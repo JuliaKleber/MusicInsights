@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import useStyleStore from "../stores/styleStore";
@@ -12,16 +11,16 @@ const ToggleMode: React.FC = () => {
   };
 
   return (
-    <div className="p-5 py-0 text-xl flex flex-row justify-between 2xl:justify-center">
+    <div className="text-xl cursor-pointer">
       <div
-        className={`text-sky-600 cursor-pointer ${
+        className={`text-sky-600 ${
           darkMode ? "hidden" : "block"
         }`}
       >
         <FontAwesomeIcon icon={faMoon} onClick={toggleMode} />
       </div>
       <div
-        className={`text-sky-400 cursor-pointer ${
+        className={`text-sky-400 ${
           darkMode ? "block" : "hidden"
         }`}
       >
