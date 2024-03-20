@@ -1,4 +1,4 @@
-"use client";
+"use server";
 
 import useMusicDataStore from "../stores/musicDataStore";
 import getSpotifyToken from "./getSpotifyToken";

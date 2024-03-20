@@ -1,21 +1,15 @@
 "use server";
 
-// import useMusicDataStore from "../stores/musicDataStore";
-// if (!isTokenStillValid) accessToken = (await getSpotifyToken());
-// if (!useMusicDataStore.getState().isTokenStillValid)
-//   await getSpotifyToken();
-// accessToken: null,
-// tokenTimeStamp: new Date("2024-01-01").getTime(),
-// isTokenStillValid: () => {
-//   const currentTimeStamp = new Date().getTime();
-//   return currentTimeStamp - useMusicDataStore.getState().tokenTimeStamp < 59 * 60 * 1000;
-// },
+let tokenTimeStamp = new Date("2024-01-01").getTime();
+let isTokenStillValid = new Date().getTime() - tokenTimeStamp < 59 * 60 * 1000;
+let accessToken: string | null = null;
 
 const getSpotifyToken = async () => {
   const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET;
   const tokenUrl = "https://accounts.spotify.com/api/token";
   const authHeader = btoa(`${clientId}:${clientSecret}`);
+  if (isTokenStillValid) return accessToken;
   try {
     const response = await fetch(tokenUrl, {
       method: "POST",
@@ -29,10 +23,9 @@ const getSpotifyToken = async () => {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    // useMusicDataStore.setState({ accessToken: data.access_token });
-    // useMusicDataStore.setState({ tokenTimeStamp: new Date().getTime() });
-    console.log(data.access_token);
-    return data.access_token;
+    accessToken = data.access_token;
+    tokenTimeStamp = new Date().getTime();
+    return accessToken;
   } catch (error) {
     console.error("Error fetching access token:", error);
   }
