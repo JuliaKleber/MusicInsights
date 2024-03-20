@@ -71,10 +71,10 @@ export default function Home() {
         darkMode && "text-pink-100"
       }`}
     >
-      <ToggleMode />
+      {/* <ToggleMode />
       <div className="m-3">
         <Search scrollToCard={scrollToCard} />
-      </div>
+      </div> */}
 
       {/* <div ref={recommendationsCardRef}>
         {recommendations.length > 0 && (
