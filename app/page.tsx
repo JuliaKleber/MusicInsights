@@ -76,7 +76,7 @@ export default function Home() {
         <Search scrollToCard={scrollToCard} />
       </div>
 
-      <div ref={recommendationsCardRef}>
+      {/* <div ref={recommendationsCardRef}>
         {recommendations.length > 0 && (
           <RecommendationsCard scrollToCard={scrollToCard} />
         )}
@@ -105,7 +105,7 @@ export default function Home() {
         <div ref={trackInfoCardRef}>
           {trackData && <TrackInfoCard scrollToCard={scrollToCard} />}
         </div>
-      </div>
+      </div> */}
       <InfoText />
     </div>
   );
