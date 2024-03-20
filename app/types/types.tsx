@@ -24,7 +24,7 @@ export interface Track {
   artists?: Artist[];
 }
 
-export interface Recommendations {
+export interface Recommendation {
   trackName: string;
   trackId: string;
   artists: Artist[];

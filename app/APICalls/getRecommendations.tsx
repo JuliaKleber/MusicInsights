@@ -14,8 +14,7 @@ const setRecommendations = (data) => {
 };
 
 const getRecommendations: (genre: string) => Promise<void> = async (genre) => {
-  // if (!isTokenStillValid) accessToken = (await getSpotifyToken());
-  const accessToken = (await getSpotifyToken());
+  const accessToken = await getSpotifyToken();
   const url = `https://api.spotify.com/v1/recommendations?limit=5&seed_genres=${genre}`;
   try {
     const response = await fetch(url, {
@@ -32,11 +31,11 @@ const getRecommendations: (genre: string) => Promise<void> = async (genre) => {
       setRecommendations(data);
     } else {
       useMusicDataStore.setState({
-        recommendations: `No recommendations found`,
+        recommendations: [],
       });
     }
   } catch (error) {
-    useMusicDataStore.setState({ recommendations: `No recommendations found` });
+    useMusicDataStore.setState({ recommendations: [] });
     console.error("Error fetching search data:", error);
   }
 };

@@ -1,12 +1,12 @@
 import { create } from 'zustand';
-import { Recommendations, ArtistData, ArtistAlbums, AlbumData, AlbumTracks, TrackData } from '../types/types';
+import { Recommendation, ArtistData, ArtistAlbums, AlbumData, AlbumTracks, TrackData } from '../types/types';
 
 type MusicDataStoreState = {
   artistSearchResults: string[];
   albumSearchResults: string[];
   trackSearchResults: string[];
   genre: string | null;
-  recommendations: Recommendations | null;
+  recommendations: Recommendation[];
   artistData: ArtistData | null;
   artistAlbums: ArtistAlbums | null;
   albumListShown: boolean;
@@ -32,7 +32,7 @@ const useMusicDataStore = create<MusicDataStoreState>((set) => ({
   trackSearchResults: [],
 
   genre: null,
-  recommendations: null,
+  recommendations: [],
 
   artistData: null,
   artistAlbums: null,

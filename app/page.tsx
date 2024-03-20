@@ -92,7 +92,7 @@ export default function Home() {
       </div>
 
       <div ref={recommendationsCardRef}>
-        {recommendations && <RecommendationsCard scrollToCard={scrollToCard} />}
+        {recommendations.length > 0 && <RecommendationsCard scrollToCard={scrollToCard} />}
       </div>
 
       <div>
