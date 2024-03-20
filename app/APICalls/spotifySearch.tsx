@@ -1,4 +1,4 @@
-"use server";
+"use client";
 
 import useMusicDataStore from "../stores/musicDataStore";
 import getSpotifyToken from "./getSpotifyToken";
@@ -9,17 +9,14 @@ const spotifySearch: (
   searchTerm: string,
   category?: Category
 ) => Promise<void> = async (searchTerm, category = "artist") => {
-  // if (!isTokenStillValid) accessToken = (await getSpotifyToken());
   const accessToken = await getSpotifyToken();
   const encodedSearchTerm = encodeURIComponent(searchTerm);
   const url = `https://api.spotify.com/v1/search?q=${encodedSearchTerm}&type=${category}&limit=20`;
   try {
-    if (!useMusicDataStore.getState().isTokenStillValid)
-      await getSpotifyToken();
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        authorization: `Bearer ${useMusicDataStore.getState().accessToken}`,
+        authorization: `Bearer ${accessToken}`,
       },
     });
     if (!response.ok) {

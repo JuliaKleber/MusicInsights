@@ -2,9 +2,6 @@ import { create } from 'zustand';
 import { Recommendations, ArtistData, ArtistAlbums, AlbumData, AlbumTracks, TrackData } from '../types/types';
 
 type MusicDataStoreState = {
-  accessToken: string | null;
-  tokenTimeStamp: number;
-  // spotifyId: string | null;
   artistSearchResults: string[];
   albumSearchResults: string[];
   trackSearchResults: string[];
@@ -17,7 +14,6 @@ type MusicDataStoreState = {
   albumTracks: AlbumTracks | null;
   trackListShown: boolean;
   trackData: TrackData | null;
-  isTokenStillValid: () => boolean;
   resetArtistSearchResults: () => void;
   resetAlbumSearchResults: () => void;
   resetTrackSearchResults: () => void;
@@ -31,14 +27,6 @@ type MusicDataStoreState = {
 };
 
 const useMusicDataStore = create<MusicDataStoreState>((set) => ({
-  accessToken: null,
-  tokenTimeStamp: new Date("2024-01-01").getTime(),
-  isTokenStillValid: () => {
-    const currentTimeStamp = new Date().getTime();
-    return currentTimeStamp - useMusicDataStore.getState().tokenTimeStamp < 59 * 60 * 1000;
-  },
-
-  // spotifyId: null,
   artistSearchResults: [],
   albumSearchResults: [],
   trackSearchResults: [],
