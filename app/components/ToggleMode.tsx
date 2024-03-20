@@ -6,29 +6,27 @@ import useStyleStore from "../stores/styleStore";
 const ToggleMode: React.FC = () => {
   const darkMode = useStyleStore((state) => state.darkMode);
   const setDarkMode = useStyleStore((state) => state.setDarkMode);
-  const [moonVisible, setMoonVisible] = useState(darkMode);
 
   const toggleMode = () => {
     darkMode ? setDarkMode(false) : setDarkMode(true);
-    darkMode ? setMoonVisible(false) : setMoonVisible(true);
   };
 
   return (
     <div className="p-5 py-0 text-xl flex flex-row justify-between 2xl:justify-center">
-      <FontAwesomeIcon
-        icon={faMoon}
+      <div
         className={`text-sky-600 cursor-pointer ${
-          moonVisible ? "hidden" : "block"
+          darkMode ? "hidden" : "block"
         }`}
-        onClick={toggleMode}
-      />
-      <FontAwesomeIcon
-        icon={faSun}
+      >
+        <FontAwesomeIcon icon={faMoon} onClick={toggleMode} />
+      </div>
+      <div
         className={`text-sky-400 cursor-pointer ${
-          moonVisible ? "block" : "hidden"
+          darkMode ? "block" : "hidden"
         }`}
-        onClick={toggleMode}
-      />
+      >
+        <FontAwesomeIcon icon={faSun} onClick={toggleMode} />
+      </div>
     </div>
   );
 };
