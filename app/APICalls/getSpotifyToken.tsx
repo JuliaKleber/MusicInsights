@@ -1,8 +1,10 @@
-import useMusicDataStore from "../stores/musicDataStore";
+'use server';
+
+// import useMusicDataStore from "../stores/musicDataStore";
 
 const getSpotifyToken = async () => {
-  const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
-  const clientSecret = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET;
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
   const tokenUrl = "https://accounts.spotify.com/api/token";
   const authHeader = btoa(`${clientId}:${clientSecret}`);
   try {
@@ -18,9 +20,9 @@ const getSpotifyToken = async () => {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    console.log(data);
-    useMusicDataStore.setState({ accessToken: data.access_token });
-    useMusicDataStore.setState({ tokenTimeStamp: new Date().getTime() });
+    // useMusicDataStore.setState({ accessToken: data.access_token });
+    // useMusicDataStore.setState({ tokenTimeStamp: new Date().getTime() });
+    return data.access_token;
   } catch (error) {
     console.error("Error fetching access token:", error);
   }

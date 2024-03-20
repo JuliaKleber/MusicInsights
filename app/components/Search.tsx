@@ -1,12 +1,10 @@
 import { useState } from "react";
-import useStyleStore, { buttonStyle } from "../stores/styleStore";
 import spotifySearch from "../APICalls/spotifySearch";
+import useStyleStore, { buttonStyle } from "../stores/styleStore";
 import { Category } from "../types/types";
 
 interface SearchProps {
-  artistInfoCardRef: React.RefObject<HTMLDivElement>;
-  albumInfoCardRef: React.RefObject<HTMLDivElement>;
-  trackInfoCardRef: React.RefObject<HTMLDivElement>;
+  scrollToCard: (category: Category, extra?: string) => void;
 }
 
 interface ButtonProps {
@@ -15,9 +13,7 @@ interface ButtonProps {
 }
 
 const Search: React.FC<SearchProps> = ({
-  artistInfoCardRef,
-  albumInfoCardRef,
-  trackInfoCardRef,
+  scrollToCard
 }) => {
   const darkMode = useStyleStore((state) => state.darkMode);
 
@@ -33,24 +29,7 @@ const Search: React.FC<SearchProps> = ({
 
   const handleSearch = (category: Category) => {
     spotifySearch(searchTerm, category);
-    if (category === "artist") {
-      artistInfoCardRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-    if (category === "album") {
-      albumInfoCardRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-    if (category === "track") {
-      trackInfoCardRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
+    scrollToCard(category);
   };
 
   const input = (
@@ -70,7 +49,7 @@ const Search: React.FC<SearchProps> = ({
   const Button: React.FC<ButtonProps> = ({ text, category }) => {
     return (
       <button
-        className={`w-32 ${buttonStyle}`}
+        className={buttonStyle}
         onClick={() => handleSearch(category)}
       >
         {text}

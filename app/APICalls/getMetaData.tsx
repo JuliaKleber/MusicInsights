@@ -268,7 +268,7 @@ const setBpmAndKey = (data) => {
 };
 
 const getMusicBrainzData = async (searchTerm: string, category: string) => {
-  const userAgentString = process.env.NEXT_PUBLIC_MUSICBRAINZ_USER_AGENT_STRING;
+  const userAgentString = process.env.MUSICBRAINZ_USER_AGENT_STRING;
   const encodedSearchTerm = encodeURIComponent(searchTerm);
   const url = `https://musicbrainz.org/ws/2/${category}?query=${encodedSearchTerm}&limit=1`;
   try {
@@ -292,7 +292,7 @@ const getMusicBrainzData = async (searchTerm: string, category: string) => {
 };
 
 const getKeyAndBpm = async (artist: string, song: string) => {
-  const bpmKey = process.env.NEXT_PUBLIC_GET_SONG_BPM_KEY;
+  const bpmKey = process.env.GET_SONG_BPM_KEY;
 
   const getSongId = async (artist: string, song: string) => {
     artist = artist.replaceAll(" ", "+").toLowerCase();

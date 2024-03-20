@@ -1,3 +1,5 @@
+"use server";
+
 import useMusicDataStore from "../stores/musicDataStore";
 import getSpotifyToken from "./getSpotifyToken";
 import getSpotifyData from "./getMetaData";
@@ -7,6 +9,8 @@ const spotifySearch: (
   searchTerm: string,
   category?: Category
 ) => Promise<void> = async (searchTerm, category = "artist") => {
+  // if (!isTokenStillValid) accessToken = (await getSpotifyToken());
+  const accessToken = await getSpotifyToken();
   const encodedSearchTerm = encodeURIComponent(searchTerm);
   const url = `https://api.spotify.com/v1/search?q=${encodedSearchTerm}&type=${category}&limit=20`;
   try {
@@ -24,13 +28,19 @@ const spotifySearch: (
     const data = await response.json();
     let spotifyId = null;
     if (category === "artist" && data.artists.items[0]) {
-      useMusicDataStore.setState({ artistSearchResults: data.artists.items.map((item) => item.id) });
+      useMusicDataStore.setState({
+        artistSearchResults: data.artists.items.map((item) => item.id),
+      });
       spotifyId = data.artists.items[0].id;
     } else if (category === "album" && data.albums.items[0]) {
-      useMusicDataStore.setState({ albumSearchResults: data.albums.items.map((item) => item.id) });
+      useMusicDataStore.setState({
+        albumSearchResults: data.albums.items.map((item) => item.id),
+      });
       spotifyId = data.albums.items[0].id;
     } else if (category === "track" && data.tracks.items[0]) {
-      useMusicDataStore.setState({ trackSearchResults: data.tracks.items.map((item) => item.id) });
+      useMusicDataStore.setState({
+        trackSearchResults: data.tracks.items.map((item) => item.id),
+      });
       spotifyId = data.tracks.items[0].id;
     }
     getSpotifyData(spotifyId, category);

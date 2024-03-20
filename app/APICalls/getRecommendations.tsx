@@ -14,7 +14,7 @@ const setRecommendations = (data) => {
 };
 
 const getRecommendations: (genre: string) => Promise<void> = async (genre) => {
-  // if (!isTokenStillValid) accessToken === (await getSpotifyToken());
+  // if (!isTokenStillValid) accessToken = (await getSpotifyToken());
   const accessToken = (await getSpotifyToken());
   const url = `https://api.spotify.com/v1/recommendations?limit=5&seed_genres=${genre}`;
   try {

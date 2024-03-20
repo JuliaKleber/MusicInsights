@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 export const buttonStyle =
-  "p-1 mt-4 mx-1 bg-sky-600 text-white rounded-md shadow-md border-none hover:bg-sky-800 hover:shadow-lg";
+  "w-32 p-1 mt-4 mx-1 bg-sky-600 text-white rounded-md shadow-md border-none hover:bg-sky-800 hover:shadow-lg";
 export const lightLinkStyle = "cursor-pointer hover:text-primaryColor";
 export const darkLinkStyle = "cursor-pointer hover:text-pink-400";
 export const lightHeaderStyle =

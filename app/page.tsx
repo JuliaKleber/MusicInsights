@@ -87,52 +87,36 @@ export default function Home() {
       <ToggleMode />
       <div className="m-3">
         <Search
-          artistInfoCardRef={artistInfoCardRef}
-          albumInfoCardRef={albumInfoCardRef}
-          trackInfoCardRef={trackInfoCardRef}
+          scrollToCard={scrollToCard}
         />
       </div>
 
       <div ref={recommendationsCardRef}>
-        {recommendations && (
-          <RecommendationsCard
-            onGetArtist={scrollToCard}
-            onGetTrack={scrollToCard}
-          />
-        )}
+        {recommendations && <RecommendationsCard scrollToCard={scrollToCard} />}
       </div>
 
       <div>
         <div ref={artistInfoCardRef}>
-          {artistData && (
-            <ArtistInfoCard
-              scrollToCard={scrollToCard}
-            />
-          )}
+          {artistData && <ArtistInfoCard scrollToCard={scrollToCard} />}
         </div>
         <div ref={artistAlbumsCardRef}>
           {albumListShown && artistAlbums && (
-            <ArtistAlbumsCard onAlbumClick={scrollToCard} />
+            <ArtistAlbumsCard scrollToCard={scrollToCard} />
           )}
         </div>
         <div ref={albumInfoCardRef}>
           {albumData && (
             <AlbumInfoCard
-              onArtistClick={scrollToCard}
+              scrollToCard={scrollToCard}
               albumTracksRef={albumTracksCardRef}
             />
           )}
         </div>
         <div ref={albumTracksCardRef}>
-          {trackListShown && <AlbumTracksCard onTrackClick={scrollToCard} />}
+          {trackListShown && <AlbumTracksCard scrollToCard={scrollToCard} />}
         </div>
         <div ref={trackInfoCardRef}>
-          {trackData && (
-            <TrackInfoCard
-              onArtistClick={scrollToCard}
-              onAlbumClick={scrollToCard}
-            />
-          )}
+          {trackData && <TrackInfoCard scrollToCard={scrollToCard} />}
         </div>
       </div>
       <InfoText />
