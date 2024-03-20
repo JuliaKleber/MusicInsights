@@ -5,6 +5,7 @@ The user can retrieve meta data about artists, albums and songs.
 ## Built with
 
 - React
+- Next.js
 - Zustand
 - TypeScript
 - Tailwind
