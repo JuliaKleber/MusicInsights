@@ -33,36 +33,36 @@ export default function Home() {
   const trackInfoCardRef = useRef(null);
 
   const scrollToCard = async (category: Category, extra?: string) => {
-    if (category === "artist" && extra === undefined) {
-      artistInfoCardRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-    if (category === "artist" && extra !== undefined) {
-      artistAlbumsCardRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-    if (category === "album") {
-      albumInfoCardRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-    if (category === "track") {
-      trackInfoCardRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-    if (category === "recommendations") {
-      recommendationsCardRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
+    // if (category === "artist" && extra === undefined) {
+    //   artistInfoCardRef.current.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "center",
+    //   });
+    // }
+    // if (category === "artist" && extra !== undefined) {
+    //   artistAlbumsCardRef.current.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "center",
+    //   });
+    // }
+    // if (category === "album") {
+    //   albumInfoCardRef.current.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "center",
+    //   });
+    // }
+    // if (category === "track") {
+    //   trackInfoCardRef.current.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "center",
+    //   });
+    // }
+    // if (category === "recommendations") {
+    //   recommendationsCardRef.current.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "center",
+    //   });
+    // }
   };
 
   return (
