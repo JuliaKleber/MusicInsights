@@ -36,6 +36,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
   const albumSearchResults = useMusicDataStore(
     (state) => state.albumSearchResults
   );
+  const resetArtistSearchResults = useMusicDataStore((state) => state.resetArtistSearchResults);
 
   const darkMode = useStyleStore((state) => state.darkMode);
 
@@ -55,10 +56,11 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
     }
   };
 
-  const onArtistClick = async (spotifyId: string, category: Category) => {
+  const onClick = async (spotifyId: string, category: Category) => {
     const data = await getMetaData(spotifyId, category);
     if (category === "artist") setArtistData(data);
-    else if (category === "album") setAlbumData(data);
+    if (category === "artist") resetArtistSearchResults();
+    if (category === "album") setAlbumData(data);
     scrollToCard(category);
   };
 
@@ -68,7 +70,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
         <li
           className={`mr-1 ${darkMode ? darkLinkStyle : lightLinkStyle}`}
           key={index}
-          onClick={() => onArtistClick(artist.spotifyId, "artist")}
+          onClick={() => onClick(artist.spotifyId, "artist")}
         >
           {index + 1 < albumData.artists.length
             ? `${artist.name}, `
@@ -92,7 +94,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
         <FontAwesomeIcon
           icon={faArrowLeft}
           className={darkMode ? darkArrowStyle : lightArrowStyle}
-          onClick={() => getMetaData(previousSpotifyId, "album")}
+          onClick={() => onClick(previousSpotifyId, "album")}
         />
       )}
       <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
@@ -102,7 +104,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
         <FontAwesomeIcon
           icon={faArrowRight}
           className={darkMode ? darkArrowStyle : lightArrowStyle}
-          onClick={() => getMetaData(nextSpotifyId, "album")}
+          onClick={() => onClick(nextSpotifyId, "album")}
         />
       )}
     </div>

@@ -25,7 +25,6 @@ const spotifySearch: (
     return searchResults;
   } catch (error) {
     console.error("Error fetching search data:", error);
-    return null;
   }
 };
 

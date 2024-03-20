@@ -22,15 +22,6 @@ export default function Home() {
   const albumData = useMusicDataStore((state) => state.albumData);
   const trackListShown = useMusicDataStore((state) => state.trackListShown);
   const trackData = useMusicDataStore((state) => state.trackData);
-  const resetArtistSearchResults = useMusicDataStore(
-    (state) => state.resetArtistSearchResults
-  );
-  const resetAlbumSearchResults = useMusicDataStore(
-    (state) => state.resetAlbumSearchResults
-  );
-  const resetTrackSearchResults = useMusicDataStore(
-    (state) => state.resetTrackSearchResults
-  );
 
   const darkMode = useStyleStore((state) => state.darkMode);
 
@@ -48,7 +39,6 @@ export default function Home() {
         behavior: "smooth",
         block: "center",
       });
-      resetArtistSearchResults();
     }
     if (category === "artist" && extra !== undefined) {
       artistAlbumsCardRef.current.scrollIntoView({
@@ -61,14 +51,12 @@ export default function Home() {
         behavior: "smooth",
         block: "center",
       });
-      resetAlbumSearchResults();
     }
     if (category === "track") {
       trackInfoCardRef.current.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
-      resetTrackSearchResults();
     }
     if (category === "recommendations") {
       recommendationsCardRef.current.scrollIntoView({

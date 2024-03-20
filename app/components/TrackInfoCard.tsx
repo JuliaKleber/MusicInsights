@@ -27,6 +27,13 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
   const trackData = useMusicDataStore((state) => state.trackData);
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
   const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
+  const setTrackData = useMusicDataStore((state) => state.setTrackData);
+  const resetArtistSearchResults = useMusicDataStore(
+    (state) => state.resetArtistSearchResults
+  );
+  const resetAlbumSearchResults = useMusicDataStore(
+    (state) => state.resetAlbumSearchResults
+  );
 
   const darkMode = useStyleStore((state) => state.darkMode);
 
@@ -37,10 +44,13 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
   const onClick = async (spotifyId: string, category: Category) => {
     const data = await getMetaData(spotifyId, category);
     if (category === "artist") setArtistData(data);
-    else if (category === "album") setAlbumData(data);
+    if (category === "artist") resetArtistSearchResults();
+    if (category === "album") setAlbumData(data);
+    if (category === "album") resetAlbumSearchResults();
+    if (category === "track") setTrackData(data);
     scrollToCard(category);
   };
-  
+
   const image = (
     <img
       src={trackData.image}
@@ -71,7 +81,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
         <FontAwesomeIcon
           icon={faArrowLeft}
           className={darkMode ? darkArrowStyle : lightArrowStyle}
-          onClick={() => getMetaData(previousSpotifyId, "track")}
+          onClick={() => onClick(previousSpotifyId, "track")}
         />
       )}
       <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
@@ -82,7 +92,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
         <FontAwesomeIcon
           icon={faArrowRight}
           className={darkMode ? darkArrowStyle : lightArrowStyle}
-          onClick={() => getMetaData(nextSpotifyId, "track")}
+          onClick={() => onClick(nextSpotifyId, "track")}
         />
       )}
     </div>

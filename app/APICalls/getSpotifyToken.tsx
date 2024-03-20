@@ -5,8 +5,8 @@ let isTokenStillValid = new Date().getTime() - tokenTimeStamp < 59 * 60 * 1000;
 let accessToken: string | null = null;
 
 const getSpotifyToken = async () => {
-  const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
-  const clientSecret = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET;
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
   const tokenUrl = "https://accounts.spotify.com/api/token";
   const authHeader = btoa(`${clientId}:${clientSecret}`);
   if (isTokenStillValid) return accessToken;

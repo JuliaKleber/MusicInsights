@@ -26,11 +26,13 @@ interface ArtistInfoCardProps {
 
 const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
   const artistData = useMusicDataStore((state) => state.artistData);
+  const setArtistData = useMusicDataStore((state) => state.setArtistData);
   const albumListShown = useMusicDataStore((state) => state.albumListShown);
   const setAlbumListShown = useMusicDataStore(
     (state) => state.setAlbumListShown
   );
   const setGenre = useMusicDataStore((state) => state.setGenre);
+  const setRecommendations = useMusicDataStore((state) => state.setRecommendations);
   const artistSearchResults = useMusicDataStore(
     (state) => state.artistSearchResults
   );
@@ -81,10 +83,17 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
     return followers;
   };
 
-  const genreClick = (genre: string) => {
+  const genreClick = async (genre: string) => {
     setGenre(genre);
-    getRecommendations(genre.toLowerCase().replaceAll(" ", "-"));
+    const recommendations = await getRecommendations(genre.toLowerCase().replaceAll(" ", "-"));
+    setRecommendations(recommendations);
     scrollToCard("recommendations");
+  };
+
+  const onClick = async (spotifyId: string, category: Category) => {
+    const data = await getMetaData(spotifyId, category);
+    if (category === "artist") setArtistData(data);
+    scrollToCard(category);
   };
 
   const image = (
@@ -101,7 +110,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
         <FontAwesomeIcon
           icon={faArrowLeft}
           className={darkMode ? darkArrowStyle : lightArrowStyle}
-          onClick={() => getMetaData(previousSpotifyId, "artist")}
+          onClick={() => onClick(previousSpotifyId, "artist")}
         />
       )}
       <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
@@ -111,7 +120,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
         <FontAwesomeIcon
           icon={faArrowRight}
           className={darkMode ? darkArrowStyle : lightArrowStyle}
-          onClick={() => getMetaData(nextSpotifyId, "artist")}
+          onClick={() => onClick(nextSpotifyId, "artist")}
         />
       )}
     </div>
