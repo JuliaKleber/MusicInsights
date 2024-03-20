@@ -24,6 +24,9 @@ type MusicDataState = {
 };
 
 type MusicDataActions = {
+  setArtistSearchResults: (searchResults: string[]) => void;
+  setAlbumSearchResults: (searchResults: string[]) => void;
+  setTrackSearchResults: (searchResults: string[]) => void;
   resetArtistSearchResults: () => void;
   resetAlbumSearchResults: () => void;
   resetTrackSearchResults: () => void;
@@ -55,6 +58,16 @@ export const useMusicDataStore = create<MusicDataStore>()((set) => ({
   trackListShown: false,
 
   trackData: null,
+
+  setArtistSearchResults: (searchResults) => {
+    set(() => ({ artistSearchResults: searchResults }));
+  },
+  setAlbumSearchResults: (searchResults) => {
+    set(() => ({ albumSearchResults: searchResults }));
+  },
+  setTrackSearchResults: (searchResults) => {
+    set(() => ({ trackSearchResults: searchResults }));
+  },
 
   resetArtistSearchResults: () => {
     set(() => ({ artistSearchResults: [] }));

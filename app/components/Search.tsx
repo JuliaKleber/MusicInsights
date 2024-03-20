@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import spotifySearch from "../APICalls/spotifySearch";
+import getMetaData from "../APICalls/getMetaData";
 import useStyleStore, { buttonStyle } from "../stores/styleStore";
 import { Category } from "../types/types";
 import useMusicDataStore from "../stores/musicDataStore";
@@ -16,6 +17,16 @@ interface ButtonProps {
 }
 
 const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
+  const setArtistSearchResults = useMusicDataStore(
+    (state) => state.setArtistSearchResults
+  );
+  const setAlbumSearchResults = useMusicDataStore(
+    (state) => state.setAlbumSearchResults
+  );
+  const setTrackSearchResults = useMusicDataStore(
+    (state) => state.setTrackSearchResults
+  );
+
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
   const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
   const setTrackData = useMusicDataStore((state) => state.setTrackData);
@@ -26,20 +37,34 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
 
   const handleKeyDown = async (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
-      const artistData = await spotifySearch(searchTerm, "artist");
+      const artistResults = await spotifySearch(searchTerm, "artist");
+      const artistData = await getMetaData(artistResults[0], "artist");
+      setArtistSearchResults(artistResults);
       setArtistData(artistData);
-      const albumData = await spotifySearch(searchTerm, "album");
+      const albumResults = await spotifySearch(searchTerm, "album");
+      const albumData = await getMetaData(albumResults[0], "album");
+      setAlbumSearchResults(albumResults);
       setAlbumData(albumData);
-      const trackData = await spotifySearch(searchTerm, "track");
+      const trackResults = await spotifySearch(searchTerm, "track");
+      const trackData = await getMetaData(trackResults[0], "track");
+      setTrackSearchResults(trackResults);
       setTrackData(trackData);
     }
   };
 
   const handleSearch = async (category: Category) => {
-    const data = await spotifySearch(searchTerm, category);
-    if (category === 'artist') setArtistData(data);
-    else if (category === 'album') setAlbumData(data);
-    else if (category === 'track') setTrackData(data);
+    const searchResults = await spotifySearch(searchTerm, category);
+    const data = await getMetaData(searchResults[0], category);
+    if (category === "artist") {
+      setArtistSearchResults(searchResults);
+      setArtistData(data);
+    } else if (category === "album") {
+      setAlbumSearchResults(searchResults);
+      setAlbumData(data);
+    } else if (category === "track") {
+      setTrackSearchResults(searchResults);
+      setTrackData(data);
+    }
     scrollToCard(category);
   };
 

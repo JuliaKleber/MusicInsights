@@ -86,9 +86,9 @@ export interface TrackData {
   spotifyPopularity: number;
   length: number;
   image: string;
-  bpm: string;
-  timeSignature: string;
-  key: string;
+  bpm?: string;
+  timeSignature?: string;
+  key?: string;
 }
 
 export interface Month {

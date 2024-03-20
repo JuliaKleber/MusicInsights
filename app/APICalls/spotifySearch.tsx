@@ -1,33 +1,12 @@
 "use server";
 
-import useMusicDataStore from "../stores/musicDataStore";
 import getSpotifyToken from "./getSpotifyToken";
-import getMetaData from "./getMetaData";
-import { Category, ArtistData, AlbumData, TrackData } from "../types/types";
-
-const updateMusicDataStore = (category: Category, data) => {
-  if (category === "artist" && data.artists.items[0]) {
-    useMusicDataStore.setState({
-      artistSearchResults: data.artists.items.map((item) => item.id),
-    });
-    return data.artists.items[0].id;
-  } else if (category === "album" && data.albums.items[0]) {
-    useMusicDataStore.setState({
-      albumSearchResults: data.albums.items.map((item) => item.id),
-    });
-    return data.albums.items[0].id;
-  } else if (category === "track" && data.tracks.items[0]) {
-    useMusicDataStore.setState({
-      trackSearchResults: data.tracks.items.map((item) => item.id),
-    });
-    return data.tracks.items[0].id;
-  }
-};
+import { Category } from "../types/types";
 
 const spotifySearch: (
   searchTerm: string,
   category?: Category
-) => Promise<ArtistData | AlbumData | TrackData | null> = async (searchTerm, category = "artist") => {
+) => Promise<string[]> = async (searchTerm, category = "artist") => {
   const accessToken = await getSpotifyToken();
   const encodedSearchTerm = encodeURIComponent(searchTerm);
   const url = `https://api.spotify.com/v1/search?q=${encodedSearchTerm}&type=${category}&limit=20`;
@@ -42,9 +21,8 @@ const spotifySearch: (
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    const spotifyId = await updateMusicDataStore(category, data);
-    const returnedData = await getMetaData(spotifyId, category);
-    return returnedData;
+    const searchResults = data[`${category}s`].items.map((item) => item.id);
+    return searchResults;
   } catch (error) {
     console.error("Error fetching search data:", error);
     return null;
