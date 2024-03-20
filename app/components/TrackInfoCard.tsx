@@ -1,5 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Hide from "./Hide";
+import getMetaData from "../APICalls/getMetaData";
+import { parsedReleaseDate } from "../functions/sharedFunctions";
 import useMusicDataStore from "../stores/musicDataStore";
 import useStyleStore, {
   lightLinkStyle,
@@ -11,24 +14,19 @@ import useStyleStore, {
   firstColumnStyle,
   secondColumnStyle,
 } from "../stores/styleStore";
-import Hide from "./Hide";
-import getMetaData from "../APICalls/getMetaData";
-import { parsedReleaseDate } from "../functions/sharedFunctions";
 import { Category, Artist } from "../types/types";
 
 interface TrackInfoCardProps {
-  onArtistClick: (id: string, category: Category) => void;
-  onAlbumClick: (id: string, category: Category) => void;
+  scrollToCard: (category: Category) => void;
 }
 
-const TrackInfoCard: React.FC<TrackInfoCardProps> = ({
-  onArtistClick,
-  onAlbumClick,
-}) => {
-  const trackData = useMusicDataStore((state) => state.trackData);
+const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
   const trackSearchResults = useMusicDataStore(
     (state) => state.trackSearchResults
   );
+  const trackData = useMusicDataStore((state) => state.trackData);
+  const setArtistData = useMusicDataStore((state) => state.setArtistData);
+  const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
 
   const darkMode = useStyleStore((state) => state.darkMode);
 
@@ -36,6 +34,13 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({
   const nextSpotifyId = trackSearchResults[indexInSearchResults + 1];
   const previousSpotifyId = trackSearchResults[indexInSearchResults - 1];
 
+  const onClick = async (spotifyId: string, category: Category) => {
+    const data = await getMetaData(spotifyId, category);
+    if (category === "artist") setArtistData(data);
+    else if (category === "album") setAlbumData(data);
+    scrollToCard(category);
+  };
+  
   const image = (
     <img
       src={trackData.image}
@@ -46,11 +51,11 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({
 
   const artistsList = (
     <ul className="flex flex-col sm:flex-row flex-wrap">
-      {trackData.artists.map((artist: Artist, index: number) => (
+      {trackData?.artists.map((artist: Artist, index: number) => (
         <li
           className={`mr-1 ${darkMode ? darkLinkStyle : lightLinkStyle}`}
           key={index}
-          onClick={() => onArtistClick(artist.spotifyId, "artist")}
+          onClick={() => onClick(artist.spotifyId, "artist")}
         >
           {index !== trackData.artists.length - 1
             ? `${artist.name}, `
@@ -70,8 +75,8 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({
         />
       )}
       <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
-        {trackData.artists[0].name} {trackData.artists.length > 1 && " & v.a."}{" "}
-        - {trackData.name}
+        {trackData?.artists[0].name} {trackData.artists.length > 1 && " & v.a."}{" "}
+        - {trackData?.name}
       </h2>
       {nextSpotifyId && (
         <FontAwesomeIcon
@@ -100,18 +105,22 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({
             className={`${secondColumnStyle} ${
               darkMode ? darkLinkStyle : lightLinkStyle
             }`}
-            onClick={() => onAlbumClick(trackData.album.spotifyId, "album")}
+            onClick={() => onClick(trackData?.album.spotifyId, "album")}
           >
-            {trackData.album.name.split(" (Remastered")[0].split(" (Deluxe")[0]}
+            {
+              trackData?.album.name
+                .split(" (Remastered")[0]
+                .split(" (Deluxe")[0]
+            }
           </td>
         </tr>
         <tr>
           <td className={firstColumnStyle}>Release Date:</td>
           <td className={secondColumnStyle}>
-            {parsedReleaseDate(trackData.releaseDate)}
+            {parsedReleaseDate(trackData?.releaseDate)}
           </td>
         </tr>
-        {trackData.bpm && (
+        {trackData?.bpm && (
           <>
             <tr>
               <td className={firstColumnStyle}>Key:</td>
@@ -131,12 +140,12 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({
         )}
         <tr>
           <td className={firstColumnStyle}>Length:</td>
-          <td className={secondColumnStyle}>{trackData.length} s</td>
+          <td className={secondColumnStyle}>{trackData?.length} s</td>
         </tr>
         <tr>
           <td className={firstColumnStyle}>Popularity on Spotify:</td>
           <td className={secondColumnStyle}>
-            {trackData.spotifyPopularity} / 100
+            {trackData?.spotifyPopularity} / 100
           </td>
         </tr>
       </tbody>

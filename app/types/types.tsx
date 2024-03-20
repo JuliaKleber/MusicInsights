@@ -89,6 +89,7 @@ export interface TrackData {
   bpm?: string;
   timeSignature?: string;
   key?: string;
+  releaseDate: string;
 }
 
 export interface Month {
