@@ -2,7 +2,7 @@
 
 import useMusicDataStore from "../stores/musicDataStore";
 import getSpotifyToken from "./getSpotifyToken";
-import { Category } from "../types/types";
+import { Category, ArtistData } from "../types/types";
 
 const genres = [
   "acoustic",
@@ -137,7 +137,7 @@ const setArtistData = (data: any) => {
   const filteredGenres = data.genres.filter((genre: string) => {
     return genres.includes(genre);
   });
-  let artistData = {
+  let artistData: ArtistData = {
     spotifyId: data.id,
     name: data.name,
     genres: filteredGenres,

@@ -4,7 +4,7 @@ import { useState } from "react";
 import spotifySearch from "../APICalls/spotifySearch";
 import getMetaData from "../APICalls/getMetaData";
 import useStyleStore, { buttonStyle } from "../stores/styleStore";
-import { Category } from "../types/types";
+import { Category, ArtistData, AlbumData, TrackData } from "../types/types";
 import useMusicDataStore from "../stores/musicDataStore";
 
 interface SearchProps {
@@ -57,7 +57,9 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
 
   const handleSearch = async (category: Category) => {
     const searchResults = await spotifySearch(searchTerm, category);
-    const data = await getMetaData(searchResults[0], category);
+    console.log(searchResults);
+    const data: ArtistData | AlbumData | TrackData = await getMetaData(searchResults[0], category);
+    console.log(data);
     if (category === "artist") {
       setArtistSearchResults(searchResults);
       setArtistData(data);
