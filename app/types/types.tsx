@@ -59,6 +59,7 @@ export interface ArtistAlbum {
 }
 
 export interface AlbumData {
+  spotifyId: string;
   name: string;
   artists: Artist[];
   label: string;

@@ -133,7 +133,7 @@ const genres = [
   "world music",
 ];
 
-const setArtistData = (data) => {
+const setArtistData = (data: any) => {
   const filteredGenres = data.genres.filter((genre: string) => {
     return genres.includes(genre);
   });
@@ -148,7 +148,7 @@ const setArtistData = (data) => {
   return artistData;
 };
 
-const setArtistDataFromMusicBrainz = (spotifyData, musicBrainzData) => {
+const setArtistDataFromMusicBrainz = (spotifyData: any, musicBrainzData: any) => {
   const artistData = {
     spotifyId: spotifyData.spotifyId,
     name: spotifyData.name,
@@ -172,7 +172,7 @@ const setArtistDataFromMusicBrainz = (spotifyData, musicBrainzData) => {
   return artistData;
 };
 
-const setArtistAlbums = (data) => {
+const setArtistAlbums = (data: any) => {
   const artistAlbums = [...data.items].reverse().map((item) => ({
     spotifyId: item.id,
     name: item.name,
@@ -183,7 +183,7 @@ const setArtistAlbums = (data) => {
   return artistAlbums;
 };
 
-const setAlbumData = (data) => {
+const setAlbumData = (data: any) => {
   const albumData = {
     spotifyId: data.id,
     name: data.name,
@@ -200,7 +200,7 @@ const setAlbumData = (data) => {
   return albumData;
 };
 
-const setAlbumTracks = (data) => {
+const setAlbumTracks = (data: any) => {
   useMusicDataStore.setState({
     albumTracks: {
       name: data.name,
@@ -217,7 +217,7 @@ const setAlbumTracks = (data) => {
   });
 };
 
-const setTrackData = (data) => {
+const setTrackData = (data: any) => {
   const trackData = {
     spotifyId: data.id,
     isrc: data.external_ids.isrc,
@@ -239,7 +239,7 @@ const setTrackData = (data) => {
   return trackData;
 };
 
-const setBpmAndKey = (spotifyData, bpmData) => {
+const setBpmAndKey = (spotifyData: any, bpmData: any) => {
   const trackData = {
     spotifyId: spotifyData.spotifyId,
     isrc: spotifyData.isrc,
