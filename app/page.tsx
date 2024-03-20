@@ -1,20 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import useMusicDataStore from "./stores/musicDataStore";
-import useStyleStore, {
-  lightLinkStyle,
-  darkLinkStyle,
-  darkArrowStyle,
-  lightArrowStyle,
-  darkHeaderStyle,
-  lightHeaderStyle,
-  firstColumnStyle,
-  secondColumnStyle,
-} from "./stores/styleStore";
-import getSpotifyToken from "./APICalls/getSpotifyToken";
-import getRecommendations from "./APICalls/getRecommendations";
-import getSpotifyData from "./APICalls/getMetaData";
+import { useRef } from "react";
 import ToggleMode from "./components/ToggleMode";
 import Search from "./components/Search";
 import ArtistInfoCard from "./components/ArtistInfoCard";
@@ -24,13 +10,11 @@ import TrackInfoCard from "./components/TrackInfoCard";
 import AlbumTracksCard from "./components/AlbumTracksCard";
 import RecommendationsCard from "./components/RecommendationsCard";
 import InfoText from "./components/InfoText";
+import useMusicDataStore from "./stores/musicDataStore";
+import useStyleStore from "./stores/styleStore";
 import { Category } from "./types/types";
 
 export default function Home() {
-  const isTokenStillValid = useMusicDataStore(
-    (state) => state.isTokenStillValid
-  );
-  const accessToken = useMusicDataStore((state) => state.accessToken);
   const recommendations = useMusicDataStore((state) => state.recommendations);
   const artistData = useMusicDataStore((state) => state.artistData);
   const artistAlbums = useMusicDataStore((state) => state.artistAlbums);
@@ -57,25 +41,20 @@ export default function Home() {
   const albumTracksCardRef = useRef(null);
   const trackInfoCardRef = useRef(null);
 
-  useEffect(() => {
-    getSpotifyToken();
-    darkMode
-      ? (document.body.style.backgroundColor = "rgb(17 24 39)")
-      : (document.body.style.backgroundColor = "white");
-  }, [darkMode]);
-
-  const retrieveSpotifyData = async (
-    id: string,
-    category: Category,
-    extra?: string
-  ) => {
-    getSpotifyData(id, category, extra);
+  const scrollToCard = async (category: Category, extra?: string) => {
+    // getSpotifyData(id, category, extra);
     if (category === "artist" && extra === undefined) {
       artistInfoCardRef.current.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
       resetArtistSearchResults();
+    }
+    if (category === "artist" && extra !== undefined) {
+      artistAlbumsCardRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }
     if (category === "album") {
       albumInfoCardRef.current.scrollIntoView({
@@ -91,12 +70,7 @@ export default function Home() {
       });
       resetTrackSearchResults();
     }
-  };
-
-  const handleGiveRecommendations = async (genre: string) => {
-    if (!isTokenStillValid) await getSpotifyToken();
-    getRecommendations(genre, accessToken);
-    if (recommendationsCardRef.current) {
+    if (category === "recommendations") {
       recommendationsCardRef.current.scrollIntoView({
         behavior: "smooth",
         block: "center",
@@ -122,8 +96,8 @@ export default function Home() {
       <div ref={recommendationsCardRef}>
         {recommendations && (
           <RecommendationsCard
-            onGetArtist={retrieveSpotifyData}
-            onGetTrack={retrieveSpotifyData}
+            onGetArtist={scrollToCard}
+            onGetTrack={scrollToCard}
           />
         )}
       </div>
@@ -132,35 +106,31 @@ export default function Home() {
         <div ref={artistInfoCardRef}>
           {artistData && (
             <ArtistInfoCard
-              onToggleAlbumList={retrieveSpotifyData}
-              onGiveRecommendations={handleGiveRecommendations}
-              artistAlbumsRef={artistAlbumsCardRef}
+              scrollToCard={scrollToCard}
             />
           )}
         </div>
         <div ref={artistAlbumsCardRef}>
           {albumListShown && artistAlbums && (
-            <ArtistAlbumsCard onAlbumClick={retrieveSpotifyData} />
+            <ArtistAlbumsCard onAlbumClick={scrollToCard} />
           )}
         </div>
         <div ref={albumInfoCardRef}>
           {albumData && (
             <AlbumInfoCard
-              onArtistClick={retrieveSpotifyData}
+              onArtistClick={scrollToCard}
               albumTracksRef={albumTracksCardRef}
             />
           )}
         </div>
         <div ref={albumTracksCardRef}>
-          {trackListShown && (
-            <AlbumTracksCard onTrackClick={retrieveSpotifyData} />
-          )}
+          {trackListShown && <AlbumTracksCard onTrackClick={scrollToCard} />}
         </div>
         <div ref={trackInfoCardRef}>
           {trackData && (
             <TrackInfoCard
-              onArtistClick={retrieveSpotifyData}
-              onAlbumClick={retrieveSpotifyData}
+              onArtistClick={scrollToCard}
+              onAlbumClick={scrollToCard}
             />
           )}
         </div>

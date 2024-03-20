@@ -7,6 +7,9 @@ const ToggleMode: React.FC = () => {
   const setDarkMode = useStyleStore((state) => state.setDarkMode);
 
   const toggleMode = () => {
+    darkMode
+      ? (document.body.style.backgroundColor = "white")
+      : (document.body.style.backgroundColor = "rgb(17 24 39)");
     darkMode ? setDarkMode(false) : setDarkMode(true);
   };
 

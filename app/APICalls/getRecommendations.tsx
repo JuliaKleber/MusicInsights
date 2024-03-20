@@ -1,3 +1,4 @@
+import getSpotifyToken from "./getSpotifyToken";
 import useMusicDataStore from "../stores/musicDataStore";
 
 const setRecommendations = (data) => {
@@ -12,10 +13,9 @@ const setRecommendations = (data) => {
   useMusicDataStore.setState({ recommendations: tracks });
 };
 
-const getRecommendations: (
-  genre: string,
-  accessToken: string
-) => Promise<void> = async (genre, accessToken) => {
+const getRecommendations: (genre: string) => Promise<void> = async (genre) => {
+  // if (!isTokenStillValid) accessToken === (await getSpotifyToken());
+  const accessToken = (await getSpotifyToken());
   const url = `https://api.spotify.com/v1/recommendations?limit=5&seed_genres=${genre}`;
   try {
     const response = await fetch(url, {

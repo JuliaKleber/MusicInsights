@@ -1,4 +1,4 @@
-export type Category = 'artist' | 'album' | 'track';
+export type Category = 'artist' | 'album' | 'track' | 'recommendations';
 
 export type DataCategory = 'artistData' | 'albumListShown' | 'albumData' | 'trackListShown' | 'trackData' | 'recommendations';
 

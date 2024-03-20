@@ -1,7 +1,14 @@
+"use server";
+
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Hide from "./Hide";
+import getSpotifyData from "../APICalls/getMetaData";
+import getRecommendations from "../APICalls/getRecommendations";
 import useMusicDataStore from "../stores/musicDataStore";
 import useStyleStore, {
+  buttonStyle,
   lightLinkStyle,
   darkLinkStyle,
   darkArrowStyle,
@@ -11,24 +18,14 @@ import useStyleStore, {
   firstColumnStyle,
   secondColumnStyle,
 } from "../stores/styleStore";
-import Hide from "./Hide";
-import getSpotifyData from "../APICalls/getMetaData";
 import { Category } from "../types/types";
 
 interface ArtistInfoCardProps {
-  onToggleAlbumList: (
-    spotifyId: string,
-    category: Category,
-    endpoint: string
-  ) => void;
-  onGiveRecommendations: (genre: string) => void;
-  artistAlbumsRef: React.RefObject<HTMLDivElement>;
+  scrollToCard: (category: Category, endpoint?: string) => void;
 }
 
 const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({
-  onToggleAlbumList,
-  onGiveRecommendations,
-  artistAlbumsRef,
+  scrollToCard,
 }) => {
   const artistData = useMusicDataStore((state) => state.artistData);
   const albumListShown = useMusicDataStore((state) => state.albumListShown);
@@ -57,20 +54,17 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({
     );
   };
 
-  const showAlbums = async () => {
+  const toggleAlbumList = async () => {
     if (albumListShown) {
       setAlbumListShown(false);
     } else {
       setAlbumListShown(true);
-      await onToggleAlbumList(
+      await getSpotifyData(
         artistData.spotifyId,
         "artist",
         "/albums?include_groups=album&limit=50"
       );
-      artistAlbumsRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
+      scrollToCard("artist", "/albums?include_groups=album&limit=50");
     }
   };
 
@@ -91,11 +85,12 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({
 
   const genreClick = (genre: string) => {
     setGenre(genre);
-    onGiveRecommendations(genre.toLowerCase().replaceAll(" ", "-"));
+    getRecommendations(genre.toLowerCase().replaceAll(" ", "-"));
+    scrollToCard("recommendations");
   };
 
   const image = (
-    <img
+    <Image
       src={artistData.image}
       alt="artist"
       className="w-64 mt-4 md:mt-0 rounded-md md:rounded-l-lg md:rounded-r-none"
@@ -192,7 +187,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({
   );
 
   const button = (
-    <button onClick={() => showAlbums()} className={`w-32 ${buttonStyle}`}>
+    <button onClick={() => toggleAlbumList()} className={`w-32 ${buttonStyle}`}>
       {albumListShown ? "Hide Albums" : "Show Albums"}
     </button>
   );
