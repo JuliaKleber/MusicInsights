@@ -18,15 +18,17 @@ import { parsedReleaseDate } from "../functions/sharedFunctions";
 import { Category, Artist } from "../types/types";
 
 interface AlbumInfoCardProps {
-  onArtistClick: (id: string, category: Category) => void;
+  scrollToCard: (category: Category) => void;
   albumTracksRef: React.RefObject<HTMLDivElement>;
 }
 
 const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
-  onArtistClick,
+  scrollToCard,
   albumTracksRef,
 }) => {
   const albumData = useMusicDataStore((state) => state.albumData);
+  const setArtistData = useMusicDataStore((state) => state.setArtistData);
+  const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
   const trackListShown = useMusicDataStore((state) => state.trackListShown);
   const setTrackListShown = useMusicDataStore(
     (state) => state.setTrackListShown
@@ -53,9 +55,16 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
     }
   };
 
+  const onArtistClick = async (spotifyId: string, category: Category) => {
+    const data = await getMetaData(spotifyId, category);
+    if (category === "artist") setArtistData(data);
+    else if (category === "album") setAlbumData(data);
+    scrollToCard(category);
+  };
+
   const artistsList = (
     <ul className="flex flex-row flex-wrap">
-      {albumData.artists.map((artist: Artist, index: number) => (
+      {albumData?.artists.map((artist: Artist, index: number) => (
         <li
           className={`mr-1 ${darkMode ? darkLinkStyle : lightLinkStyle}`}
           key={index}
