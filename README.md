@@ -34,3 +34,28 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+# Music Insights
+
+The user can retrieve meta data about artists, albums and songs.
+
+## Built with
+
+- React
+- Zustand
+- TypeScript
+- Tailwind
+
+## Link
+
+https://juliakleber.github.io/MusicInsights/
+
+## Screenshots
+
+![Screenshot of the dark mode](https://github.com/JuliaKleber/MusicInsights/assets/142741980/b5d04169-91f5-43a1-b4a1-26d32c91c683)
+
+![Screenshot of the light mode](https://github.com/JuliaKleber/MusicInsights/assets/142741980/89e84759-3121-4f85-b58f-4afe0fe748c9)
+
+## Author
+
+[Julia Kleber](https://github.com/JuliaKleber)
