@@ -19,7 +19,8 @@ interface StyleStoreState {
 }
 
 const useStyleStore = create<StyleStoreState>((set) => ({
-  darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
+  // darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
+  darkMode: false,
   setDarkMode: (state: boolean) => {
     set(() => ({ darkMode: state }));
   },

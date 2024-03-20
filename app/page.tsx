@@ -33,36 +33,36 @@ export default function Home() {
   const trackInfoCardRef = useRef(null);
 
   const scrollToCard = async (category: Category, extra?: string) => {
-    // if (category === "artist" && extra === undefined) {
-    //   artistInfoCardRef.current.scrollIntoView({
-    //     behavior: "smooth",
-    //     block: "center",
-    //   });
-    // }
-    // if (category === "artist" && extra !== undefined) {
-    //   artistAlbumsCardRef.current.scrollIntoView({
-    //     behavior: "smooth",
-    //     block: "center",
-    //   });
-    // }
-    // if (category === "album") {
-    //   albumInfoCardRef.current.scrollIntoView({
-    //     behavior: "smooth",
-    //     block: "center",
-    //   });
-    // }
-    // if (category === "track") {
-    //   trackInfoCardRef.current.scrollIntoView({
-    //     behavior: "smooth",
-    //     block: "center",
-    //   });
-    // }
-    // if (category === "recommendations") {
-    //   recommendationsCardRef.current.scrollIntoView({
-    //     behavior: "smooth",
-    //     block: "center",
-    //   });
-    // }
+    if (category === "artist" && extra === undefined) {
+      artistInfoCardRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+    if (category === "artist" && extra !== undefined) {
+      artistAlbumsCardRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+    if (category === "album") {
+      albumInfoCardRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+    if (category === "track") {
+      trackInfoCardRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+    if (category === "recommendations") {
+      recommendationsCardRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
   };
 
   return (
@@ -71,12 +71,12 @@ export default function Home() {
         darkMode && "text-pink-100"
       }`}
     >
-      {/* <ToggleMode />
+      <ToggleMode />
       <div className="m-3">
         <Search scrollToCard={scrollToCard} />
-      </div> */}
+      </div>
 
-      {/* <div ref={recommendationsCardRef}>
+      <div ref={recommendationsCardRef}>
         {recommendations.length > 0 && (
           <RecommendationsCard scrollToCard={scrollToCard} />
         )}
@@ -105,7 +105,7 @@ export default function Home() {
         <div ref={trackInfoCardRef}>
           {trackData && <TrackInfoCard scrollToCard={scrollToCard} />}
         </div>
-      </div> */}
+      </div>
       <InfoText />
     </div>
   );
