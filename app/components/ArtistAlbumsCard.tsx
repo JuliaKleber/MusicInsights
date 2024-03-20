@@ -16,17 +16,18 @@ const ArtistAlbumsCard: React.FC<ArtistAlbumsCardProps> = ({
   onAlbumClick,
 }) => {
   const artistAlbums = useMusicDataStore((state) => state.artistAlbums);
+  const artistData = useMusicDataStore((state) => state.artistData);
   const darkMode = useStyleStore((state) => state.darkMode);
 
   const header = (
     <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
-      {artistAlbums.name} - Albums
+      {artistData.name} - Albums
     </h2>
   );
 
   const image = (
     <img
-      src={artistAlbums.image}
+      src={artistData.image}
       alt="artist"
       className="w-64 mt-4 md:mt-0 rounded-md md:rounded-l-lg md:rounded-r-none"
     />
@@ -34,7 +35,7 @@ const ArtistAlbumsCard: React.FC<ArtistAlbumsCardProps> = ({
 
   const albumsList = (
     <ul>
-      {artistAlbums.albums.map((album: Album, index: number) => {
+      {artistAlbums?.map((album: Album, index: number) => {
         return (
           <li key={index}>
             {album.releaseDate?.slice(0, 4)} -{" "}

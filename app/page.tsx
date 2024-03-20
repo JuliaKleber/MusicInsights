@@ -33,7 +33,6 @@ export default function Home() {
   const trackInfoCardRef = useRef(null);
 
   const scrollToCard = async (category: Category, extra?: string) => {
-    // getMetaData(id, category, extra);
     if (category === "artist" && extra === undefined) {
       artistInfoCardRef.current.scrollIntoView({
         behavior: "smooth",
@@ -88,7 +87,7 @@ export default function Home() {
           {artistData && <ArtistInfoCard scrollToCard={scrollToCard} />}
         </div>
         <div ref={artistAlbumsCardRef}>
-          {albumListShown && artistAlbums && (
+          {albumListShown && artistAlbums.length > 0 && (
             <ArtistAlbumsCard scrollToCard={scrollToCard} />
           )}
         </div>

@@ -26,6 +26,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
   );
   const trackData = useMusicDataStore((state) => state.trackData);
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
+  const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
   const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
   const setTrackData = useMusicDataStore((state) => state.setTrackData);
   const resetArtistSearchResults = useMusicDataStore(
@@ -45,6 +46,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
     const data = await getMetaData(spotifyId, category);
     if (category === "artist") setArtistData(data);
     if (category === "artist") resetArtistSearchResults();
+    if (category === "artist") setArtistAlbums([]);
     if (category === "album") setAlbumData(data);
     if (category === "album") resetAlbumSearchResults();
     if (category === "track") setTrackData(data);

@@ -31,6 +31,8 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
   const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
   const setTrackData = useMusicDataStore((state) => state.setTrackData);
 
+  const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
+
   const darkMode = useStyleStore((state) => state.darkMode);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,6 +43,7 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
       const artistData = await getMetaData(artistResults[0], "artist");
       setArtistSearchResults(artistResults);
       setArtistData(artistData);
+      setArtistAlbums([]);
       const albumResults = await spotifySearch(searchTerm, "album");
       const albumData = await getMetaData(albumResults[0], "album");
       setAlbumSearchResults(albumResults);
@@ -58,6 +61,7 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
     if (category === "artist") {
       setArtistSearchResults(searchResults);
       setArtistData(data);
+      setArtistAlbums([]);
     } else if (category === "album") {
       setAlbumSearchResults(searchResults);
       setAlbumData(data);

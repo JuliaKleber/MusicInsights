@@ -2,7 +2,7 @@ import { create } from "zustand";
 import {
   Recommendation,
   ArtistData,
-  ArtistAlbums,
+  ArtistAlbum,
   AlbumData,
   AlbumTracks,
   TrackData,
@@ -15,7 +15,7 @@ type MusicDataState = {
   genre: string | null;
   recommendations: Recommendation[];
   artistData: ArtistData | null;
-  artistAlbums: ArtistAlbums | null;
+  artistAlbums: ArtistAlbum[] | null;
   albumListShown: boolean;
   albumData: AlbumData | null;
   albumTracks: AlbumTracks | null;
@@ -27,12 +27,16 @@ type MusicDataActions = {
   setArtistSearchResults: (searchResults: string[]) => void;
   setAlbumSearchResults: (searchResults: string[]) => void;
   setTrackSearchResults: (searchResults: string[]) => void;
+
   resetArtistSearchResults: () => void;
   resetAlbumSearchResults: () => void;
   resetTrackSearchResults: () => void;
+
   setGenre: (genre: string) => void;
   setRecommendations: (recommendations: Recommendation[]) => void;
+
   setArtistData: (data: ArtistData) => void;
+  setArtistAlbums: (data: ArtistAlbum[]) => void;
   setAlbumListShown: (value: boolean) => void;
   setAlbumData: (data: AlbumData) => void;
   setTrackListShown: (value: boolean) => void;
@@ -50,7 +54,7 @@ export const useMusicDataStore = create<MusicDataStore>()((set) => ({
   recommendations: [],
 
   artistData: null,
-  artistAlbums: null,
+  artistAlbums: [],
   albumListShown: false,
 
   albumData: null,
@@ -85,8 +89,12 @@ export const useMusicDataStore = create<MusicDataStore>()((set) => ({
   setRecommendations: (recommendations: Recommendation[]) => {
     set(() => ({ recommendations: recommendations }));
   },
+
   setArtistData: (data: ArtistData) => {
     set(() => ({ artistData: data }));
+  },
+  setArtistAlbums: (data: ArtistAlbum[]) => {
+    set(() => ({ artistAlbums: data }));
   },
   setAlbumListShown: (value: boolean) => {
     set(() => ({ albumListShown: value }));

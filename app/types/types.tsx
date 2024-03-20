@@ -1,6 +1,12 @@
-export type Category = 'artist' | 'album' | 'track' | 'recommendations';
+export type Category = "artist" | "album" | "track" | "recommendations";
 
-export type DataCategory = 'artistData' | 'albumListShown' | 'albumData' | 'trackListShown' | 'trackData' | 'recommendations';
+export type DataCategory =
+  | "artistData"
+  | "albumListShown"
+  | "albumData"
+  | "trackListShown"
+  | "trackData"
+  | "recommendations";
 
 export interface Artist {
   name: string;
@@ -15,7 +21,7 @@ export interface Album {
     height: number;
     width: number;
     url: string;
-  }
+  };
 }
 
 export interface Track {
@@ -45,15 +51,11 @@ export interface ArtistData {
   country?: string;
 }
 
-export interface ArtistAlbums {
+export interface ArtistAlbum {
+  spotifyId: string;
   name: string;
+  realeaseDate: string;
   image: string;
-  albums: {
-    spotifyId: string;
-    name: string;
-    realeaseDate: string;
-    image: string;
-  }[];
 }
 
 export interface AlbumData {
@@ -67,22 +69,22 @@ export interface AlbumData {
 }
 
 export interface AlbumTracks {
-  name: string,
-  artists: Artist[],
-  tracks: Track[],
-  image: string,
+  name: string;
+  artists: Artist[];
+  tracks: Track[];
+  image: string;
 }
 
 export interface TrackData {
-  spotifyId: string,
-  isrc: string,
-  name: string,
-  artists: Artist[],
+  spotifyId: string;
+  isrc: string;
+  name: string;
+  artists: Artist[];
   album: {
     spotifyId: string;
     name: string;
     trackNumber: number;
-  },
+  };
   spotifyPopularity: number;
   length: number;
   image: string;

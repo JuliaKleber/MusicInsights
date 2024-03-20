@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Hide from "./Hide";
@@ -19,6 +18,7 @@ import useStyleStore, {
   secondColumnStyle,
 } from "../stores/styleStore";
 import { Category } from "../types/types";
+import { use } from "react";
 
 interface ArtistInfoCardProps {
   scrollToCard: (category: Category, endpoint?: string) => void;
@@ -27,12 +27,15 @@ interface ArtistInfoCardProps {
 const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
   const artistData = useMusicDataStore((state) => state.artistData);
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
+  const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
   const albumListShown = useMusicDataStore((state) => state.albumListShown);
   const setAlbumListShown = useMusicDataStore(
     (state) => state.setAlbumListShown
   );
   const setGenre = useMusicDataStore((state) => state.setGenre);
-  const setRecommendations = useMusicDataStore((state) => state.setRecommendations);
+  const setRecommendations = useMusicDataStore(
+    (state) => state.setRecommendations
+  );
   const artistSearchResults = useMusicDataStore(
     (state) => state.artistSearchResults
   );
@@ -59,11 +62,12 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
       setAlbumListShown(false);
     } else {
       setAlbumListShown(true);
-      await getMetaData(
+      const artistAlbums = await getMetaData(
         artistData.spotifyId,
         "artist",
         "/albums?include_groups=album&limit=50"
       );
+      setArtistAlbums(artistAlbums);
       scrollToCard("artist", "/albums?include_groups=album&limit=50");
     }
   };
@@ -85,7 +89,9 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
 
   const genreClick = async (genre: string) => {
     setGenre(genre);
-    const recommendations = await getRecommendations(genre.toLowerCase().replaceAll(" ", "-"));
+    const recommendations = await getRecommendations(
+      genre.toLowerCase().replaceAll(" ", "-")
+    );
     setRecommendations(recommendations);
     scrollToCard("recommendations");
   };
@@ -93,6 +99,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
   const onClick = async (spotifyId: string, category: Category) => {
     const data = await getMetaData(spotifyId, category);
     if (category === "artist") setArtistData(data);
+    if (category === "artist") setArtistAlbums([]);
     scrollToCard(category);
   };
 

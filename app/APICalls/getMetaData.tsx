@@ -137,7 +137,7 @@ const setArtistData = (data) => {
   const filteredGenres = data.genres.filter((genre: string) => {
     return genres.includes(genre);
   });
-  const artistData = {
+  let artistData = {
     spotifyId: data.id,
     name: data.name,
     genres: filteredGenres,
@@ -148,46 +148,39 @@ const setArtistData = (data) => {
   return artistData;
 };
 
-const setArtistDataFromMusicBrainz = (data) => {
-  const previousArtistData = useMusicDataStore.getState().artistData;
-  useMusicDataStore.setState({
-    artistData: {
-      spotifyId: previousArtistData.spotifyId,
-      name: previousArtistData.name,
-      genres: previousArtistData.genres,
-      spotifyPopularity: previousArtistData.spotifyPopularity,
-      followers: previousArtistData.followers,
-      image: previousArtistData.image,
-      formationDate: data.artists[0]["life-span"]?.begin || null,
-      disbandmentDate: data.artists[0]["life-span"]?.end || null,
-      isnis: data.artists[0].isnis ?? null,
-      type: data.artists[0].type ?? null,
-      location:
-        data.artists[0].area?.type === "City"
-          ? data.artists[0].area.name
-          : data.artists[0]["begin-area"]?.name ?? null,
-      country:
-        data.artists[0].area?.type === "Country"
-          ? data.artists[0].area.name
-          : null,
-    },
-  });
+const setArtistDataFromMusicBrainz = (spotifyData, musicBrainzData) => {
+  const artistData = {
+    spotifyId: spotifyData.spotifyId,
+    name: spotifyData.name,
+    genres: spotifyData.genres,
+    spotifyPopularity: spotifyData.spotifyPopularity,
+    followers: spotifyData.followers,
+    image: spotifyData.image,
+    formationDate: musicBrainzData.artists[0]["life-span"]?.begin || null,
+    disbandmentDate: musicBrainzData.artists[0]["life-span"]?.end || null,
+    isnis: musicBrainzData.artists[0].isnis ?? null,
+    type: musicBrainzData.artists[0].type ?? null,
+    location:
+      musicBrainzData.artists[0].area?.type === "City"
+        ? musicBrainzData.artists[0].area.name
+        : musicBrainzData.artists[0]["begin-area"]?.name ?? null,
+    country:
+      musicBrainzData.artists[0].area?.type === "Country"
+        ? musicBrainzData.artists[0].area.name
+        : null,
+  };
+  return artistData;
 };
 
 const setArtistAlbums = (data) => {
-  const previousArtistData = useMusicDataStore.getState().artistData;
-  useMusicDataStore.setState({
-    artistAlbums: {
-      name: previousArtistData.name,
-      image: previousArtistData.image,
-      albums: [...data.items].reverse().map((item) => ({
-        spotifyId: item.id,
-        name: item.name,
-        releaseDate: item.release_date,
-        image: item.images[2],
-      })),
-    },
-  });
+  const artistAlbums = [...data.items].reverse().map((item) => ({
+    spotifyId: item.id,
+    name: item.name,
+    releaseDate: item.release_date,
+    image: item.images[2],
+  }));
+
+  return artistAlbums;
 };
 
 const setAlbumData = (data) => {
@@ -225,46 +218,43 @@ const setAlbumTracks = (data) => {
 };
 
 const setTrackData = (data) => {
-  const
-    trackData = {
-      spotifyId: data.id,
-      isrc: data.external_ids.isrc,
-      name: data.name,
-      artists: data.artists.map((artist) => ({
-        spotifyId: artist.id,
-        name: artist.name,
-      })),
-      album: {
-        spotifyId: data.album.id,
-        name: data.album.name,
-        trackNumber: data.track_number,
-      },
-      spotifyPopularity: data.popularity,
-      length: Math.round(data.duration_ms / 1000),
-      image: data.album.images[1].url,
-      releaseDate: data.album.release_date,
-    };
+  const trackData = {
+    spotifyId: data.id,
+    isrc: data.external_ids.isrc,
+    name: data.name,
+    artists: data.artists.map((artist) => ({
+      spotifyId: artist.id,
+      name: artist.name,
+    })),
+    album: {
+      spotifyId: data.album.id,
+      name: data.album.name,
+      trackNumber: data.track_number,
+    },
+    spotifyPopularity: data.popularity,
+    length: Math.round(data.duration_ms / 1000),
+    image: data.album.images[1].url,
+    releaseDate: data.album.release_date,
+  };
   return trackData;
 };
 
-const setBpmAndKey = (data) => {
-  const previousTrackData = useMusicDataStore.getState().trackData;
-  useMusicDataStore.setState({
-    trackData: {
-      spotifyId: previousTrackData.spotifyId,
-      isrc: previousTrackData.isrc,
-      name: previousTrackData.name,
-      artists: previousTrackData.artists,
-      album: previousTrackData.album,
-      spotifyPopularity: previousTrackData.spotifyPopularity,
-      length: previousTrackData.length,
-      image: previousTrackData.image,
-      releaseDate: previousTrackData.releaseDate,
-      bpm: data.song.tempo,
-      timeSignature: data.song.time_sig,
-      key: data.song.key_of,
-    },
-  });
+const setBpmAndKey = (spotifyData, bpmData) => {
+  const trackData = {
+    spotifyId: spotifyData.spotifyId,
+    isrc: spotifyData.isrc,
+    name: spotifyData.name,
+    artists: spotifyData.artists,
+    album: spotifyData.album,
+    spotifyPopularity: spotifyData.spotifyPopularity,
+    length: spotifyData.length,
+    image: spotifyData.image,
+    releaseDate: spotifyData.releaseDate,
+    bpm: bpmData.song.tempo,
+    timeSignature: bpmData.song.time_sig,
+    key: bpmData.song.key_of,
+  };
+  return trackData;
 };
 
 const getMusicBrainzData = async (searchTerm: string, category: string) => {
@@ -284,8 +274,9 @@ const getMusicBrainzData = async (searchTerm: string, category: string) => {
     }
     const data = await response.json();
     if (category === "artist" && data.artists[0]) {
-      setArtistDataFromMusicBrainz(data);
+      return data;
     }
+    return null;
   } catch (error) {
     console.error(`Error fetching ${category} data from MusicBrainz:`, error);
   }
@@ -293,6 +284,7 @@ const getMusicBrainzData = async (searchTerm: string, category: string) => {
 
 const getKeyAndBpm = async (artist: string, song: string) => {
   const bpmKey = process.env.GET_SONG_BPM_KEY;
+  let bpmData = null;
 
   const getSongId = async (artist: string, song: string) => {
     artist = artist.replaceAll(" ", "+").toLowerCase();
@@ -312,7 +304,7 @@ const getKeyAndBpm = async (artist: string, song: string) => {
       const data = await response.json();
       if (data.search[0]) {
         const songId = data.search[0].song_id;
-        getBpm(songId);
+        return getBpm(songId);
       }
     } catch (error) {
       console.error("Error fetching bpm and key data:", error);
@@ -329,12 +321,12 @@ const getKeyAndBpm = async (artist: string, song: string) => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      setBpmAndKey(data);
+      return data;
     } catch (error) {
       console.error("Error fetching bpm and key data:", error);
     }
   };
-  getSongId(artist, song);
+  return await getSongId(artist, song);
 };
 
 const getMetaData = async (
@@ -356,20 +348,27 @@ const getMetaData = async (
     }
     const data = await response.json();
     let returnedData = null;
+
     if (category === "artist" && extra === "") {
-      returnedData = await setArtistData(data);
-      // useMusicDataStore.setState({ albumListShown: false });
-      // getMusicBrainzData(data.name, "artist");
+      const spotifyData = await setArtistData(data);
+      const musicBrainzData = await getMusicBrainzData(
+        spotifyData.name,
+        "artist"
+      );
+      returnedData = await setArtistDataFromMusicBrainz(
+        spotifyData,
+        musicBrainzData
+      );
     } else if (category === "artist" && extra !== "") {
       returnedData = await setArtistAlbums(data);
-      // useMusicDataStore.setState({ albumListShown: true });
     } else if (category === "album") {
       returnedData = await setAlbumData(data);
-      // returnedData = await setAlbumTracks(data);
+      // setAlbumTracks(data);
       // useMusicDataStore.setState({ trackListShown: false });
     } else if (category === "track") {
-      returnedData = await setTrackData(data);
-      // getKeyAndBpm(data.artists[0].name, data.name);
+      const spotifyData = await setTrackData(data);
+      const bpmData = await getKeyAndBpm(data.artists[0].name, data.name);
+      bpmData ? returnedData = await setBpmAndKey(spotifyData, bpmData) : returnedData = spotifyData;
     }
     return returnedData;
   } catch (error) {

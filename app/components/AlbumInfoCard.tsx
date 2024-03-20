@@ -28,6 +28,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
 }) => {
   const albumData = useMusicDataStore((state) => state.albumData);
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
+  const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
   const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
   const trackListShown = useMusicDataStore((state) => state.trackListShown);
   const setTrackListShown = useMusicDataStore(
@@ -60,6 +61,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
     const data = await getMetaData(spotifyId, category);
     if (category === "artist") setArtistData(data);
     if (category === "artist") resetArtistSearchResults();
+    if (category === "artist") setArtistAlbums([]);
     if (category === "album") setAlbumData(data);
     scrollToCard(category);
   };
@@ -166,7 +168,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
       <div className="p-3 flex flex-col items-center justify-center">
         {header}
         {table}
-        {button}
+        {/* {button} */}
       </div>
 
       <Hide category="albumData" />
