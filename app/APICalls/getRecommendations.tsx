@@ -1,3 +1,5 @@
+"use server";
+
 import getSpotifyToken from "./getSpotifyToken";
 import useMusicDataStore from "../stores/musicDataStore";
 

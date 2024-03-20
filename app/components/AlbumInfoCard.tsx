@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import useMusicDataStore from "../stores/musicDataStore";
 import useStyleStore, {
+  buttonStyle,
   lightLinkStyle,
   darkLinkStyle,
   darkArrowStyle,
@@ -12,7 +13,7 @@ import useStyleStore, {
   secondColumnStyle,
 } from "../stores/styleStore";
 import Hide from "./Hide";
-import getSpotifyData from "../APICalls/getMetaData";
+import getMetaData from "../APICalls/getMetaData";
 import { parsedReleaseDate } from "../functions/sharedFunctions";
 import { Category, Artist } from "../types/types";
 
@@ -82,7 +83,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
         <FontAwesomeIcon
           icon={faArrowLeft}
           className={darkMode ? darkArrowStyle : lightArrowStyle}
-          onClick={() => getSpotifyData(previousSpotifyId, "album")}
+          onClick={() => getMetaData(previousSpotifyId, "album")}
         />
       )}
       <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
@@ -92,7 +93,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
         <FontAwesomeIcon
           icon={faArrowRight}
           className={darkMode ? darkArrowStyle : lightArrowStyle}
-          onClick={() => getSpotifyData(nextSpotifyId, "album")}
+          onClick={() => getMetaData(nextSpotifyId, "album")}
         />
       )}
     </div>
@@ -134,7 +135,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
   );
 
   const button = (
-    <button onClick={() => toggleTrackList()} className={`w-32 ${buttonStyle}`}>
+    <button onClick={() => toggleTrackList()} className={buttonStyle}>
       {trackListShown ? "Hide Tracks" : "Show Tracks"}
     </button>
   );

@@ -1,7 +1,10 @@
+"use client";
+
 import { useState } from "react";
 import spotifySearch from "../APICalls/spotifySearch";
 import useStyleStore, { buttonStyle } from "../stores/styleStore";
 import { Category } from "../types/types";
+import useMusicDataStore from "../stores/musicDataStore";
 
 interface SearchProps {
   scrollToCard: (category: Category, extra?: string) => void;
@@ -12,23 +15,31 @@ interface ButtonProps {
   category: Category;
 }
 
-const Search: React.FC<SearchProps> = ({
-  scrollToCard
-}) => {
+const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
+  const setArtistData = useMusicDataStore((state) => state.setArtistData);
+  const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
+  const setTrackData = useMusicDataStore((state) => state.setTrackData);
+
   const darkMode = useStyleStore((state) => state.darkMode);
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
+  const handleKeyDown = async (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
-      spotifySearch(searchTerm, "artist");
-      spotifySearch(searchTerm, "album");
-      spotifySearch(searchTerm, "track");
+      const artistData = await spotifySearch(searchTerm, "artist");
+      setArtistData(artistData);
+      const albumData = await spotifySearch(searchTerm, "album");
+      setAlbumData(albumData);
+      const trackData = await spotifySearch(searchTerm, "track");
+      setTrackData(trackData);
     }
   };
 
-  const handleSearch = (category: Category) => {
-    spotifySearch(searchTerm, category);
+  const handleSearch = async (category: Category) => {
+    const data = await spotifySearch(searchTerm, category);
+    if (category === 'artist') setArtistData(data);
+    else if (category === 'album') setAlbumData(data);
+    else if (category === 'track') setTrackData(data);
     scrollToCard(category);
   };
 
@@ -48,10 +59,7 @@ const Search: React.FC<SearchProps> = ({
 
   const Button: React.FC<ButtonProps> = ({ text, category }) => {
     return (
-      <button
-        className={buttonStyle}
-        onClick={() => handleSearch(category)}
-      >
+      <button className={buttonStyle} onClick={() => handleSearch(category)}>
         {text}
       </button>
     );

@@ -1,7 +1,14 @@
-import { create } from 'zustand';
-import { Recommendation, ArtistData, ArtistAlbums, AlbumData, AlbumTracks, TrackData } from '../types/types';
+import { create } from "zustand";
+import {
+  Recommendation,
+  ArtistData,
+  ArtistAlbums,
+  AlbumData,
+  AlbumTracks,
+  TrackData,
+} from "../types/types";
 
-type MusicDataStoreState = {
+type MusicDataState = {
   artistSearchResults: string[];
   albumSearchResults: string[];
   trackSearchResults: string[];
@@ -14,11 +21,14 @@ type MusicDataStoreState = {
   albumTracks: AlbumTracks | null;
   trackListShown: boolean;
   trackData: TrackData | null;
+};
+
+type MusicDataActions = {
   resetArtistSearchResults: () => void;
   resetAlbumSearchResults: () => void;
   resetTrackSearchResults: () => void;
   setGenre: (genre: string) => void;
-  setRecommendations: (recommendations: Recommendations) => void;
+  setRecommendations: (recommendations: Recommendation[]) => void;
   setArtistData: (data: ArtistData) => void;
   setAlbumListShown: (value: boolean) => void;
   setAlbumData: (data: AlbumData) => void;
@@ -26,7 +36,9 @@ type MusicDataStoreState = {
   setTrackData: (data: TrackData) => void;
 };
 
-const useMusicDataStore = create<MusicDataStoreState>((set) => ({
+type MusicDataStore = MusicDataState & MusicDataActions;
+
+export const useMusicDataStore = create<MusicDataStore>()((set) => ({
   artistSearchResults: [],
   albumSearchResults: [],
   trackSearchResults: [],
@@ -45,36 +57,37 @@ const useMusicDataStore = create<MusicDataStoreState>((set) => ({
   trackData: null,
 
   resetArtistSearchResults: () => {
-    set(() => ({ artistSearchResults: [] }))
+    set(() => ({ artistSearchResults: [] }));
   },
   resetAlbumSearchResults: () => {
-    set(() => ({ albumSearchResults: [] }))
+    set(() => ({ albumSearchResults: [] }));
   },
   resetTrackSearchResults: () => {
-    set(() => ({ trackSearchResults: [] }))
+    set(() => ({ trackSearchResults: [] }));
   },
 
   setGenre: (genre: string) => {
-    set(() => ({ genre: genre }))
+    set(() => ({ genre: genre }));
   },
-  setRecommendations: (recommendations: Recommendations) => {
-    set(() => ({ recommendations: recommendations }))
+  setRecommendations: (recommendations: Recommendation[]) => {
+    set(() => ({ recommendations: recommendations }));
   },
   setArtistData: (data: ArtistData) => {
-    set(() => ({ artistData: data }))
+    set(() => ({ artistData: data }));
   },
   setAlbumListShown: (value: boolean) => {
-    set(() => ({ albumListShown: value }))
+    set(() => ({ albumListShown: value }));
   },
   setAlbumData: (data: AlbumData) => {
-    set(() => ({ albumData: data }))
+    set(() => ({ albumData: data }));
   },
   setTrackListShown: (value: boolean) => {
-    set(() => ({ trackListShown: value }))
+    set(() => ({ trackListShown: value }));
   },
   setTrackData: (data: TrackData) => {
-    set(() => ({ trackData: data }))
+    set(() => ({ trackData: data }));
   },
 }));
+
 
 export default useMusicDataStore;

@@ -33,16 +33,16 @@ export interface Recommendation {
 export interface ArtistData {
   spotifyId: string;
   name: string;
-  genres: string[];
+  genres?: string[];
   spotifyPopularity: number;
   followers: number;
   image: string;
-  formationDate: string | null;
-  disbandmentDate: string | null;
-  isnis: string | null;
-  type: string | null;
-  location: string;
-  country: string;
+  formationDate?: string | null;
+  disbandmentDate?: string | null;
+  isnis?: string | null;
+  type?: string | null;
+  location?: string;
+  country?: string;
 }
 
 export interface ArtistAlbums {

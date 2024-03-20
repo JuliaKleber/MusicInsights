@@ -1,10 +1,10 @@
-"use server";
+"use client";
 
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Hide from "./Hide";
-import getSpotifyData from "../APICalls/getMetaData";
+import getMetaData from "../APICalls/getMetaData";
 import getRecommendations from "../APICalls/getRecommendations";
 import useMusicDataStore from "../stores/musicDataStore";
 import useStyleStore, {
@@ -24,9 +24,7 @@ interface ArtistInfoCardProps {
   scrollToCard: (category: Category, endpoint?: string) => void;
 }
 
-const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({
-  scrollToCard,
-}) => {
+const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
   const artistData = useMusicDataStore((state) => state.artistData);
   const albumListShown = useMusicDataStore((state) => state.albumListShown);
   const setAlbumListShown = useMusicDataStore(
@@ -59,7 +57,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({
       setAlbumListShown(false);
     } else {
       setAlbumListShown(true);
-      await getSpotifyData(
+      await getMetaData(
         artistData.spotifyId,
         "artist",
         "/albums?include_groups=album&limit=50"
@@ -90,7 +88,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({
   };
 
   const image = (
-    <Image
+    <img
       src={artistData.image}
       alt="artist"
       className="w-64 mt-4 md:mt-0 rounded-md md:rounded-l-lg md:rounded-r-none"
@@ -103,7 +101,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({
         <FontAwesomeIcon
           icon={faArrowLeft}
           className={darkMode ? darkArrowStyle : lightArrowStyle}
-          onClick={() => getSpotifyData(previousSpotifyId, "artist")}
+          onClick={() => getMetaData(previousSpotifyId, "artist")}
         />
       )}
       <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
@@ -113,7 +111,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({
         <FontAwesomeIcon
           icon={faArrowRight}
           className={darkMode ? darkArrowStyle : lightArrowStyle}
-          onClick={() => getSpotifyData(nextSpotifyId, "artist")}
+          onClick={() => getMetaData(nextSpotifyId, "artist")}
         />
       )}
     </div>
@@ -187,7 +185,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({
   );
 
   const button = (
-    <button onClick={() => toggleAlbumList()} className={`w-32 ${buttonStyle}`}>
+    <button onClick={() => toggleAlbumList()} className={buttonStyle}>
       {albumListShown ? "Hide Albums" : "Show Albums"}
     </button>
   );

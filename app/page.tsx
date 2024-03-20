@@ -42,7 +42,7 @@ export default function Home() {
   const trackInfoCardRef = useRef(null);
 
   const scrollToCard = async (category: Category, extra?: string) => {
-    // getSpotifyData(id, category, extra);
+    // getMetaData(id, category, extra);
     if (category === "artist" && extra === undefined) {
       artistInfoCardRef.current.scrollIntoView({
         behavior: "smooth",
@@ -86,13 +86,13 @@ export default function Home() {
     >
       <ToggleMode />
       <div className="m-3">
-        <Search
-          scrollToCard={scrollToCard}
-        />
+        <Search scrollToCard={scrollToCard} />
       </div>
 
       <div ref={recommendationsCardRef}>
-        {recommendations.length > 0 && <RecommendationsCard scrollToCard={scrollToCard} />}
+        {recommendations.length > 0 && (
+          <RecommendationsCard scrollToCard={scrollToCard} />
+        )}
       </div>
 
       <div>

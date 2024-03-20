@@ -12,7 +12,7 @@ import useStyleStore, {
   secondColumnStyle,
 } from "../stores/styleStore";
 import Hide from "./Hide";
-import getSpotifyData from "../APICalls/getMetaData";
+import getMetaData from "../APICalls/getMetaData";
 import { parsedReleaseDate } from "../functions/sharedFunctions";
 import { Category, Artist } from "../types/types";
 
@@ -66,7 +66,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({
         <FontAwesomeIcon
           icon={faArrowLeft}
           className={darkMode ? darkArrowStyle : lightArrowStyle}
-          onClick={() => getSpotifyData(previousSpotifyId, "track")}
+          onClick={() => getMetaData(previousSpotifyId, "track")}
         />
       )}
       <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
@@ -77,7 +77,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({
         <FontAwesomeIcon
           icon={faArrowRight}
           className={darkMode ? darkArrowStyle : lightArrowStyle}
-          onClick={() => getSpotifyData(nextSpotifyId, "track")}
+          onClick={() => getMetaData(nextSpotifyId, "track")}
         />
       )}
     </div>
