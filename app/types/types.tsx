@@ -39,7 +39,7 @@ export interface Recommendation {
 export type ArtistData = {
   spotifyId: string;
   name: string;
-  genres?: string[];
+  genres: string[];
   spotifyPopularity: number;
   followers: number;
   image: string;
@@ -49,7 +49,7 @@ export type ArtistData = {
   type?: string | null;
   location?: string;
   country?: string;
-} | undefined | null
+} | undefined
 
 export interface ArtistAlbum {
   spotifyId: string;

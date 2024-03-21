@@ -29,6 +29,7 @@ const Hide: React.FC<HideProps> = ({ category }) => {
       case "artistData":
         setArtistData(undefined);
         setArtistSearchResults([]);
+        setAlbumListShown(false);
         break;
       case "albumListShown":
         setAlbumListShown(false);

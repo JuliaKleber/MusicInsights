@@ -17,8 +17,7 @@ import useStyleStore, {
   firstColumnStyle,
   secondColumnStyle,
 } from "../stores/styleStore";
-import { Category } from "../types/types";
-import { use } from "react";
+import { Category, ArtistData, ArtistAlbum } from "../types/types";
 
 interface ArtistInfoCardProps {
   scrollToCard: (category: Category, endpoint?: string) => void;
@@ -42,9 +41,9 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
 
   const darkMode = useStyleStore((state) => state.darkMode);
 
-  const indexInSearchResults = artistSearchResults.indexOf(
-    artistData.spotifyId
-  );
+  const indexInSearchResults = artistData
+    ? artistSearchResults.indexOf(artistData.spotifyId)
+    : -1;
   const nextSpotifyId = artistSearchResults[indexInSearchResults + 1];
   const previousSpotifyId = artistSearchResults[indexInSearchResults - 1];
 
@@ -62,11 +61,11 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
       setAlbumListShown(false);
     } else {
       setAlbumListShown(true);
-      const artistAlbums = await getMetaData(
+      const artistAlbums: ArtistAlbum[] = artistData ? await getMetaData(
         artistData.spotifyId,
         "artist",
         "/albums?include_groups=album&limit=50"
-      );
+      ) : [];
       setArtistAlbums(artistAlbums);
       scrollToCard("artist", "/albums?include_groups=album&limit=50");
     }
@@ -97,7 +96,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
   };
 
   const onClick = async (spotifyId: string, category: Category) => {
-    const data = await getMetaData(spotifyId, category);
+    const data: ArtistData = await getMetaData(spotifyId, category);
     if (category === "artist") setArtistData(data);
     if (category === "artist") setArtistAlbums([]);
     scrollToCard(category);
@@ -121,7 +120,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
         />
       )}
       <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
-        {artistData.name}
+        {artistData?.name}
       </h2>
       {nextSpotifyId && (
         <FontAwesomeIcon
@@ -136,12 +135,12 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
   const table = (
     <table className="table-auto">
       <tbody>
-        {artistData.genres.length !== 0 && (
+        {artistData?.genres?.length !== 0 && (
           <tr>
             <td className={firstColumnStyle}>Genre(s):</td>
             <td className={secondColumnStyle}>
               <ul className="flex flex-row flex-wrap">
-                {parsedGenres(artistData.genres).map((genre, index) => {
+                {artistData && parsedGenres(artistData.genres).map((genre, index) => {
                   return (
                     <li
                       className={`mr-1 ${
@@ -160,7 +159,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
             </td>
           </tr>
         )}
-        {artistData.formationDate && (
+        {artistData?.formationDate && (
           <tr>
             <td className={firstColumnStyle}>Active:</td>
             <td className={secondColumnStyle}>
@@ -174,7 +173,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
             </td>
           </tr>
         )}
-        {(artistData.location || artistData.country) && (
+        {(artistData?.location || artistData?.country) && (
           <tr>
             <td className={firstColumnStyle}>Location:</td>
             <td className={secondColumnStyle}>
@@ -187,13 +186,13 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
         <tr>
           <td className={firstColumnStyle}>Popularity on Spotify:</td>
           <td className={secondColumnStyle}>
-            {artistData.spotifyPopularity} / 100
+            {artistData?.spotifyPopularity} / 100
           </td>
         </tr>
         <tr>
           <td className={firstColumnStyle}>Followers on Spotify:</td>
           <td className={secondColumnStyle}>
-            {parsedFollowers(artistData.followers)}
+            {artistData && parsedFollowers(artistData.followers)}
           </td>
         </tr>
       </tbody>
