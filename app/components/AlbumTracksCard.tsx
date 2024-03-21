@@ -6,15 +6,29 @@ import useStyleStore, {
   lightHeaderStyle,
 } from "../stores/styleStore";
 import Hide from "./Hide";
-import { Category, Artist, Track } from "../types/types";
+import getMetaData from "../APICalls/getMetaData";
+import { Category, Artist, Track, TrackData } from "../types/types";
 
 interface AlbumTracksCardProps {
-  onTrackClick: (id: string, category: Category) => void;
+  scrollToCard: (category: Category) => void;
 }
 
-const AlbumTracksCard: React.FC<AlbumTracksCardProps> = ({ onTrackClick }) => {
+const AlbumTracksCard: React.FC<AlbumTracksCardProps> = ({ scrollToCard }) => {
   const albumTracks = useMusicDataStore((state) => state.albumTracks);
+  const setTrackData = useMusicDataStore((state) => state.setTrackData);
+  const resetTrackSearchResults = useMusicDataStore(
+    (state) => state.resetTrackSearchResults
+  );
   const darkMode = useStyleStore((state) => state.darkMode);
+
+  const onTrackClick = async (spotifyId: string, category: Category) => {
+    if (category === "track") {
+      const data: TrackData = await getMetaData(spotifyId, category);
+      setTrackData(data);
+      resetTrackSearchResults();
+    };
+    scrollToCard(category);
+  };
 
   const image = (
     <img
@@ -26,15 +40,15 @@ const AlbumTracksCard: React.FC<AlbumTracksCardProps> = ({ onTrackClick }) => {
 
   const header = (
     <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
-      {albumTracks.artists.map((artist: Artist) => artist.name).join(", ")} -{" "}
-      {albumTracks.name}
+      {albumTracks && albumTracks.artists.map((artist: Artist) => artist.name).join(", ")} -{" "}
+      {albumTracks?.name}
     </h2>
   );
 
   const trackList = (
     <table className="">
       <tbody>
-        {albumTracks.tracks.map((track: Track, index: number) => (
+        {albumTracks?.tracks.map((track: Track, index: number) => (
           <tr key={track.name}>
             <td className="text-right pr-2">{index + 1}.</td>
             <td

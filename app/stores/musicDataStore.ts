@@ -18,7 +18,7 @@ type MusicDataState = {
   artistAlbums: ArtistAlbum[] | undefined;
   albumListShown: boolean;
   albumData: AlbumData | undefined;
-  albumTracks: AlbumTracks | [];
+  albumTracks: AlbumTracks | undefined;
   trackListShown: boolean;
   trackData: TrackData | undefined;
 };
@@ -39,6 +39,7 @@ type MusicDataActions = {
   setArtistAlbums: (data: ArtistAlbum[]) => void;
   setAlbumListShown: (value: boolean) => void;
   setAlbumData: (data: AlbumData) => void;
+  setAlbumTracks: (data: AlbumTracks) => void;
   setTrackListShown: (value: boolean) => void;
   setTrackData: (data: TrackData) => void;
 };
@@ -101,6 +102,9 @@ export const useMusicDataStore = create<MusicDataStore>()((set) => ({
   },
   setAlbumData: (data: AlbumData) => {
     set(() => ({ albumData: data }));
+  },
+  setAlbumTracks: (data: AlbumTracks) => {
+    set(() => ({ albumTracks: data }));
   },
   setTrackListShown: (value: boolean) => {
     set(() => ({ trackListShown: value }));

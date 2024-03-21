@@ -28,6 +28,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
   const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
   const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
+  const setTrackListShown = useMusicDataStore((state) => state.setTrackListShown);
   const setTrackData = useMusicDataStore((state) => state.setTrackData);
   const resetArtistSearchResults = useMusicDataStore(
     (state) => state.resetArtistSearchResults
@@ -49,6 +50,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
     if (category === "artist") setArtistAlbums([]);
     if (category === "album") setAlbumData(data);
     if (category === "album") resetAlbumSearchResults();
+    if (category === "album") setTrackListShown(false);
     if (category === "track") setTrackData(data);
     scrollToCard(category);
   };

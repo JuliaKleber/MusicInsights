@@ -20,6 +20,7 @@ export default function Home() {
   const artistAlbums = useMusicDataStore((state) => state.artistAlbums);
   const albumListShown = useMusicDataStore((state) => state.albumListShown);
   const albumData = useMusicDataStore((state) => state.albumData);
+  const albumTracks = useMusicDataStore((state) => state.albumTracks);
   const trackListShown = useMusicDataStore((state) => state.trackListShown);
   const trackData = useMusicDataStore((state) => state.trackData);
 
@@ -47,6 +48,12 @@ export default function Home() {
     }
     if (category === "album") {
       albumInfoCardRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+    if (category === "albumTracks") {
+      albumTracksCardRef.current.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
@@ -100,7 +107,9 @@ export default function Home() {
           )}
         </div>
         <div ref={albumTracksCardRef}>
-          {trackListShown && <AlbumTracksCard scrollToCard={scrollToCard} />}
+          {trackListShown && albumTracks && (
+            <AlbumTracksCard scrollToCard={scrollToCard} />
+          )}
         </div>
         <div ref={trackInfoCardRef}>
           {trackData && <TrackInfoCard scrollToCard={scrollToCard} />}

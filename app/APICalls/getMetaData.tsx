@@ -1,6 +1,5 @@
 "use server";
 
-import useMusicDataStore from "../stores/musicDataStore";
 import getSpotifyToken from "./getSpotifyToken";
 import {
   Category,
@@ -342,7 +341,10 @@ const getMetaData = async (
   category: Category,
   extra: string = ""
 ) => {
-  const url = `https://api.spotify.com/v1/${category}s/${id}${extra}`;
+  const url =
+    category === "albumTracks"
+      ? `https://api.spotify.com/v1/albums/${id}`
+      : `https://api.spotify.com/v1/${category}s/${id}${extra}`;
   const accessToken = await getSpotifyToken();
   try {
     const response = await fetch(url, {
@@ -370,8 +372,8 @@ const getMetaData = async (
       returnedData = await setArtistAlbums(data);
     } else if (category === "album") {
       returnedData = await setAlbumData(data);
-      // setAlbumTracks(data);
-      // useMusicDataStore.setState({ trackListShown: false });
+    } else if (category === "albumTracks") {
+      returnedData = await setAlbumTracks(data);
     } else if (category === "track") {
       const spotifyData = await setTrackData(data);
       const bpmData = await getKeyAndBpm(data.artists[0].name, data.name);

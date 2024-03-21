@@ -15,7 +15,13 @@ import useStyleStore, {
 import Hide from "./Hide";
 import getMetaData from "../APICalls/getMetaData";
 import { parsedReleaseDate } from "../functions/sharedFunctions";
-import { Category, Artist } from "../types/types";
+import {
+  Category,
+  Artist,
+  ArtistData,
+  AlbumData,
+  AlbumTracks,
+} from "../types/types";
 
 interface AlbumInfoCardProps {
   scrollToCard: (category: Category) => void;
@@ -30,6 +36,10 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
   const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
   const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
+  const setAlbumTracks = useMusicDataStore((state) => state.setAlbumTracks);
+  const setAlbumListShown = useMusicDataStore(
+    (state) => state.setAlbumListShown
+  );
   const trackListShown = useMusicDataStore((state) => state.trackListShown);
   const setTrackListShown = useMusicDataStore(
     (state) => state.setTrackListShown
@@ -37,18 +47,27 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
   const albumSearchResults = useMusicDataStore(
     (state) => state.albumSearchResults
   );
-  const resetArtistSearchResults = useMusicDataStore((state) => state.resetArtistSearchResults);
+  const resetArtistSearchResults = useMusicDataStore(
+    (state) => state.resetArtistSearchResults
+  );
 
   const darkMode = useStyleStore((state) => state.darkMode);
 
-  const indexInSearchResults = albumSearchResults.indexOf(albumData.spotifyId);
+  const indexInSearchResults = albumData
+    ? albumSearchResults.indexOf(albumData.spotifyId)
+    : -1;
   const nextSpotifyId = albumSearchResults[indexInSearchResults + 1];
   const previousSpotifyId = albumSearchResults[indexInSearchResults - 1];
 
-  const toggleTrackList = () => {
+  const toggleTrackList = async () => {
     if (trackListShown) {
       setTrackListShown(false);
     } else {
+      const albumTracks: AlbumTracks = albumData ? await getMetaData(
+        albumData.spotifyId,
+        "albumTracks"
+      ) : undefined;
+      setAlbumTracks(albumTracks);
       setTrackListShown(true);
       albumTracksRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -58,11 +77,17 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
   };
 
   const onClick = async (spotifyId: string, category: Category) => {
-    const data = await getMetaData(spotifyId, category);
-    if (category === "artist") setArtistData(data);
-    if (category === "artist") resetArtistSearchResults();
-    if (category === "artist") setArtistAlbums([]);
-    if (category === "album") setAlbumData(data);
+    if (category === "artist") {
+      const data: ArtistData = await getMetaData(spotifyId, category);
+      setArtistData(data);
+      resetArtistSearchResults();
+      setArtistAlbums([]);
+      setAlbumListShown(false);
+    } else if (category === "album") {
+      const data: AlbumData = await getMetaData(spotifyId, category);
+      setAlbumData(data);
+      setTrackListShown(false);
+    }
     scrollToCard(category);
   };
 
@@ -100,7 +125,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
         />
       )}
       <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
-        {artistsList} - {albumData.name}
+        {artistsList} - {albumData?.name}
       </h2>
       {nextSpotifyId && (
         <FontAwesomeIcon
@@ -122,12 +147,12 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
         <tr>
           <td className={firstColumnStyle}>Release Date:</td>
           <td className={secondColumnStyle}>
-            {parsedReleaseDate(albumData.releaseDate)}
+            {parsedReleaseDate(albumData?.releaseDate)}
           </td>
         </tr>
         <tr>
           <td className={firstColumnStyle}>Label:</td>
-          <td className={secondColumnStyle}>{albumData.label}</td>
+          <td className={secondColumnStyle}>{albumData?.label}</td>
         </tr>
         {/* <tr>
           <td className={firstColumnStyle}>Producer:</td>
@@ -140,7 +165,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
         <tr>
           <td className={firstColumnStyle}>Popularity on Spotify:</td>
           <td className={secondColumnStyle}>
-            {albumData.spotifyPopularity} / 100
+            {albumData?.spotifyPopularity} / 100
           </td>
         </tr>
       </tbody>
@@ -168,7 +193,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
       <div className="p-3 flex flex-col items-center justify-center">
         {header}
         {table}
-        {/* {button} */}
+        {button}
       </div>
 
       <Hide category="albumData" />
