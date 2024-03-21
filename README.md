@@ -18,7 +18,11 @@ The user can retrieve meta data about artists, albums and songs.
 
 ![Screenshot of the dark mode](https://github.com/JuliaKleber/MusicInsightsInitial/assets/142741980/b5d04169-91f5-43a1-b4a1-26d32c91c683)
 
+![Screenshot of the dark mode](https://github.com/JuliaKleber/MusicInsights/assets/142741980/526d3071-7dd6-4819-8913-492ec15f94ed)
+
 ![Screenshot of the light mode](https://github.com/JuliaKleber/MusicInsightsInitial/assets/142741980/89e84759-3121-4f85-b58f-4afe0fe748c9)
+
+![Screenshot of the light mode](https://github.com/JuliaKleber/MusicInsights/assets/142741980/dfb28eef-b72c-4ca9-84ed-40f1797bc23d)
 
 ## Author
 
