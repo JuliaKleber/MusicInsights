@@ -6,22 +6,28 @@ import useStyleStore, {
   lightHeaderStyle,
 } from "../stores/styleStore";
 import Hide from "./Hide";
-import { Category, Album } from "../types/types";
+import getMetaData from "../APICalls/getMetaData";
+import { Category, ArtistAlbum, AlbumData } from "../types/types";
 
 interface ArtistAlbumsCardProps {
-  onAlbumClick: (spotifyId: string, category: Category) => void;
+  scrollToCard: (category: Category) => void;
 }
 
 const ArtistAlbumsCard: React.FC<ArtistAlbumsCardProps> = ({
-  onAlbumClick,
+  scrollToCard,
 }) => {
   const artistAlbums = useMusicDataStore((state) => state.artistAlbums);
   const artistData = useMusicDataStore((state) => state.artistData);
+  const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
+  const resetAlbumSearchResults = useMusicDataStore(
+    (state) => state.resetAlbumSearchResults
+  );
+
   const darkMode = useStyleStore((state) => state.darkMode);
 
   const header = (
     <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
-      {artistData.name} - Albums
+      {artistData?.name} - Albums
     </h2>
   );
 
@@ -33,9 +39,18 @@ const ArtistAlbumsCard: React.FC<ArtistAlbumsCardProps> = ({
     />
   );
 
+  const onAlbumClick = async (id: string, category: Category) => {
+    if (category === "album") {
+      const data: AlbumData = await getMetaData(id, "album");
+      setAlbumData(data);
+      resetAlbumSearchResults();
+    }
+    scrollToCard(category);
+  }
+
   const albumsList = (
     <ul>
-      {artistAlbums?.map((album: Album, index: number) => {
+      {artistAlbums?.map((album: ArtistAlbum, index: number) => {
         return (
           <li key={index}>
             {album.releaseDate?.slice(0, 4)} -{" "}
