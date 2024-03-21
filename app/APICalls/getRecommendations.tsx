@@ -4,11 +4,11 @@ import getSpotifyToken from "./getSpotifyToken";
 import useMusicDataStore from "../stores/musicDataStore";
 import { Recommendation } from "../types/types";
 
-const setRecommendations = (data) => {
-  const recommendations = data.tracks.map((track) => ({
+const setRecommendations = (data: any) => {
+  const recommendations = data.tracks.map((track: any) => ({
     name: track.name,
     spotifyId: track.id,
-    artists: track.artists.map((artist) => ({
+    artists: track.artists.map((artist: any) => ({
       spotifyId: artist.id,
       name: artist.name,
     })),
@@ -16,7 +16,7 @@ const setRecommendations = (data) => {
   return recommendations;
 };
 
-const getRecommendations: (genre: string) => Promise<Recommendation[]> = async (genre) => {
+const getRecommendations: (genre: string | undefined) => Promise<Recommendation[]> = async (genre) => {
   const accessToken = await getSpotifyToken();
   const url = `https://api.spotify.com/v1/recommendations?limit=5&seed_genres=${genre}`;
   try {

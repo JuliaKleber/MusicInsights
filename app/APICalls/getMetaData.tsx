@@ -2,7 +2,14 @@
 
 import useMusicDataStore from "../stores/musicDataStore";
 import getSpotifyToken from "./getSpotifyToken";
-import { Category, ArtistData } from "../types/types";
+import {
+  Category,
+  ArtistData,
+  ArtistAlbum,
+  AlbumData,
+  AlbumTracks,
+  TrackData,
+} from "../types/types";
 
 const genres = [
   "acoustic",
@@ -148,8 +155,11 @@ const setArtistData = (data: any) => {
   return artistData;
 };
 
-const setArtistDataFromMusicBrainz = (spotifyData: any, musicBrainzData: any) => {
-  const artistData = {
+const setArtistDataFromMusicBrainz = (
+  spotifyData: any,
+  musicBrainzData: any
+) => {
+  const artistData: ArtistData = {
     spotifyId: spotifyData.spotifyId,
     name: spotifyData.name,
     genres: spotifyData.genres,
@@ -173,21 +183,20 @@ const setArtistDataFromMusicBrainz = (spotifyData: any, musicBrainzData: any) =>
 };
 
 const setArtistAlbums = (data: any) => {
-  const artistAlbums = [...data.items].reverse().map((item) => ({
+  const artistAlbums: ArtistAlbum[] = [...data.items].reverse().map((item) => ({
     spotifyId: item.id,
     name: item.name,
     releaseDate: item.release_date,
     image: item.images[2],
   }));
-
   return artistAlbums;
 };
 
 const setAlbumData = (data: any) => {
-  const albumData = {
+  const albumData: AlbumData = {
     spotifyId: data.id,
     name: data.name,
-    artists: data.artists.map((artist) => ({
+    artists: data.artists.map((artist: any) => ({
       spotifyId: artist.id,
       name: artist.name,
     })),
@@ -201,28 +210,27 @@ const setAlbumData = (data: any) => {
 };
 
 const setAlbumTracks = (data: any) => {
-  useMusicDataStore.setState({
-    albumTracks: {
-      name: data.name,
-      artists: data.artists.map((artist) => ({
-        spotifyId: artist.id,
-        name: artist.name,
-      })),
-      tracks: data.tracks.items.map((item) => ({
-        spotifyId: item.id,
-        name: item.name,
-      })),
-      image: data.images[1].url,
-    },
-  });
+  const albumTracks: AlbumTracks = {
+    name: data.name,
+    artists: data.artists.map((artist: any) => ({
+      spotifyId: artist.id,
+      name: artist.name,
+    })),
+    tracks: data.tracks.items.map((item: any) => ({
+      spotifyId: item.id,
+      name: item.name,
+    })),
+    image: data.images[1].url,
+  };
+  return albumTracks;
 };
 
 const setTrackData = (data: any) => {
-  const trackData = {
+  const trackData: TrackData = {
     spotifyId: data.id,
     isrc: data.external_ids.isrc,
     name: data.name,
-    artists: data.artists.map((artist) => ({
+    artists: data.artists.map((artist: any) => ({
       spotifyId: artist.id,
       name: artist.name,
     })),
@@ -240,7 +248,7 @@ const setTrackData = (data: any) => {
 };
 
 const setBpmAndKey = (spotifyData: any, bpmData: any) => {
-  const trackData = {
+  const trackData: TrackData = {
     spotifyId: spotifyData.spotifyId,
     isrc: spotifyData.isrc,
     name: spotifyData.name,
@@ -347,8 +355,7 @@ const getMetaData = async (
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    let returnedData = null;
-
+    let returnedData = undefined;
     if (category === "artist" && extra === "") {
       const spotifyData = await setArtistData(data);
       const musicBrainzData = await getMusicBrainzData(
@@ -368,7 +375,9 @@ const getMetaData = async (
     } else if (category === "track") {
       const spotifyData = await setTrackData(data);
       const bpmData = await getKeyAndBpm(data.artists[0].name, data.name);
-      bpmData ? returnedData = await setBpmAndKey(spotifyData, bpmData) : returnedData = spotifyData;
+      bpmData
+        ? (returnedData = await setBpmAndKey(spotifyData, bpmData))
+        : (returnedData = spotifyData);
     }
     return returnedData;
   } catch (error) {

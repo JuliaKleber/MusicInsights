@@ -31,12 +31,12 @@ export interface Track {
 }
 
 export interface Recommendation {
-  trackName: string;
-  trackId: string;
+  name: string;
+  spotifyId: string;
   artists: Artist[];
 }
 
-export interface ArtistData {
+export type ArtistData = {
   spotifyId: string;
   name: string;
   genres?: string[];
@@ -49,16 +49,16 @@ export interface ArtistData {
   type?: string | null;
   location?: string;
   country?: string;
-}
+} | undefined | null
 
 export interface ArtistAlbum {
   spotifyId: string;
   name: string;
-  realeaseDate: string;
+  releaseDate: string;
   image: string;
 }
 
-export interface AlbumData {
+export type AlbumData = {
   spotifyId: string;
   name: string;
   artists: Artist[];
@@ -67,7 +67,7 @@ export interface AlbumData {
   spotifyPopularity: number;
   upc: string;
   image: string;
-}
+} | undefined | null
 
 export interface AlbumTracks {
   name: string;
@@ -76,7 +76,7 @@ export interface AlbumTracks {
   image: string;
 }
 
-export interface TrackData {
+export type TrackData = {
   spotifyId: string;
   isrc: string;
   name: string;
@@ -93,7 +93,7 @@ export interface TrackData {
   timeSignature?: string;
   key?: string;
   releaseDate: string;
-}
+} | undefined | null
 
 export interface Month {
   [key: string]: string;

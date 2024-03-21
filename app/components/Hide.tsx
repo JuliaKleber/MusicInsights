@@ -27,23 +27,23 @@ const Hide: React.FC<HideProps> = ({ category }) => {
   const setCategoryInStore: () => void = () => {
     switch (category) {
       case "artistData":
-        setArtistData(null);
+        setArtistData(undefined);
         setArtistSearchResults([]);
         break;
       case "albumListShown":
-        setAlbumListShown(null);
+        setAlbumListShown(false);
         break;
       case "albumData":
-        setAlbumData(null);
+        setAlbumData(undefined);
         break;
       case "trackListShown":
-        setTrackListShown(null);
+        setTrackListShown(false);
         break;
       case "trackData":
-        setTrackData(null);
+        setTrackData(undefined);
         break;
       case "recommendations":
-        setRecommendations(null);
+        setRecommendations([]);
         break;
       default:
         break;

@@ -12,15 +12,15 @@ type MusicDataState = {
   artistSearchResults: string[];
   albumSearchResults: string[];
   trackSearchResults: string[];
-  genre: string | null;
+  genre: string | undefined;
   recommendations: Recommendation[];
-  artistData: ArtistData | null;
-  artistAlbums: ArtistAlbum[] | null;
+  artistData: ArtistData | undefined;
+  artistAlbums: ArtistAlbum[] | undefined;
   albumListShown: boolean;
-  albumData: AlbumData | null;
-  albumTracks: AlbumTracks | null;
+  albumData: AlbumData | undefined;
+  albumTracks: AlbumTracks | [];
   trackListShown: boolean;
-  trackData: TrackData | null;
+  trackData: TrackData | undefined;
 };
 
 type MusicDataActions = {
@@ -50,18 +50,18 @@ export const useMusicDataStore = create<MusicDataStore>()((set) => ({
   albumSearchResults: [],
   trackSearchResults: [],
 
-  genre: null,
+  genre: undefined,
   recommendations: [],
 
-  artistData: null,
+  artistData: undefined,
   artistAlbums: [],
   albumListShown: false,
 
-  albumData: null,
-  albumTracks: null,
+  albumData: undefined,
+  albumTracks: [],
   trackListShown: false,
 
-  trackData: null,
+  trackData: undefined,
 
   setArtistSearchResults: (searchResults) => {
     set(() => ({ artistSearchResults: searchResults }));

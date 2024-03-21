@@ -57,9 +57,7 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
 
   const handleSearch = async (category: Category) => {
     const searchResults = await spotifySearch(searchTerm, category);
-    console.log(searchResults);
     const data: ArtistData | AlbumData | TrackData = await getMetaData(searchResults[0], category);
-    console.log(data);
     if (category === "artist") {
       setArtistSearchResults(searchResults);
       setArtistData(data);
