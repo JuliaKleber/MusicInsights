@@ -41,7 +41,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
 
   const darkMode = useStyleStore((state) => state.darkMode);
 
-  const indexInSearchResults = artistData
+  const indexInSearchResults = artistData && artistSearchResults
     ? artistSearchResults.indexOf(artistData.spotifyId)
     : -1;
   const nextSpotifyId = artistSearchResults[indexInSearchResults + 1];

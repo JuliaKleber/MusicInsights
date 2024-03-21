@@ -59,7 +59,7 @@ export const useMusicDataStore = create<MusicDataStore>()((set) => ({
   albumListShown: false,
 
   albumData: undefined,
-  albumTracks: [],
+  albumTracks: undefined,
   trackListShown: false,
 
   trackData: undefined,

@@ -32,6 +32,8 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
   const setTrackData = useMusicDataStore((state) => state.setTrackData);
 
   const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
+  const setAlbumListShown = useMusicDataStore((state) => state.setAlbumListShown);
+  const setTrackListShown = useMusicDataStore((state) => state.setTrackListShown);
 
   const darkMode = useStyleStore((state) => state.darkMode);
 
@@ -40,16 +42,18 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
   const handleKeyDown = async (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       const artistResults = await spotifySearch(searchTerm, "artist");
-      const artistData = await getMetaData(artistResults[0], "artist");
+      const artistData: ArtistData = await getMetaData(artistResults[0], "artist");
       setArtistSearchResults(artistResults);
       setArtistData(artistData);
       setArtistAlbums([]);
+      setAlbumListShown(false);
       const albumResults = await spotifySearch(searchTerm, "album");
-      const albumData = await getMetaData(albumResults[0], "album");
+      const albumData: AlbumData = await getMetaData(albumResults[0], "album");
       setAlbumSearchResults(albumResults);
       setAlbumData(albumData);
+      setTrackListShown(false);
       const trackResults = await spotifySearch(searchTerm, "track");
-      const trackData = await getMetaData(trackResults[0], "track");
+      const trackData: TrackData = await getMetaData(trackResults[0], "track");
       setTrackSearchResults(trackResults);
       setTrackData(trackData);
     }
@@ -57,15 +61,19 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
 
   const handleSearch = async (category: Category) => {
     const searchResults = await spotifySearch(searchTerm, category);
-    const data: ArtistData | AlbumData | TrackData = await getMetaData(searchResults[0], category);
     if (category === "artist") {
+      const data: ArtistData = await getMetaData(searchResults[0], category);
       setArtistSearchResults(searchResults);
       setArtistData(data);
       setArtistAlbums([]);
+      setAlbumListShown(false);
     } else if (category === "album") {
+      const data: AlbumData = await getMetaData(searchResults[0], category);
       setAlbumSearchResults(searchResults);
       setAlbumData(data);
+      setTrackListShown(false);
     } else if (category === "track") {
+      const data: TrackData = await getMetaData(searchResults[0], category);
       setTrackSearchResults(searchResults);
       setTrackData(data);
     }

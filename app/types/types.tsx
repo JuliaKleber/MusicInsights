@@ -67,7 +67,7 @@ export type AlbumData = {
   spotifyPopularity: number;
   upc: string;
   image: string;
-} | undefined | null
+} | undefined
 
 export interface AlbumTracks {
   name: string;
@@ -93,7 +93,7 @@ export type TrackData = {
   timeSignature?: string;
   key?: string;
   releaseDate: string;
-} | undefined | null
+} | undefined
 
 export interface Month {
   [key: string]: string;

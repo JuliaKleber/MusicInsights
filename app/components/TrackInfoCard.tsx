@@ -39,7 +39,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
 
   const darkMode = useStyleStore((state) => state.darkMode);
 
-  const indexInSearchResults = trackSearchResults.indexOf(trackData.spotifyId);
+  const indexInSearchResults = trackData ? trackSearchResults.indexOf(trackData.spotifyId) : -1;
   const nextSpotifyId = trackSearchResults[indexInSearchResults + 1];
   const previousSpotifyId = trackSearchResults[indexInSearchResults - 1];
 
@@ -57,7 +57,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
 
   const image = (
     <img
-      src={trackData.image}
+      src={trackData?.image}
       alt="track"
       className="w-64 mt-4 md:mt-0 rounded-md md:rounded-l-lg md:rounded-r-none"
     />
@@ -89,7 +89,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
         />
       )}
       <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
-        {trackData?.artists[0].name} {trackData.artists.length > 1 && " & v.a."}{" "}
+        {trackData?.artists[0].name} {trackData && trackData.artists.length > 1 && " & v.a."}{" "}
         - {trackData?.name}
       </h2>
       {nextSpotifyId && (
@@ -119,7 +119,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
             className={`${secondColumnStyle} ${
               darkMode ? darkLinkStyle : lightLinkStyle
             }`}
-            onClick={() => onClick(trackData?.album.spotifyId, "album")}
+            onClick={() => onClick(trackData ? trackData.album.spotifyId : '', "album")}
           >
             {
               trackData?.album.name

@@ -94,7 +94,7 @@ export default function Home() {
           {artistData && <ArtistInfoCard scrollToCard={scrollToCard} />}
         </div>
         <div ref={artistAlbumsCardRef}>
-          {albumListShown && artistAlbums.length > 0 && artistData && (
+          {albumListShown && artistAlbums && artistData && (
             <ArtistAlbumsCard scrollToCard={scrollToCard} />
           )}
         </div>

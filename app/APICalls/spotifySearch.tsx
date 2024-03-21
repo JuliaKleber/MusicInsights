@@ -21,7 +21,7 @@ const spotifySearch: (
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    const searchResults = data[`${category}s`].items.map((item) => item.id);
+    const searchResults = data[`${category}s`].items.map((item: any) => item.id);
     return searchResults;
   } catch (error) {
     console.error("Error fetching search data:", error);
