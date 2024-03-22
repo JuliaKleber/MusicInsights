@@ -1,14 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import useMusicDataStore from "../stores/musicDataStore";
-import useStyleStore, {
+import {
+  cardStyle,
   buttonStyle,
-  lightLinkStyle,
-  darkLinkStyle,
-  darkArrowStyle,
-  lightArrowStyle,
-  darkHeaderStyle,
-  lightHeaderStyle,
+  linkStyle,
+  arrowStyle,
   firstColumnStyle,
   secondColumnStyle,
 } from "../stores/styleStore";
@@ -51,8 +48,6 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
     (state) => state.resetArtistSearchResults
   );
 
-  const darkMode = useStyleStore((state) => state.darkMode);
-
   const indexInSearchResults = albumData
     ? albumSearchResults.indexOf(albumData.spotifyId)
     : -1;
@@ -63,10 +58,9 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
     if (trackListShown) {
       setTrackListShown(false);
     } else {
-      const albumTracks: AlbumTracks = albumData ? await getMetaData(
-        albumData.spotifyId,
-        "albumTracks"
-      ) : undefined;
+      const albumTracks: AlbumTracks = albumData
+        ? await getMetaData(albumData.spotifyId, "albumTracks")
+        : undefined;
       setAlbumTracks(albumTracks);
       setTrackListShown(true);
       albumTracksRef.current?.scrollIntoView({
@@ -95,7 +89,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
     <ul className="flex flex-row flex-wrap">
       {albumData?.artists.map((artist: Artist, index: number) => (
         <li
-          className={`mr-1 ${darkMode ? darkLinkStyle : lightLinkStyle}`}
+          className={`mr-1 ${linkStyle}`}
           key={index}
           onClick={() => onClick(artist.spotifyId, "artist")}
         >
@@ -120,17 +114,17 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
       {previousSpotifyId && (
         <FontAwesomeIcon
           icon={faArrowLeft}
-          className={darkMode ? darkArrowStyle : lightArrowStyle}
+          className={arrowStyle}
           onClick={() => onClick(previousSpotifyId, "album")}
         />
       )}
-      <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
+      <h2>
         {artistsList} - {albumData?.name}
       </h2>
       {nextSpotifyId && (
         <FontAwesomeIcon
           icon={faArrowRight}
-          className={darkMode ? darkArrowStyle : lightArrowStyle}
+          className={arrowStyle}
           onClick={() => onClick(nextSpotifyId, "album")}
         />
       )}
@@ -183,11 +177,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
   }
 
   return (
-    <div
-      className={`m-5 p-2 flex flex-col md:flex-row justify-between rounded-lg shadow-costum ${
-        darkMode && "bg-darkBackground"
-      }`}
-    >
+    <div className={cardStyle}>
       <div className="flex items-center justify-center">{image}</div>
 
       <div className="p-3 flex flex-col items-center justify-center">

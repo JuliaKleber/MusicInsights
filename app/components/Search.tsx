@@ -3,7 +3,7 @@
 import { useState } from "react";
 import spotifySearch from "../APICalls/spotifySearch";
 import getMetaData from "../APICalls/getMetaData";
-import useStyleStore, { buttonStyle } from "../stores/styleStore";
+import { buttonStyle } from "../stores/styleStore";
 import { Category, ArtistData, AlbumData, TrackData } from "../types/types";
 import useMusicDataStore from "../stores/musicDataStore";
 
@@ -32,17 +32,22 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
   const setTrackData = useMusicDataStore((state) => state.setTrackData);
 
   const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
-  const setAlbumListShown = useMusicDataStore((state) => state.setAlbumListShown);
-  const setTrackListShown = useMusicDataStore((state) => state.setTrackListShown);
-
-  const darkMode = useStyleStore((state) => state.darkMode);
+  const setAlbumListShown = useMusicDataStore(
+    (state) => state.setAlbumListShown
+  );
+  const setTrackListShown = useMusicDataStore(
+    (state) => state.setTrackListShown
+  );
 
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleKeyDown = async (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       const artistResults = await spotifySearch(searchTerm, "artist");
-      const artistData: ArtistData = await getMetaData(artistResults[0], "artist");
+      const artistData: ArtistData = await getMetaData(
+        artistResults[0],
+        "artist"
+      );
       setArtistSearchResults(artistResults);
       setArtistData(artistData);
       setArtistAlbums([]);
@@ -86,11 +91,10 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
       placeholder="Enter Search Term"
       onChange={(event) => setSearchTerm(event.target.value)}
       onKeyDown={(event) => handleKeyDown(event)}
-      className={`w-64 p-1 m-1 text-center rounded-md border ${
-        darkMode
-          ? "text-white bg-gray-700 border-gray-900 focus:outline-none focus:border-pink-100"
-          : "border-gray-200 bg-gray-50 focus:outline-none focus:border-sky-600"
-      }`}
+      className="w-64 p-1 m-1 text-center rounded-md border focus:outline-none
+        dark:text-white dark:bg-gray-700 dark:border-gray-900 dark:focus:border-pink-100
+        border-gray-200 bg-gray-50 focus:border-sky-600
+      "
     />
   );
 

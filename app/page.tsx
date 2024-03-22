@@ -24,8 +24,6 @@ export default function Home() {
   const trackListShown = useMusicDataStore((state) => state.trackListShown);
   const trackData = useMusicDataStore((state) => state.trackData);
 
-  const darkMode = useStyleStore((state) => state.darkMode);
-
   const recommendationsCardRef = useRef(null);
   const artistInfoCardRef = useRef(null);
   const artistAlbumsCardRef = useRef(null);
@@ -74,9 +72,7 @@ export default function Home() {
 
   return (
     <div
-      className={`p-3 flex flex-col items-center ${
-        darkMode && "text-pink-100"
-      }`}
+      className={`p-3 flex flex-col items-center`}
     >
       <ToggleMode />
       <div className="m-3">

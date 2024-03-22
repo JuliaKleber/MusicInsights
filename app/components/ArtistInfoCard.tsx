@@ -6,14 +6,11 @@ import Hide from "./Hide";
 import getMetaData from "../APICalls/getMetaData";
 import getRecommendations from "../APICalls/getRecommendations";
 import useMusicDataStore from "../stores/musicDataStore";
-import useStyleStore, {
+import {
+  cardStyle,
   buttonStyle,
-  lightLinkStyle,
-  darkLinkStyle,
-  darkArrowStyle,
-  lightArrowStyle,
-  darkHeaderStyle,
-  lightHeaderStyle,
+  linkStyle,
+  arrowStyle,
   firstColumnStyle,
   secondColumnStyle,
 } from "../stores/styleStore";
@@ -39,11 +36,10 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
     (state) => state.artistSearchResults
   );
 
-  const darkMode = useStyleStore((state) => state.darkMode);
-
-  const indexInSearchResults = artistData && artistSearchResults
-    ? artistSearchResults.indexOf(artistData.spotifyId)
-    : -1;
+  const indexInSearchResults =
+    artistData && artistSearchResults
+      ? artistSearchResults.indexOf(artistData.spotifyId)
+      : -1;
   const nextSpotifyId = artistSearchResults[indexInSearchResults + 1];
   const previousSpotifyId = artistSearchResults[indexInSearchResults - 1];
 
@@ -61,11 +57,13 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
       setAlbumListShown(false);
     } else {
       setAlbumListShown(true);
-      const artistAlbums: ArtistAlbum[] = artistData ? await getMetaData(
-        artistData.spotifyId,
-        "artist",
-        "/albums?include_groups=album&limit=50"
-      ) : [];
+      const artistAlbums: ArtistAlbum[] = artistData
+        ? await getMetaData(
+            artistData.spotifyId,
+            "artist",
+            "/albums?include_groups=album&limit=50"
+          )
+        : [];
       setArtistAlbums(artistAlbums);
       scrollToCard("artist", "/albums?include_groups=album&limit=50");
     }
@@ -115,17 +113,15 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
       {previousSpotifyId && (
         <FontAwesomeIcon
           icon={faArrowLeft}
-          className={darkMode ? darkArrowStyle : lightArrowStyle}
+          className={arrowStyle}
           onClick={() => onClick(previousSpotifyId, "artist")}
         />
       )}
-      <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
-        {artistData?.name}
-      </h2>
+      <h2>{artistData?.name}</h2>
       {nextSpotifyId && (
         <FontAwesomeIcon
           icon={faArrowRight}
-          className={darkMode ? darkArrowStyle : lightArrowStyle}
+          className={arrowStyle}
           onClick={() => onClick(nextSpotifyId, "artist")}
         />
       )}
@@ -140,21 +136,20 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
             <td className={firstColumnStyle}>Genre(s):</td>
             <td className={secondColumnStyle}>
               <ul className="flex flex-row flex-wrap">
-                {artistData && parsedGenres(artistData.genres).map((genre, index) => {
-                  return (
-                    <li
-                      className={`mr-1 ${
-                        darkMode ? darkLinkStyle : lightLinkStyle
-                      }`}
-                      onClick={() => genreClick(genre)}
-                      key={index}
-                    >
-                      {index === artistData.genres.length - 1
-                        ? genre
-                        : `${genre},`}
-                    </li>
-                  );
-                })}
+                {artistData &&
+                  parsedGenres(artistData.genres).map((genre, index) => {
+                    return (
+                      <li
+                        className={`mr-1 ${linkStyle}`}
+                        onClick={() => genreClick(genre)}
+                        key={index}
+                      >
+                        {index === artistData.genres.length - 1
+                          ? genre
+                          : `${genre},`}
+                      </li>
+                    );
+                  })}
               </ul>
             </td>
           </tr>
@@ -206,11 +201,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
   );
 
   return (
-    <div
-      className={`m-5 p-2 flex flex-col md:flex-row justify-between rounded-lg shadow-costum ${
-        darkMode && "bg-darkBackground"
-      }`}
-    >
+    <div className={cardStyle}>
       <div className="flex items-center justify-center">{image}</div>
 
       <div className="p-3 flex flex-col justify-center items-center">

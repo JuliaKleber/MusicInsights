@@ -4,20 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-rgb: 17, 24, 39;
+@layer base {
+  body {
+    @apply  dark:bg-bgDark bg-white dark:text-pink-100;
   }
-}
-
-body {
-  background: rgb(var(--background-rgb));
-}
-
-h2 {
-  font-size: 20px;
+  h2 {
+    @apply text-xl mx-3 text-red-600 dark:text-sky-500 font-primaryFont flex flex-row flex-wrap justify-center;
+  }
 }
