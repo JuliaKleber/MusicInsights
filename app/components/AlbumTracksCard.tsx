@@ -25,7 +25,7 @@ const AlbumTracksCard: React.FC<AlbumTracksCardProps> = ({ scrollToCard }) => {
 
   const image = (
     <img
-      src={albumTracks.image}
+      src={albumTracks?.image}
       alt="album"
       className="w-64 mt-4 md:mt-0 rounded-md md:rounded-l-lg md:rounded-r-none"
     />

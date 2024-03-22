@@ -27,13 +27,13 @@ type MusicDataActions = {
   setGenre: (genre: string) => void;
   setRecommendations: (recommendations: Recommendation[]) => void;
 
-  setArtistData: (data: ArtistData) => void;
+  setArtistData: (data: ArtistData | null) => void;
   setArtistAlbums: (data: ArtistAlbum[]) => void;
   setAlbumListShown: (value: boolean) => void;
-  setAlbumData: (data: AlbumData) => void;
+  setAlbumData: (data: AlbumData | null) => void;
   setAlbumTracks: (data: AlbumTracks) => void;
   setTrackListShown: (value: boolean) => void;
-  setTrackData: (data: TrackData) => void;
+  setTrackData: (data: TrackData | null) => void;
 };
 
 type MusicDataStore = MusicDataState & MusicDataActions;
@@ -83,25 +83,25 @@ export const useMusicDataStore = create<MusicDataStore>()((set) => ({
     set(() => ({ recommendations: recommendations }));
   },
 
-  setArtistData: (data: ArtistData) => {
+  setArtistData: (data) => {
     set(() => ({ artistData: data }));
   },
-  setArtistAlbums: (data: ArtistAlbum[]) => {
+  setArtistAlbums: (data) => {
     set(() => ({ artistAlbums: data }));
   },
-  setAlbumListShown: (value: boolean) => {
+  setAlbumListShown: (value) => {
     set(() => ({ albumListShown: value }));
   },
-  setAlbumData: (data: AlbumData) => {
+  setAlbumData: (data) => {
     set(() => ({ albumData: data }));
   },
-  setAlbumTracks: (data: AlbumTracks) => {
+  setAlbumTracks: (data) => {
     set(() => ({ albumTracks: data }));
   },
-  setTrackListShown: (value: boolean) => {
+  setTrackListShown: (value) => {
     set(() => ({ trackListShown: value }));
   },
-  setTrackData: (data: TrackData) => {
+  setTrackData: (data) => {
     set(() => ({ trackData: data }));
   },
 }));

@@ -88,7 +88,7 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({ scrollToCard }) => {
 
   const image = (
     <img
-      src={albumData.image}
+      src={albumData?.image}
       alt="album"
       className="w-64 mt-4 md:mt-0 rounded-md md:rounded-l-lg md:rounded-r-none"
     />

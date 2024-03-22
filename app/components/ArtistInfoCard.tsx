@@ -103,7 +103,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
 
   const image = (
     <img
-      src={artistData.image}
+      src={artistData?.image}
       alt="artist"
       className="w-64 mt-4 md:mt-0 rounded-md md:rounded-l-lg md:rounded-r-none"
     />
