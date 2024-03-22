@@ -1,4 +1,4 @@
-import { linkStyle } from "../stores/styleStore";
+import { linkStyle } from "../styles/styles";
 
 const InfoText: React.FC = () => {
   return (

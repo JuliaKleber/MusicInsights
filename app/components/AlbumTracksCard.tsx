@@ -1,5 +1,5 @@
 import useMusicDataStore from "../stores/musicDataStore";
-import { cardStyle, linkStyle } from "../stores/styleStore";
+import { cardStyle, linkStyle } from "../styles/styles";
 import Hide from "./Hide";
 import getMetaData from "../APICalls/getMetaData";
 

@@ -8,10 +8,10 @@ import {
   linkStyle,
   firstColumnStyle,
   secondColumnStyle,
-} from "../stores/styleStore";
+} from "../styles/styles";
 
 interface RecommendationsCardProps {
-  scrollToCard: (category: Category, extra?: string) =>void;
+  scrollToCard: (category: Category, extra?: string) => void;
 }
 
 const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
@@ -56,7 +56,7 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
   };
 
   const header = (
-    <div className="flex flex-row justify-center items-center">
+    <div className="mb-3 flex flex-row justify-center items-center">
       <h2>Recommendations for {genre}</h2>
       <FontAwesomeIcon
         icon={faShuffle}

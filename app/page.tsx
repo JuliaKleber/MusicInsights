@@ -22,46 +22,46 @@ export default function Home() {
   const trackListShown = useMusicDataStore((state) => state.trackListShown);
   const trackData = useMusicDataStore((state) => state.trackData);
 
-  const recommendationsCardRef = useRef(null);
-  const artistInfoCardRef = useRef(null);
-  const artistAlbumsCardRef = useRef(null);
-  const albumInfoCardRef = useRef(null);
-  const albumTracksCardRef = useRef(null);
-  const trackInfoCardRef = useRef(null);
+  const recommendationsCardRef = useRef<null | HTMLDivElement>(null);
+  const artistInfoCardRef = useRef<null | HTMLDivElement>(null);
+  const artistAlbumsCardRef = useRef<null | HTMLDivElement>(null);
+  const albumInfoCardRef = useRef<null | HTMLDivElement>(null);
+  const albumTracksCardRef = useRef<null | HTMLDivElement>(null);
+  const trackInfoCardRef = useRef<null | HTMLDivElement>(null);
 
-  const scrollToCard = (category: Category, extra?: string) => {
-    if (category === "artist" && extra === undefined) {
-      artistInfoCardRef.current.scrollIntoView({
+  const scrollToCard = (category: Category, extra: string = "") => {
+    if (category === "artist" && extra === "") {
+      artistInfoCardRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
     }
-    if (category === "artist" && extra !== undefined) {
-      artistAlbumsCardRef.current.scrollIntoView({
+    if (category === "artist" && extra !== "") {
+      artistAlbumsCardRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
     }
     if (category === "album") {
-      albumInfoCardRef.current.scrollIntoView({
+      albumInfoCardRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
     }
     if (category === "albumTracks") {
-      albumTracksCardRef.current.scrollIntoView({
+      albumTracksCardRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
     }
     if (category === "track") {
-      trackInfoCardRef.current.scrollIntoView({
+      trackInfoCardRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
     }
     if (category === "recommendations") {
-      recommendationsCardRef.current.scrollIntoView({
+      recommendationsCardRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
@@ -69,21 +69,18 @@ export default function Home() {
   };
 
   return (
-    <div
-      className={`p-3 flex flex-col items-center`}
-    >
+    <div className={`p-3 flex flex-col items-center`}>
       <ToggleMode />
       <div className="m-3">
         <Search scrollToCard={scrollToCard} />
       </div>
 
-      <div ref={recommendationsCardRef}>
-        {recommendations.length > 0 && (
-          <RecommendationsCard scrollToCard={scrollToCard} />
-        )}
-      </div>
-
       <div>
+        <div ref={recommendationsCardRef}>
+          {recommendations.length > 0 && (
+            <RecommendationsCard scrollToCard={scrollToCard} />
+          )}
+        </div>
         <div ref={artistInfoCardRef}>
           {artistData && <ArtistInfoCard scrollToCard={scrollToCard} />}
         </div>
@@ -93,12 +90,7 @@ export default function Home() {
           )}
         </div>
         <div ref={albumInfoCardRef}>
-          {albumData && (
-            <AlbumInfoCard
-              scrollToCard={scrollToCard}
-              albumTracksRef={albumTracksCardRef}
-            />
-          )}
+          {albumData && <AlbumInfoCard scrollToCard={scrollToCard} />}
         </div>
         <div ref={albumTracksCardRef}>
           {trackListShown && albumTracks && (
@@ -109,6 +101,7 @@ export default function Home() {
           {trackData && <TrackInfoCard scrollToCard={scrollToCard} />}
         </div>
       </div>
+
       <InfoText />
     </div>
   );

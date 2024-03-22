@@ -1,5 +1,5 @@
 import useMusicDataStore from "../stores/musicDataStore";
-import { cardStyle, linkStyle } from "../stores/styleStore";
+import { cardStyle, linkStyle } from "../styles/styles";
 import Hide from "./Hide";
 import getMetaData from "../APICalls/getMetaData";
 
@@ -57,9 +57,7 @@ const ArtistAlbumsCard: React.FC<ArtistAlbumsCardProps> = ({
   );
 
   return (
-    <div
-      className={cardStyle}
-    >
+    <div className={cardStyle}>
       <div className="md:mr-2 flex items-center justify-center">{image}</div>
       <div className="flex flex-col justify-center items-center">
         {header}

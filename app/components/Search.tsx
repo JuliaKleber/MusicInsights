@@ -3,7 +3,7 @@
 import { useState } from "react";
 import spotifySearch from "../APICalls/spotifySearch";
 import getMetaData from "../APICalls/getMetaData";
-import { buttonStyle } from "../stores/styleStore";
+import { buttonStyle } from "../styles/styles";
 import useMusicDataStore from "../stores/musicDataStore";
 
 interface SearchProps {
@@ -43,10 +43,7 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
   const handleKeyDown = async (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       const artistResults = await spotifySearch(searchTerm, "artist");
-      const artistData = await getMetaData(
-        artistResults[0],
-        "artist"
-      );
+      const artistData = await getMetaData(artistResults[0], "artist");
       setArtistSearchResults(artistResults);
       setArtistData(artistData);
       setArtistAlbums([]);

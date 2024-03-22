@@ -13,7 +13,7 @@ import {
   arrowStyle,
   firstColumnStyle,
   secondColumnStyle,
-} from "../stores/styleStore";
+} from "../styles/styles";
 
 interface ArtistInfoCardProps {
   scrollToCard: (category: Category, endpoint?: string) => void;

@@ -8,7 +8,7 @@ import {
   arrowStyle,
   firstColumnStyle,
   secondColumnStyle,
-} from "../stores/styleStore";
+} from "../styles/styles";
 import Hide from "./Hide";
 import getMetaData from "../APICalls/getMetaData";
 import { parsedReleaseDate } from "../functions/sharedFunctions";

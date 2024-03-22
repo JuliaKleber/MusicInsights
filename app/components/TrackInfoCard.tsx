@@ -10,7 +10,7 @@ import {
   arrowStyle,
   firstColumnStyle,
   secondColumnStyle,
-} from "../stores/styleStore";
+} from "../styles/styles";
 
 interface TrackInfoCardProps {
   scrollToCard: (category: Category) => void;
