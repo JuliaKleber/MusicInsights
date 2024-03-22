@@ -6,7 +6,6 @@ import { useTheme } from "next-themes";
 
 const ToggleMode: React.FC = () => {
   const { systemTheme, theme, setTheme } = useTheme();
-  const currentTheme = theme === "system" ? systemTheme : theme;
 
   return (
     <div className="text-xl cursor-pointer text-center">

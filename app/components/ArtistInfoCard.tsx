@@ -83,7 +83,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
     return followers;
   };
 
-  const genreClick = async (genre: string) => {
+  const onGenreClick = async (genre: string) => {
     setGenre(genre);
     const recommendations = await getRecommendations(
       genre.toLowerCase().replaceAll(" ", "-")
@@ -92,7 +92,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
     scrollToCard("recommendations");
   };
 
-  const onClick = async (spotifyId: string, category: Category) => {
+  const onArtistClick = async (spotifyId: string, category: Category) => {
     const data = await getMetaData(spotifyId, category);
     if (category === "artist") {
       setArtistData(data);
@@ -115,7 +115,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
         <FontAwesomeIcon
           icon={faArrowLeft}
           className={arrowStyle}
-          onClick={() => onClick(previousSpotifyId, "artist")}
+          onClick={() => onArtistClick(previousSpotifyId, "artist")}
         />
       )}
       <h2>{artistData?.name}</h2>
@@ -123,7 +123,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
         <FontAwesomeIcon
           icon={faArrowRight}
           className={arrowStyle}
-          onClick={() => onClick(nextSpotifyId, "artist")}
+          onClick={() => onArtistClick(nextSpotifyId, "artist")}
         />
       )}
     </div>
@@ -142,7 +142,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
                     return (
                       <li
                         className={`mr-1 ${linkStyle}`}
-                        onClick={() => genreClick(genre)}
+                        onClick={() => onGenreClick(genre)}
                         key={index}
                       >
                         {index === artistData.genres.length - 1

@@ -48,9 +48,9 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
   };
 
   const showNewTracks = async () => {
-    const recommendations = await getRecommendations(
-      genre?.toLowerCase().replaceAll(" ", "-")
-    );
+    const recommendations = genre
+      ? await getRecommendations(genre.toLowerCase().replaceAll(" ", "-"))
+      : null;
     setRecommendations(recommendations);
     scrollToCard("recommendations");
   };

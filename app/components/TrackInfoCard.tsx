@@ -43,12 +43,16 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
 
   const onClick = async (spotifyId: string, category: Category) => {
     const data = await getMetaData(spotifyId, category);
-    if (category === "artist") setArtistData(data);
-    if (category === "artist") resetArtistSearchResults();
-    if (category === "artist") setArtistAlbums([]);
-    if (category === "album") setAlbumData(data);
-    if (category === "album") resetAlbumSearchResults();
-    if (category === "album") setTrackListShown(false);
+    if (category === "artist") {
+      setArtistData(data);
+      resetArtistSearchResults();
+      setArtistAlbums([]);
+    }
+    if (category === "album") {
+      setAlbumData(data);
+      resetAlbumSearchResults();
+      setTrackListShown(false);
+    }
     if (category === "track") setTrackData(data);
     scrollToCard(category);
   };
