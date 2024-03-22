@@ -1,10 +1,5 @@
 import useMusicDataStore from "../stores/musicDataStore";
-import useStyleStore, {
-  lightLinkStyle,
-  darkLinkStyle,
-  darkHeaderStyle,
-  lightHeaderStyle,
-} from "../stores/styleStore";
+import { cardStyle, linkStyle } from "../stores/styleStore";
 import Hide from "./Hide";
 import getMetaData from "../APICalls/getMetaData";
 import { Category, Artist, Track, TrackData } from "../types/types";
@@ -19,14 +14,13 @@ const AlbumTracksCard: React.FC<AlbumTracksCardProps> = ({ scrollToCard }) => {
   const resetTrackSearchResults = useMusicDataStore(
     (state) => state.resetTrackSearchResults
   );
-  const darkMode = useStyleStore((state) => state.darkMode);
 
   const onTrackClick = async (spotifyId: string, category: Category) => {
     if (category === "track") {
       const data: TrackData = await getMetaData(spotifyId, category);
       setTrackData(data);
       resetTrackSearchResults();
-    };
+    }
     scrollToCard(category);
   };
 
@@ -39,9 +33,12 @@ const AlbumTracksCard: React.FC<AlbumTracksCardProps> = ({ scrollToCard }) => {
   );
 
   const header = (
-    <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
-      {albumTracks && albumTracks.artists.map((artist: Artist) => artist.name).join(", ")} -{" "}
-      {albumTracks?.name}
+    <h2>
+      {albumTracks &&
+        albumTracks.artists
+          .map((artist: Artist) => artist.name)
+          .join(", ")}{" "}
+      - {albumTracks?.name}
     </h2>
   );
 
@@ -52,9 +49,7 @@ const AlbumTracksCard: React.FC<AlbumTracksCardProps> = ({ scrollToCard }) => {
           <tr key={track.name}>
             <td className="text-right pr-2">{index + 1}.</td>
             <td
-              className={`font-bold ${
-                darkMode ? darkLinkStyle : lightLinkStyle
-              }`}
+              className={`font-bold ${linkStyle}`}
               onClick={() => onTrackClick(track.spotifyId, "track")}
             >
               {track.name.split(" - Unplugged")[0]}
@@ -66,11 +61,7 @@ const AlbumTracksCard: React.FC<AlbumTracksCardProps> = ({ scrollToCard }) => {
   );
 
   return (
-    <div
-      className={`m-4 p-2 flex flex-col md:flex-row justify-between rounded-lg shadow-costum ${
-        darkMode && "bg-darkBackground"
-      }`}
-    >
+    <div className={cardStyle}>
       <div className="flex items-center justify-center">{image}</div>
 
       <div className="m-2 flex flex-col items-center md:px-24">

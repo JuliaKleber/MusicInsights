@@ -4,11 +4,8 @@ import Hide from "./Hide";
 import getMetaData from "../APICalls/getMetaData";
 import getRecommendations from "../APICalls/getRecommendations";
 import useMusicDataStore from "../stores/musicDataStore";
-import useStyleStore, {
-  lightLinkStyle,
-  darkLinkStyle,
-  darkHeaderStyle,
-  lightHeaderStyle,
+import {
+  linkStyle,
   firstColumnStyle,
   secondColumnStyle,
 } from "../stores/styleStore";
@@ -28,7 +25,9 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
 }) => {
   const genre = useMusicDataStore((state) => state.genre);
   const recommendations = useMusicDataStore((state) => state.recommendations);
-  const setRecommendations = useMusicDataStore((state) => state.setRecommendations);
+  const setRecommendations = useMusicDataStore(
+    (state) => state.setRecommendations
+  );
 
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
   const resetArtistSearchResults = useMusicDataStore(
@@ -40,8 +39,6 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
   const resetTrackSearchResults = useMusicDataStore(
     (state) => state.resetTrackSearchResults
   );
-  
-  const darkMode = useStyleStore((state) => state.darkMode);
 
   const onClick = async (id: string, category: Category) => {
     if (category === "artist") {
@@ -67,14 +64,11 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
 
   const header = (
     <div className="flex flex-row justify-center items-center">
-      <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
-        Recommendations for {genre}
-      </h2>
+      <h2>Recommendations for {genre}</h2>
       <FontAwesomeIcon
         icon={faShuffle}
-        className={`${
-          darkMode ? "text-sky-300" : "text-red-300"
-        } cursor-pointer`}
+        className="
+          dark:text-sky-300 text-red-300 cursor-pointer"
         onClick={() => showNewTracks()}
         role="button"
         aria-label="Give new recommendations"
@@ -91,7 +85,7 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
               <tr key={trackIndex}>
                 <td className={firstColumnStyle}>
                   <span
-                    className={darkMode ? darkLinkStyle : lightLinkStyle}
+                    className={linkStyle}
                     onClick={() =>
                       onClick(recommendation.artists[0].spotifyId, "artist")
                     }
@@ -101,9 +95,7 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
                   {recommendation.artists.length > 1 ? " & v.a.:" : ":"}
                 </td>
                 <td
-                  className={`${secondColumnStyle} ${
-                    darkMode ? darkLinkStyle : lightLinkStyle
-                  }`}
+                  className={`${secondColumnStyle} ${linkStyle}`}
                   onClick={() => onClick(recommendation.spotifyId, "track")}
                 >
                   {recommendation.name}
@@ -117,11 +109,7 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
   );
 
   return (
-    <div
-      className={`m-4 p-2 flex justify-center rounded-lg shadow-costum ${
-        darkMode && "bg-darkBackground"
-      }`}
-    >
+    <div className="m-4 p-2 flex justify-center rounded-lg shadow-costum dark:bg-bgDark">
       <div className="flex flex-col ">
         {header}
         {typeof recommendations !== "string" ? table : recommendations}

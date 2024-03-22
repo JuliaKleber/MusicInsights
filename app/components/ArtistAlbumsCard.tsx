@@ -1,10 +1,5 @@
 import useMusicDataStore from "../stores/musicDataStore";
-import useStyleStore, {
-  lightLinkStyle,
-  darkLinkStyle,
-  darkHeaderStyle,
-  lightHeaderStyle,
-} from "../stores/styleStore";
+import { cardStyle, linkStyle } from "../stores/styleStore";
 import Hide from "./Hide";
 import getMetaData from "../APICalls/getMetaData";
 import { Category, ArtistAlbum, AlbumData } from "../types/types";
@@ -23,13 +18,7 @@ const ArtistAlbumsCard: React.FC<ArtistAlbumsCardProps> = ({
     (state) => state.resetAlbumSearchResults
   );
 
-  const darkMode = useStyleStore((state) => state.darkMode);
-
-  const header = (
-    <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
-      {artistData?.name} - Albums
-    </h2>
-  );
+  const header = <h2>{artistData?.name} - Albums</h2>;
 
   const image = (
     <img
@@ -46,7 +35,7 @@ const ArtistAlbumsCard: React.FC<ArtistAlbumsCardProps> = ({
       resetAlbumSearchResults();
     }
     scrollToCard(category);
-  }
+  };
 
   const albumsList = (
     <ul>
@@ -56,9 +45,7 @@ const ArtistAlbumsCard: React.FC<ArtistAlbumsCardProps> = ({
             {album.releaseDate?.slice(0, 4)} -{" "}
             {
               <span
-                className={`font-bold ${
-                  darkMode ? darkLinkStyle : lightLinkStyle
-                }`}
+                className={`font-bold ${linkStyle}`}
                 onClick={() => onAlbumClick(album.spotifyId, "album")}
               >
                 {album.name.split(" (Deluxe")[0].split(" (Remastered")[0]}
@@ -72,9 +59,7 @@ const ArtistAlbumsCard: React.FC<ArtistAlbumsCardProps> = ({
 
   return (
     <div
-      className={`m-4 p-2 flex flex-col md:flex-row justify-between rounded-lg shadow-costum ${
-        darkMode && "bg-darkBackground"
-      }`}
+      className={cardStyle}
     >
       <div className="md:mr-2 flex items-center justify-center">{image}</div>
       <div className="flex flex-col justify-center items-center">

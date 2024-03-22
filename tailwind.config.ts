@@ -6,6 +6,7 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
@@ -13,7 +14,8 @@ const config: Config = {
       },
       colors: {
         primaryColor: "#DC143C",
-        darkBackground: "#1f2937",
+        bgDarkCard: "#1f2937",
+        bgDark: "rgb(17, 24, 39)",
         darkHover: "rgb(252 165 165)",
       },
       boxShadow: {

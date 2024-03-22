@@ -1,17 +1,12 @@
-import useStyleStore, {
-  lightLinkStyle,
-  darkLinkStyle,
-} from "../stores/styleStore";
+import useStyleStore, { linkStyle } from "../stores/styleStore";
 
 const InfoText: React.FC = () => {
-  const darkMode = useStyleStore((state) => state.darkMode);
-
   return (
     <p className="text-gray-600 text-center">
       The information shown on this page is provided by{" "}
       <a
         href="https://open.spotify.com"
-        className={darkMode ? darkLinkStyle : lightLinkStyle}
+        className={linkStyle}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -20,7 +15,7 @@ const InfoText: React.FC = () => {
       ,{" "}
       <a
         href="https://getsongbpm.com"
-        className={darkMode ? darkLinkStyle : lightLinkStyle}
+        className={linkStyle}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -29,7 +24,7 @@ const InfoText: React.FC = () => {
       and{" "}
       <a
         href="https://musicbrainz.org"
-        className={darkMode ? darkLinkStyle : lightLinkStyle}
+        className={linkStyle}
         target="_blank"
         rel="noopener noreferrer"
       >

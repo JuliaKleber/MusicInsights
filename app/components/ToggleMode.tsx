@@ -1,33 +1,24 @@
+"use client";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
-import useStyleStore from "../stores/styleStore";
+import { useTheme } from "next-themes";
 
 const ToggleMode: React.FC = () => {
-  const darkMode = useStyleStore((state) => state.darkMode);
-  const setDarkMode = useStyleStore((state) => state.setDarkMode);
-
-  const toggleMode = () => {
-    darkMode
-      ? (document.body.style.backgroundColor = "white")
-      : (document.body.style.backgroundColor = "rgb(17 24 39)");
-    darkMode ? setDarkMode(false) : setDarkMode(true);
-  };
+  const { systemTheme, theme, setTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
 
   return (
-    <div className="text-xl cursor-pointer">
+    <div className="text-xl cursor-pointer text-center">
       <div
-        className={`text-sky-600 ${
-          darkMode ? "hidden" : "block"
-        }`}
+        className="text-sky-600 block dark:hidden"
       >
-        <FontAwesomeIcon icon={faMoon} onClick={toggleMode} />
+        <FontAwesomeIcon icon={faMoon} onClick={() => setTheme("dark")} />
       </div>
       <div
-        className={`text-sky-400 ${
-          darkMode ? "block" : "hidden"
-        }`}
+        className="text-sky-400 hidden dark:block"
       >
-        <FontAwesomeIcon icon={faSun} onClick={toggleMode} />
+        <FontAwesomeIcon icon={faSun} onClick={() => setTheme("light")} />
       </div>
     </div>
   );

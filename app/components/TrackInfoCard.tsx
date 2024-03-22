@@ -4,13 +4,10 @@ import Hide from "./Hide";
 import getMetaData from "../APICalls/getMetaData";
 import { parsedReleaseDate } from "../functions/sharedFunctions";
 import useMusicDataStore from "../stores/musicDataStore";
-import useStyleStore, {
-  lightLinkStyle,
-  darkLinkStyle,
-  darkArrowStyle,
-  lightArrowStyle,
-  darkHeaderStyle,
-  lightHeaderStyle,
+import {
+  cardStyle,
+  linkStyle,
+  arrowStyle,
   firstColumnStyle,
   secondColumnStyle,
 } from "../stores/styleStore";
@@ -28,7 +25,9 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
   const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
   const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
-  const setTrackListShown = useMusicDataStore((state) => state.setTrackListShown);
+  const setTrackListShown = useMusicDataStore(
+    (state) => state.setTrackListShown
+  );
   const setTrackData = useMusicDataStore((state) => state.setTrackData);
   const resetArtistSearchResults = useMusicDataStore(
     (state) => state.resetArtistSearchResults
@@ -37,9 +36,9 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
     (state) => state.resetAlbumSearchResults
   );
 
-  const darkMode = useStyleStore((state) => state.darkMode);
-
-  const indexInSearchResults = trackData ? trackSearchResults.indexOf(trackData.spotifyId) : -1;
+  const indexInSearchResults = trackData
+    ? trackSearchResults.indexOf(trackData.spotifyId)
+    : -1;
   const nextSpotifyId = trackSearchResults[indexInSearchResults + 1];
   const previousSpotifyId = trackSearchResults[indexInSearchResults - 1];
 
@@ -67,7 +66,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
     <ul className="flex flex-col sm:flex-row flex-wrap">
       {trackData?.artists.map((artist: Artist, index: number) => (
         <li
-          className={`mr-1 ${darkMode ? darkLinkStyle : lightLinkStyle}`}
+          className={`mr-1 ${linkStyle}`}
           key={index}
           onClick={() => onClick(artist.spotifyId, "artist")}
         >
@@ -84,18 +83,19 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
       {previousSpotifyId && (
         <FontAwesomeIcon
           icon={faArrowLeft}
-          className={darkMode ? darkArrowStyle : lightArrowStyle}
+          className={arrowStyle}
           onClick={() => onClick(previousSpotifyId, "track")}
         />
       )}
-      <h2 className={darkMode ? darkHeaderStyle : lightHeaderStyle}>
-        {trackData?.artists[0].name} {trackData && trackData.artists.length > 1 && " & v.a."}{" "}
-        - {trackData?.name}
+      <h2>
+        {trackData?.artists[0].name}{" "}
+        {trackData && trackData.artists.length > 1 && " & v.a."} -{" "}
+        {trackData?.name}
       </h2>
       {nextSpotifyId && (
         <FontAwesomeIcon
           icon={faArrowRight}
-          className={darkMode ? darkArrowStyle : lightArrowStyle}
+          className={arrowStyle}
           onClick={() => onClick(nextSpotifyId, "track")}
         />
       )}
@@ -116,10 +116,10 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
         <tr>
           <td className={firstColumnStyle}>Album:</td>
           <td
-            className={`${secondColumnStyle} ${
-              darkMode ? darkLinkStyle : lightLinkStyle
-            }`}
-            onClick={() => onClick(trackData ? trackData.album.spotifyId : '', "album")}
+            className={`${secondColumnStyle} ${linkStyle}`}
+            onClick={() =>
+              onClick(trackData ? trackData.album.spotifyId : "", "album")
+            }
           >
             {
               trackData?.album.name
@@ -167,11 +167,7 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
   );
 
   return (
-    <div
-      className={`m-5 p-2 flex flex-col md:flex-row justify-between rounded-lg shadow-costum ${
-        darkMode && "bg-darkBackground"
-      }`}
-    >
+    <div className={cardStyle}>
       <div className="flex items-center justify-center">{image}</div>
 
       <div className="p-3 flex flex-col items-center justify-center">
