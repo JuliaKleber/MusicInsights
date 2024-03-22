@@ -9,15 +9,9 @@ import {
   firstColumnStyle,
   secondColumnStyle,
 } from "../stores/styleStore";
-import {
-  Category,
-  Recommendation,
-  ArtistData,
-  TrackData,
-} from "../types/types";
 
 interface RecommendationsCardProps {
-  scrollToCard: (category: Category, extra?: string) => Promise<void>;
+  scrollToCard: (category: Category, extra?: string) =>void;
 }
 
 const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
@@ -41,13 +35,12 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
   );
 
   const onClick = async (id: string, category: Category) => {
+    const data = await getMetaData(id, category);
     if (category === "artist") {
-      const data: ArtistData = await getMetaData(id, "artist");
       setArtistData(data);
       resetArtistSearchResults();
       setArtistAlbums([]);
     } else if (category === "track") {
-      const data: TrackData = await getMetaData(id, "track");
       setTrackData(data);
       resetTrackSearchResults();
     }

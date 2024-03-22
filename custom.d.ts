@@ -1,6 +1,6 @@
-export type Category = "artist" | "album" | "track" | "recommendations" | "albumTracks";
+type Category = "artist" | "album" | "track" | "recommendations" | "albumTracks";
 
-export type DataCategory =
+type DataCategory =
   | "artistData"
   | "albumListShown"
   | "albumData"
@@ -8,12 +8,12 @@ export type DataCategory =
   | "trackData"
   | "recommendations";
 
-export interface Artist {
+interface Artist {
   name: string;
   spotifyId: string;
 }
 
-export interface Album {
+interface Album {
   name: string;
   spotifyId: string;
   releaseDate: string;
@@ -24,19 +24,19 @@ export interface Album {
   };
 }
 
-export interface Track {
+interface Track {
   name: string;
   spotifyId: string;
   artists?: Artist[];
 }
 
-export interface Recommendation {
+interface Recommendation {
   name: string;
   spotifyId: string;
   artists: Artist[];
 }
 
-export type ArtistData = {
+interface ArtistData {
   spotifyId: string;
   name: string;
   genres: string[];
@@ -49,16 +49,16 @@ export type ArtistData = {
   type?: string | null;
   location?: string;
   country?: string;
-} | undefined
+}
 
-export interface ArtistAlbum {
+interface ArtistAlbum {
   spotifyId: string;
   name: string;
   releaseDate: string;
   image: string;
 }
 
-export type AlbumData = {
+interface AlbumData {
   spotifyId: string;
   name: string;
   artists: Artist[];
@@ -67,16 +67,16 @@ export type AlbumData = {
   spotifyPopularity: number;
   upc: string;
   image: string;
-} | undefined
+}
 
-export interface AlbumTracks {
+interface AlbumTracks {
   name: string;
   artists: Artist[];
   tracks: Track[];
   image: string;
 }
 
-export type TrackData = {
+interface TrackData {
   spotifyId: string;
   isrc: string;
   name: string;
@@ -93,8 +93,8 @@ export type TrackData = {
   timeSignature?: string;
   key?: string;
   releaseDate: string;
-} | undefined
+}
 
-export interface Month {
+interface Month {
   [key: string]: string;
 }

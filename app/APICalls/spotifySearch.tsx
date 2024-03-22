@@ -1,11 +1,10 @@
 "use server";
 
 import getSpotifyToken from "./getSpotifyToken";
-import { Category } from "../types/types";
 
 const spotifySearch: (
   searchTerm: string,
-  category?: Category
+  category: Category
 ) => Promise<string[]> = async (searchTerm, category = "artist") => {
   const accessToken = await getSpotifyToken();
   const encodedSearchTerm = encodeURIComponent(searchTerm);

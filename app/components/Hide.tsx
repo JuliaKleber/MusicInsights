@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import useMusicDataStore from "../stores/musicDataStore";
-import { DataCategory } from "../types/types";
 
 interface HideProps {
   category: DataCategory;
@@ -24,10 +23,10 @@ const Hide: React.FC<HideProps> = ({ category }) => {
     (state) => state.setRecommendations
   );
 
-  const setCategoryInStore: () => void = () => {
+  const setCategoryInStore = () => {
     switch (category) {
       case "artistData":
-        setArtistData(undefined);
+        setArtistData(null);
         setArtistSearchResults([]);
         setAlbumListShown(false);
         break;
@@ -35,13 +34,13 @@ const Hide: React.FC<HideProps> = ({ category }) => {
         setAlbumListShown(false);
         break;
       case "albumData":
-        setAlbumData(undefined);
+        setAlbumData(null);
         break;
       case "trackListShown":
         setTrackListShown(false);
         break;
       case "trackData":
-        setTrackData(undefined);
+        setTrackData(null);
         break;
       case "recommendations":
         setRecommendations([]);

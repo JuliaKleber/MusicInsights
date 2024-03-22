@@ -14,7 +14,6 @@ import {
   firstColumnStyle,
   secondColumnStyle,
 } from "../stores/styleStore";
-import { Category, ArtistData, ArtistAlbum } from "../types/types";
 
 interface ArtistInfoCardProps {
   scrollToCard: (category: Category, endpoint?: string) => void;
@@ -57,7 +56,7 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
       setAlbumListShown(false);
     } else {
       setAlbumListShown(true);
-      const artistAlbums: ArtistAlbum[] = artistData
+      const artistAlbums = artistData
         ? await getMetaData(
             artistData.spotifyId,
             "artist",
@@ -94,9 +93,11 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
   };
 
   const onClick = async (spotifyId: string, category: Category) => {
-    const data: ArtistData = await getMetaData(spotifyId, category);
-    if (category === "artist") setArtistData(data);
-    if (category === "artist") setArtistAlbums([]);
+    const data = await getMetaData(spotifyId, category);
+    if (category === "artist") {
+      setArtistData(data);
+      setArtistAlbums([]);
+    }
     scrollToCard(category);
   };
 

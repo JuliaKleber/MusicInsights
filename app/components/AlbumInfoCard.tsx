@@ -12,23 +12,12 @@ import {
 import Hide from "./Hide";
 import getMetaData from "../APICalls/getMetaData";
 import { parsedReleaseDate } from "../functions/sharedFunctions";
-import {
-  Category,
-  Artist,
-  ArtistData,
-  AlbumData,
-  AlbumTracks,
-} from "../types/types";
 
 interface AlbumInfoCardProps {
   scrollToCard: (category: Category) => void;
-  albumTracksRef: React.RefObject<HTMLDivElement>;
 }
 
-const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
-  scrollToCard,
-  albumTracksRef,
-}) => {
+const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({ scrollToCard }) => {
   const albumData = useMusicDataStore((state) => state.albumData);
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
   const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
@@ -58,27 +47,23 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({
     if (trackListShown) {
       setTrackListShown(false);
     } else {
-      const albumTracks: AlbumTracks = albumData
+      const albumTracks = albumData
         ? await getMetaData(albumData.spotifyId, "albumTracks")
-        : undefined;
+        : null;
       setAlbumTracks(albumTracks);
       setTrackListShown(true);
-      albumTracksRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
+      scrollToCard("albumTracks");
     }
   };
 
   const onClick = async (spotifyId: string, category: Category) => {
+    const data = await getMetaData(spotifyId, category);
     if (category === "artist") {
-      const data: ArtistData = await getMetaData(spotifyId, category);
       setArtistData(data);
       resetArtistSearchResults();
       setArtistAlbums([]);
       setAlbumListShown(false);
     } else if (category === "album") {
-      const data: AlbumData = await getMetaData(spotifyId, category);
       setAlbumData(data);
       setTrackListShown(false);
     }

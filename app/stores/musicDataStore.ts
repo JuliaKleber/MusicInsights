@@ -1,26 +1,18 @@
 import { create } from "zustand";
-import {
-  Recommendation,
-  ArtistData,
-  ArtistAlbum,
-  AlbumData,
-  AlbumTracks,
-  TrackData,
-} from "../types/types";
 
 type MusicDataState = {
   artistSearchResults: string[];
   albumSearchResults: string[];
   trackSearchResults: string[];
-  genre: string | undefined;
+  genre: string | null;
   recommendations: Recommendation[];
-  artistData: ArtistData | undefined;
-  artistAlbums: ArtistAlbum[] | undefined;
+  artistData: ArtistData | null;
+  artistAlbums: ArtistAlbum[] | null;
   albumListShown: boolean;
-  albumData: AlbumData | undefined;
-  albumTracks: AlbumTracks | undefined;
+  albumData: AlbumData | null;
+  albumTracks: AlbumTracks | null;
   trackListShown: boolean;
-  trackData: TrackData | undefined;
+  trackData: TrackData | null;
 };
 
 type MusicDataActions = {
@@ -51,18 +43,18 @@ export const useMusicDataStore = create<MusicDataStore>()((set) => ({
   albumSearchResults: [],
   trackSearchResults: [],
 
-  genre: undefined,
+  genre: null,
   recommendations: [],
 
-  artistData: undefined,
+  artistData: null,
   artistAlbums: [],
   albumListShown: false,
 
-  albumData: undefined,
-  albumTracks: undefined,
+  albumData: null,
+  albumTracks: null,
   trackListShown: false,
 
-  trackData: undefined,
+  trackData: null,
 
   setArtistSearchResults: (searchResults) => {
     set(() => ({ artistSearchResults: searchResults }));

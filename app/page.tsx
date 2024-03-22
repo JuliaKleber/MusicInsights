@@ -11,8 +11,6 @@ import AlbumTracksCard from "./components/AlbumTracksCard";
 import RecommendationsCard from "./components/RecommendationsCard";
 import InfoText from "./components/InfoText";
 import useMusicDataStore from "./stores/musicDataStore";
-import useStyleStore from "./stores/styleStore";
-import { Category } from "./types/types";
 
 export default function Home() {
   const recommendations = useMusicDataStore((state) => state.recommendations);
@@ -31,7 +29,7 @@ export default function Home() {
   const albumTracksCardRef = useRef(null);
   const trackInfoCardRef = useRef(null);
 
-  const scrollToCard = async (category: Category, extra?: string) => {
+  const scrollToCard = (category: Category, extra?: string) => {
     if (category === "artist" && extra === undefined) {
       artistInfoCardRef.current.scrollIntoView({
         behavior: "smooth",

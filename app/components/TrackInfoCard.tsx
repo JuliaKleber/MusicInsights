@@ -11,7 +11,6 @@ import {
   firstColumnStyle,
   secondColumnStyle,
 } from "../stores/styleStore";
-import { Category, Artist } from "../types/types";
 
 interface TrackInfoCardProps {
   scrollToCard: (category: Category) => void;

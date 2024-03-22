@@ -1,6 +1,4 @@
-import { Month } from "../types/types";
-
-export const parsedReleaseDate: (releaseDate: string | undefined) => string = (releaseDate: string | undefined) => {
+export const parsedReleaseDate = (releaseDate: string | undefined): string => {
   if (releaseDate === undefined) return "N/A";
   const month: Month = {
     "01": "Jan",
