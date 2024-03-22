@@ -12,31 +12,3 @@
     @apply text-xl mx-3 text-red-600 dark:text-sky-500 font-primaryFont flex flex-row flex-wrap justify-center;
   }
 }
-
-/* // export const lightHeaderStyle =
-//   "mx-3 text-primaryColor font-primaryFont flex flex-row flex-wrap justify-center";
-// export const darkHeaderStyle =
-//   "mx-3 text-sky-500 font-primaryFont flex flex-row flex-wrap justify-center"; */
-
-/* :root {
-  --background-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-rgb: 17, 24, 39;
-  }
-}
-
-body {
-  background: rgb(var(--background-rgb));
-} */
-
-/* h2 {
-  font-size: 20px;
-} */
-
-
-/* className={`p-3 flex flex-col items-center ${
-  darkMode && "text-pink-100"
-}`} */
