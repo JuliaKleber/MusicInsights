@@ -1,8 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShuffle } from "@fortawesome/free-solid-svg-icons";
 import Hide from "./Hide";
-import getArtistData from "../APICalls/getArtistData";
-import getTrackData from "../APICalls/getTrackData";
 import getRecommendations from "../APICalls/getRecommendations";
 import useMusicDataStore from "../stores/musicDataStore";
 import {
@@ -12,10 +10,12 @@ import {
 } from "../styles/styles";
 
 interface RecommendationsCardProps {
+  clickHandler: (spotifyId: string, category: Category) => void;
   scrollToCard: (category: Category, extra?: string) => void;
 }
 
 const RecommendationsCard = ({
+  clickHandler,
   scrollToCard,
 }: RecommendationsCardProps) => {
   const genre = useMusicDataStore((state) => state.genre);
@@ -23,31 +23,6 @@ const RecommendationsCard = ({
   const setRecommendations = useMusicDataStore(
     (state) => state.setRecommendations
   );
-
-  const setArtistData = useMusicDataStore((state) => state.setArtistData);
-  const resetArtistSearchResults = useMusicDataStore(
-    (state) => state.resetArtistSearchResults
-  );
-  const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
-
-  const setTrackData = useMusicDataStore((state) => state.setTrackData);
-  const resetTrackSearchResults = useMusicDataStore(
-    (state) => state.resetTrackSearchResults
-  );
-
-  const onClick = async (id: string, category: Category) => {
-    if (category === "artist") {
-      const data = await getArtistData(id);
-      setArtistData(data);
-      resetArtistSearchResults();
-      setArtistAlbums([]);
-    } else if (category === "track") {
-      const data = await getTrackData(id);
-      setTrackData(data);
-      resetTrackSearchResults();
-    }
-    scrollToCard(category);
-  };
 
   const showNewTracks = async () => {
     const recommendations = genre
@@ -71,7 +46,7 @@ const RecommendationsCard = ({
     </div>
   );
 
-  const table = typeof recommendations !== "string" && (
+  const table = (
     <table>
       <tbody>
         {recommendations.map(
@@ -82,7 +57,10 @@ const RecommendationsCard = ({
                   <span
                     className={linkStyle}
                     onClick={() =>
-                      onClick(recommendation.artists[0].spotifyId, "artist")
+                      clickHandler(
+                        recommendation.artists[0].spotifyId,
+                        "artist"
+                      )
                     }
                   >
                     {recommendation.artists[0].name}
@@ -91,7 +69,9 @@ const RecommendationsCard = ({
                 </td>
                 <td
                   className={`${secondColumnStyle} ${linkStyle}`}
-                  onClick={() => onClick(recommendation.spotifyId, "track")}
+                  onClick={() =>
+                    clickHandler(recommendation.spotifyId, "track")
+                  }
                 >
                   {recommendation.name}
                 </td>
@@ -104,10 +84,14 @@ const RecommendationsCard = ({
   );
 
   return (
-    <div className="m-4 p-2 flex justify-center rounded-lg shadow-costum dark:bg-bgDark">
+    <div
+      className={
+        "m-5 mb-0 p-2 flex justify-center rounded-lg shadow-costum dark:bg-bgDark"
+      }
+    >
       <div className="flex flex-col ">
         {header}
-        {typeof recommendations !== "string" ? table : recommendations}
+        {table}
       </div>
       <Hide category="recommendations" />
     </div>

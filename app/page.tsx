@@ -10,6 +10,9 @@ import TrackInfoCard from "./components/TrackInfoCard";
 import AlbumTracksCard from "./components/AlbumTracksCard";
 import RecommendationsCard from "./components/RecommendationsCard";
 import InfoText from "./components/InfoText";
+import getArtistData from "./APICalls/getArtistData";
+import getAlbumData from "./APICalls/getAlbumData";
+import getTrackData from "./APICalls/getTrackData";
 import useMusicDataStore from "./stores/musicDataStore";
 
 export default function Home() {
@@ -22,12 +25,55 @@ export default function Home() {
   const trackListShown = useMusicDataStore((state) => state.trackListShown);
   const trackData = useMusicDataStore((state) => state.trackData);
 
+  const setArtistData = useMusicDataStore((state) => state.setArtistData);
+  const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
+
+  const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
+  const setAlbumListShown = useMusicDataStore(
+    (state) => state.setAlbumListShown
+  );
+
+  const setTrackData = useMusicDataStore((state) => state.setTrackData);
+  const setTrackListShown = useMusicDataStore(
+    (state) => state.setTrackListShown
+  );
+
+  const resetArtistSearchResults = useMusicDataStore(
+    (state) => state.resetArtistSearchResults
+  );
+  const resetAlbumSearchResults = useMusicDataStore(
+    (state) => state.resetAlbumSearchResults
+  );
+  const resetTrackSearchResults = useMusicDataStore(
+    (state) => state.resetTrackSearchResults
+  );
+
   const recommendationsCardRef = useRef<null | HTMLDivElement>(null);
   const artistInfoCardRef = useRef<null | HTMLDivElement>(null);
   const artistAlbumsCardRef = useRef<null | HTMLDivElement>(null);
   const albumInfoCardRef = useRef<null | HTMLDivElement>(null);
   const albumTracksCardRef = useRef<null | HTMLDivElement>(null);
   const trackInfoCardRef = useRef<null | HTMLDivElement>(null);
+
+  const clickHandler = async (spotifyId: string, category: Category, resetSearch: boolean = true) => {
+    if (category === "artist") {
+      const data = await getArtistData(spotifyId);
+      setArtistData(data);
+      setArtistAlbums([]);
+      setAlbumListShown(false);
+      if (resetSearch === true) resetArtistSearchResults();
+    } else if (category === "album") {
+      const data = await getAlbumData(spotifyId);
+      setAlbumData(data);
+      setTrackListShown(false);
+      if (resetSearch === true) resetAlbumSearchResults();
+    } else if (category === "track") {
+      const data = await getTrackData(spotifyId);
+      setTrackData(data);
+      if (resetSearch === true) resetTrackSearchResults();
+    }
+    scrollToCard(category);
+  };
 
   const scrollToCard = (category: Category, extra: string = "") => {
     if (category === "artist" && extra === "") {
@@ -75,30 +121,44 @@ export default function Home() {
         <Search scrollToCard={scrollToCard} />
       </div>
 
+      <div ref={recommendationsCardRef}>
+        {recommendations.length > 0 && (
+          <RecommendationsCard
+            clickHandler={clickHandler}
+            scrollToCard={scrollToCard}
+          />
+        )}
+      </div>
+
       <div>
-        <div ref={recommendationsCardRef}>
-          {recommendations.length > 0 && (
-            <RecommendationsCard scrollToCard={scrollToCard} />
-          )}
-        </div>
         <div ref={artistInfoCardRef}>
-          {artistData && <ArtistInfoCard scrollToCard={scrollToCard} />}
+          {artistData && (
+            <ArtistInfoCard
+              clickHandler={clickHandler}
+              scrollToCard={scrollToCard}
+            />
+          )}
         </div>
         <div ref={artistAlbumsCardRef}>
           {albumListShown && artistAlbums && artistData && (
-            <ArtistAlbumsCard scrollToCard={scrollToCard} />
+            <ArtistAlbumsCard clickHandler={clickHandler} />
           )}
         </div>
         <div ref={albumInfoCardRef}>
-          {albumData && <AlbumInfoCard scrollToCard={scrollToCard} />}
+          {albumData && (
+            <AlbumInfoCard
+              clickHandler={clickHandler}
+              scrollToCard={scrollToCard}
+            />
+          )}
         </div>
         <div ref={albumTracksCardRef}>
           {trackListShown && albumTracks && (
-            <AlbumTracksCard scrollToCard={scrollToCard} />
+            <AlbumTracksCard clickHandler={clickHandler} />
           )}
         </div>
         <div ref={trackInfoCardRef}>
-          {trackData && <TrackInfoCard scrollToCard={scrollToCard} />}
+          {trackData && <TrackInfoCard clickHandler={clickHandler} />}
         </div>
       </div>
 

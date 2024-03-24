@@ -1,67 +1,36 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Hide from "./Hide";
-import getArtistData from "../APICalls/getArtistData";
-import getAlbumData from "../APICalls/getAlbumData";
-import getTrackData from "../APICalls/getTrackData";
 import { parsedReleaseDate } from "../functions/sharedFunctions";
 import useMusicDataStore from "../stores/musicDataStore";
 import {
   cardStyle,
   linkStyle,
   arrowStyle,
+  inactiveArrowStyle,
   firstColumnStyle,
   secondColumnStyle,
 } from "../styles/styles";
 
 interface TrackInfoCardProps {
-  scrollToCard: (category: Category) => void;
+  clickHandler: (
+    spotifyId: string,
+    category: Category,
+    resetResults: boolean
+  ) => void;
 }
 
-const TrackInfoCard = ({ scrollToCard }: TrackInfoCardProps) => {
+const TrackInfoCard = ({ clickHandler }: TrackInfoCardProps) => {
   const trackSearchResults = useMusicDataStore(
     (state) => state.trackSearchResults
   );
   const trackData = useMusicDataStore((state) => state.trackData);
-  const setArtistData = useMusicDataStore((state) => state.setArtistData);
-  const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
-  const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
-  const setTrackListShown = useMusicDataStore(
-    (state) => state.setTrackListShown
-  );
-  const setTrackData = useMusicDataStore((state) => state.setTrackData);
-  const resetArtistSearchResults = useMusicDataStore(
-    (state) => state.resetArtistSearchResults
-  );
-  const resetAlbumSearchResults = useMusicDataStore(
-    (state) => state.resetAlbumSearchResults
-  );
 
   const indexInSearchResults = trackData
     ? trackSearchResults.indexOf(trackData.spotifyId)
     : -1;
   const nextSpotifyId = trackSearchResults[indexInSearchResults + 1];
   const previousSpotifyId = trackSearchResults[indexInSearchResults - 1];
-
-  const onClick = async (spotifyId: string, category: Category) => {
-    if (category === "artist") {
-      const data = await getArtistData(spotifyId);
-      setArtistData(data);
-      resetArtistSearchResults();
-      setArtistAlbums([]);
-    }
-    if (category === "album") {
-      const data = await getAlbumData(spotifyId);
-      setAlbumData(data);
-      resetAlbumSearchResults();
-      setTrackListShown(false);
-    }
-    if (category === "track") {
-      const data = await getTrackData(spotifyId);
-      setTrackData(data);
-    }
-    scrollToCard(category);
-  };
 
   const image = (
     <img
@@ -77,7 +46,7 @@ const TrackInfoCard = ({ scrollToCard }: TrackInfoCardProps) => {
         <li
           className={`mr-1 ${linkStyle}`}
           key={index}
-          onClick={() => onClick(artist.spotifyId, "artist")}
+          onClick={() => clickHandler(artist.spotifyId, "artist")}
         >
           {index !== trackData.artists.length - 1
             ? `${artist.name}, `
@@ -87,27 +56,43 @@ const TrackInfoCard = ({ scrollToCard }: TrackInfoCardProps) => {
     </ul>
   );
 
-  const header = (
-    <div className="flex flex-row mb-3 items-center">
-      {previousSpotifyId && (
+  const backArrow = (
+    <>
+      {previousSpotifyId ? (
         <FontAwesomeIcon
           icon={faArrowLeft}
           className={arrowStyle}
-          onClick={() => onClick(previousSpotifyId, "track")}
+          onClick={() => clickHandler(previousSpotifyId, "track", false)}
         />
+      ) : (
+        <FontAwesomeIcon icon={faArrowLeft} className={inactiveArrowStyle} />
       )}
+    </>
+  );
+
+  const nextArrow = (
+    <>
+      {nextSpotifyId ? (
+        <FontAwesomeIcon
+          icon={faArrowRight}
+          className={arrowStyle}
+          onClick={() => clickHandler(nextSpotifyId, "track", false)}
+        />
+      ) : (
+        <FontAwesomeIcon icon={faArrowRight} className={inactiveArrowStyle} />
+      )}
+    </>
+  );
+
+  const header = (
+    <div className="flex flex-row mb-3 items-center">
+      {trackSearchResults.length > 0 && backArrow}
       <h2>
         {trackData?.artists[0].name}{" "}
         {trackData && trackData.artists.length > 1 && " & v.a."} -{" "}
         {trackData?.name}
       </h2>
-      {nextSpotifyId && (
-        <FontAwesomeIcon
-          icon={faArrowRight}
-          className={arrowStyle}
-          onClick={() => onClick(nextSpotifyId, "track")}
-        />
-      )}
+      {trackSearchResults.length > 0 && nextArrow}
     </div>
   );
 
@@ -127,7 +112,7 @@ const TrackInfoCard = ({ scrollToCard }: TrackInfoCardProps) => {
           <td
             className={`${secondColumnStyle} ${linkStyle}`}
             onClick={() =>
-              onClick(trackData ? trackData.album.spotifyId : "", "album")
+              clickHandler(trackData ? trackData.album.spotifyId : "", "album")
             }
           >
             {

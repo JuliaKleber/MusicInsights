@@ -1,27 +1,13 @@
 import useMusicDataStore from "../stores/musicDataStore";
 import { cardStyle, linkStyle } from "../styles/styles";
 import Hide from "./Hide";
-import getTrackData from "../APICalls/getTrackData";
 
 interface AlbumTracksCardProps {
-  scrollToCard: (category: Category) => void;
+  clickHandler: (spotifyId: string, category: Category) => void;
 }
 
-const AlbumTracksCard = ({ scrollToCard }: AlbumTracksCardProps) => {
+const AlbumTracksCard = ({ clickHandler }: AlbumTracksCardProps) => {
   const albumTracks = useMusicDataStore((state) => state.albumTracks);
-  const setTrackData = useMusicDataStore((state) => state.setTrackData);
-  const resetTrackSearchResults = useMusicDataStore(
-    (state) => state.resetTrackSearchResults
-  );
-
-  const onTrackClick = async (spotifyId: string, category: Category) => {
-    if (category === "track") {
-      const data = await getTrackData(spotifyId);
-      setTrackData(data);
-      resetTrackSearchResults();
-    }
-    scrollToCard(category);
-  };
 
   const image = (
     <img
@@ -49,7 +35,7 @@ const AlbumTracksCard = ({ scrollToCard }: AlbumTracksCardProps) => {
             <td className="text-right pr-2">{index + 1}.</td>
             <td
               className={`font-bold ${linkStyle}`}
-              onClick={() => onTrackClick(track.spotifyId, "track")}
+              onClick={() => clickHandler(track.spotifyId, "track")}
             >
               {track.name.split(" - Unplugged")[0]}
             </td>

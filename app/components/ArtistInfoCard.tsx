@@ -3,7 +3,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Hide from "./Hide";
-import getArtistData from "../APICalls/getArtistData";
 import getArtistAlbumsData from "../APICalls/getArtistAlbumsData";
 import getRecommendations from "../APICalls/getRecommendations";
 import useMusicDataStore from "../stores/musicDataStore";
@@ -12,17 +11,25 @@ import {
   buttonStyle,
   linkStyle,
   arrowStyle,
+  inactiveArrowStyle,
   firstColumnStyle,
   secondColumnStyle,
 } from "../styles/styles";
 
 interface ArtistInfoCardProps {
+  clickHandler: (
+    spotifyId: string,
+    category: Category,
+    resetResults: boolean
+  ) => void;
   scrollToCard: (category: Category, endpoint?: string) => void;
 }
 
-const ArtistInfoCard = ({ scrollToCard }: ArtistInfoCardProps) => {
+const ArtistInfoCard = ({
+  clickHandler,
+  scrollToCard,
+}: ArtistInfoCardProps) => {
   const artistData = useMusicDataStore((state) => state.artistData);
-  const setArtistData = useMusicDataStore((state) => state.setArtistData);
   const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
   const albumListShown = useMusicDataStore((state) => state.albumListShown);
   const setAlbumListShown = useMusicDataStore(
@@ -92,15 +99,6 @@ const ArtistInfoCard = ({ scrollToCard }: ArtistInfoCardProps) => {
     scrollToCard("recommendations");
   };
 
-  const onArtistClick = async (spotifyId: string, category: Category) => {
-    if (category === "artist") {
-      const data = await getArtistData(spotifyId);
-      setArtistData(data);
-      setArtistAlbums([]);
-    }
-    scrollToCard(category);
-  };
-
   const image = (
     <img
       src={artistData?.image}
@@ -109,23 +107,39 @@ const ArtistInfoCard = ({ scrollToCard }: ArtistInfoCardProps) => {
     />
   );
 
-  const header = (
-    <div className="flex flex-row mb-3 items-center">
-      {previousSpotifyId && (
+  const backArrow = (
+    <>
+      {previousSpotifyId ? (
         <FontAwesomeIcon
           icon={faArrowLeft}
           className={arrowStyle}
-          onClick={() => onArtistClick(previousSpotifyId, "artist")}
+          onClick={() => clickHandler(previousSpotifyId, "artist", false)}
         />
+      ) : (
+        <FontAwesomeIcon icon={faArrowLeft} className={inactiveArrowStyle} />
       )}
-      <h2>{artistData?.name}</h2>
-      {nextSpotifyId && (
+    </>
+  );
+
+  const nextArrow = (
+    <>
+      {nextSpotifyId ? (
         <FontAwesomeIcon
           icon={faArrowRight}
           className={arrowStyle}
-          onClick={() => onArtistClick(nextSpotifyId, "artist")}
+          onClick={() => clickHandler(nextSpotifyId, "artist", false)}
         />
+      ) : (
+        <FontAwesomeIcon icon={faArrowRight} className={inactiveArrowStyle} />
       )}
+    </>
+  );
+
+  const header = (
+    <div className="flex flex-row mb-3 items-center">
+      {artistSearchResults.length > 0 && backArrow}
+      <h2>{artistData?.name}</h2>
+      {artistSearchResults.length > 0 && nextArrow}
     </div>
   );
 

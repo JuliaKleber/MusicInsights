@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import useMusicDataStore from "../stores/musicDataStore";
 
-const Hide: React.FC<HideProps> = ({ category }: { category: DataCategory }) => {
+const Hide = ({ category }: { category: DataCategory }) => {
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
   const setArtistSearchResults = useMusicDataStore(
     (state) => state.setArtistSearchResults

@@ -1,19 +1,14 @@
 import useMusicDataStore from "../stores/musicDataStore";
 import { cardStyle, linkStyle } from "../styles/styles";
 import Hide from "./Hide";
-import getAlbumData from "../APICalls/getAlbumData";
 
 interface ArtistAlbumsCardProps {
-  scrollToCard: (category: Category) => void;
+  clickHandler: (spotifyId: string, category: Category) => void;
 }
 
-const ArtistAlbumsCard = ({ scrollToCard }: ArtistAlbumsCardProps) => {
+const ArtistAlbumsCard = ({ clickHandler }: ArtistAlbumsCardProps) => {
   const artistAlbums = useMusicDataStore((state) => state.artistAlbums);
   const artistData = useMusicDataStore((state) => state.artistData);
-  const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
-  const resetAlbumSearchResults = useMusicDataStore(
-    (state) => state.resetAlbumSearchResults
-  );
 
   const header = <h2>{artistData?.name} - Albums</h2>;
 
@@ -25,15 +20,6 @@ const ArtistAlbumsCard = ({ scrollToCard }: ArtistAlbumsCardProps) => {
     />
   );
 
-  const onAlbumClick = async (id: string, category: Category) => {
-    if (category === "album") {
-      const data = await getAlbumData(id);
-      setAlbumData(data);
-      resetAlbumSearchResults();
-    }
-    scrollToCard(category);
-  };
-
   const albumsList = (
     <ul>
       {artistAlbums?.map((album: ArtistAlbum, index: number) => {
@@ -43,7 +29,7 @@ const ArtistAlbumsCard = ({ scrollToCard }: ArtistAlbumsCardProps) => {
             {
               <span
                 className={`font-bold ${linkStyle}`}
-                onClick={() => onAlbumClick(album.spotifyId, "album")}
+                onClick={() => clickHandler(album.spotifyId, "album")}
               >
                 {album.name.split(" (Deluxe")[0].split(" (Remastered")[0]}
               </span>

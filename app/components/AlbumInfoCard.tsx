@@ -6,37 +6,28 @@ import {
   buttonStyle,
   linkStyle,
   arrowStyle,
+  inactiveArrowStyle,
   firstColumnStyle,
   secondColumnStyle,
 } from "../styles/styles";
 import Hide from "./Hide";
-import getArtistData from "../APICalls/getArtistData";
-import getAlbumData from "../APICalls/getAlbumData";
 import getAlbumTracksData from "../APICalls/getAlbumTracksData";
 import { parsedReleaseDate } from "../functions/sharedFunctions";
 
 interface AlbumInfoCardProps {
+  clickHandler: (spotifyId: string, category: Category, resetResults: boolean) => void;
   scrollToCard: (category: Category) => void;
 }
 
-const AlbumInfoCard = ({ scrollToCard }: AlbumInfoCardProps) => {
+const AlbumInfoCard = ({ clickHandler, scrollToCard }: AlbumInfoCardProps) => {
   const albumData = useMusicDataStore((state) => state.albumData);
-  const setArtistData = useMusicDataStore((state) => state.setArtistData);
-  const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
-  const setAlbumData = useMusicDataStore((state) => state.setAlbumData);
   const setAlbumTracks = useMusicDataStore((state) => state.setAlbumTracks);
-  const setAlbumListShown = useMusicDataStore(
-    (state) => state.setAlbumListShown
-  );
   const trackListShown = useMusicDataStore((state) => state.trackListShown);
   const setTrackListShown = useMusicDataStore(
     (state) => state.setTrackListShown
   );
   const albumSearchResults = useMusicDataStore(
     (state) => state.albumSearchResults
-  );
-  const resetArtistSearchResults = useMusicDataStore(
-    (state) => state.resetArtistSearchResults
   );
 
   const indexInSearchResults = albumData
@@ -58,28 +49,13 @@ const AlbumInfoCard = ({ scrollToCard }: AlbumInfoCardProps) => {
     }
   };
 
-  const onClick = async (spotifyId: string, category: Category) => {
-    if (category === "artist") {
-      const data = await getArtistData(spotifyId);
-      setArtistData(data);
-      resetArtistSearchResults();
-      setArtistAlbums([]);
-      setAlbumListShown(false);
-    } else if (category === "album") {
-      const data = await getAlbumData(spotifyId);
-      setAlbumData(data);
-      setTrackListShown(false);
-    }
-    scrollToCard(category);
-  };
-
   const artistsList = (
     <ul className="flex flex-row flex-wrap">
       {albumData?.artists.map((artist: Artist, index: number) => (
         <li
           className={`mr-1 ${linkStyle}`}
           key={index}
-          onClick={() => onClick(artist.spotifyId, "artist")}
+          onClick={() => clickHandler(artist.spotifyId, "artist")}
         >
           {index + 1 < albumData.artists.length
             ? `${artist.name}, `
@@ -97,25 +73,41 @@ const AlbumInfoCard = ({ scrollToCard }: AlbumInfoCardProps) => {
     />
   );
 
-  const header = (
-    <div className="flex flex-row mb-3 items-center">
-      {previousSpotifyId && (
+  const backArrow = (
+    <>
+      {previousSpotifyId ? (
         <FontAwesomeIcon
           icon={faArrowLeft}
           className={arrowStyle}
-          onClick={() => onClick(previousSpotifyId, "album")}
+          onClick={() => clickHandler(previousSpotifyId, "album", false)}
         />
+      ) : (
+        <FontAwesomeIcon icon={faArrowLeft} className={inactiveArrowStyle} />
       )}
-      <h2>
-        {artistsList} - {albumData?.name}
-      </h2>
-      {nextSpotifyId && (
+    </>
+  );
+
+  const nextArrow = (
+    <>
+      {nextSpotifyId ? (
         <FontAwesomeIcon
           icon={faArrowRight}
           className={arrowStyle}
-          onClick={() => onClick(nextSpotifyId, "album")}
+          onClick={() => clickHandler(nextSpotifyId, "album", false)}
         />
+      ) : (
+        <FontAwesomeIcon icon={faArrowRight} className={inactiveArrowStyle} />
       )}
+    </>
+  );
+
+  const header = (
+    <div className="flex flex-row mb-3 items-center">
+      {albumSearchResults.length > 0 && backArrow}
+      <h2>
+        {artistsList} - {albumData?.name}
+      </h2>
+      {albumSearchResults.length > 0 && nextArrow}
     </div>
   );
 
