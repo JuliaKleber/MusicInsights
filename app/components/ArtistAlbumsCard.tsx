@@ -1,7 +1,7 @@
 import useMusicDataStore from "../stores/musicDataStore";
 import { cardStyle, linkStyle } from "../styles/styles";
 import Hide from "./Hide";
-import getMetaData from "../APICalls/getMetaData";
+import getAlbumData from "../APICalls/getAlbumData";
 
 interface ArtistAlbumsCardProps {
   scrollToCard: (category: Category) => void;
@@ -29,7 +29,7 @@ const ArtistAlbumsCard: React.FC<ArtistAlbumsCardProps> = ({
 
   const onAlbumClick = async (id: string, category: Category) => {
     if (category === "album") {
-      const data = await getMetaData(id, "album");
+      const data = await getAlbumData(id);
       setAlbumData(data);
       resetAlbumSearchResults();
     }

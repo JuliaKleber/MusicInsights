@@ -1,7 +1,7 @@
 import useMusicDataStore from "../stores/musicDataStore";
 import { cardStyle, linkStyle } from "../styles/styles";
 import Hide from "./Hide";
-import getMetaData from "../APICalls/getMetaData";
+import getTrackData from "../APICalls/getTrackData";
 
 interface AlbumTracksCardProps {
   scrollToCard: (category: Category) => void;
@@ -16,7 +16,7 @@ const AlbumTracksCard: React.FC<AlbumTracksCardProps> = ({ scrollToCard }) => {
 
   const onTrackClick = async (spotifyId: string, category: Category) => {
     if (category === "track") {
-      const data = await getMetaData(spotifyId, category);
+      const data = await getTrackData(spotifyId);
       setTrackData(data);
       resetTrackSearchResults();
     }

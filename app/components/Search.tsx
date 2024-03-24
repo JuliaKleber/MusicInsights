@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import spotifySearch from "../APICalls/spotifySearch";
-import getMetaData from "../APICalls/getMetaData";
+import getArtistData from "../APICalls/getArtistData";
+import getAlbumData from "../APICalls/getAlbumData";
+import getTrackData from "../APICalls/getTrackData";
 import { buttonStyle } from "../styles/styles";
 import useMusicDataStore from "../stores/musicDataStore";
 
@@ -40,43 +42,33 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleKeyDown = async (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
-      const artistResults = await spotifySearch(searchTerm, "artist");
-      const artistData = await getMetaData(artistResults[0], "artist");
-      setArtistSearchResults(artistResults);
-      setArtistData(artistData);
-      setArtistAlbums([]);
-      setAlbumListShown(false);
-      const albumResults = await spotifySearch(searchTerm, "album");
-      const albumData = await getMetaData(albumResults[0], "album");
-      setAlbumSearchResults(albumResults);
-      setAlbumData(albumData);
-      setTrackListShown(false);
-      const trackResults = await spotifySearch(searchTerm, "track");
-      const trackData = await getMetaData(trackResults[0], "track");
-      setTrackSearchResults(trackResults);
-      setTrackData(trackData);
-    }
-  };
-
   const handleSearch = async (category: Category) => {
     const searchResults = await spotifySearch(searchTerm, category);
-    const data = await getMetaData(searchResults[0], category);
     if (category === "artist") {
+      const data = await getArtistData(searchResults[0]);
       setArtistSearchResults(searchResults);
       setArtistData(data);
       setArtistAlbums([]);
       setAlbumListShown(false);
     } else if (category === "album") {
+      const data = await getAlbumData(searchResults[0]);
       setAlbumSearchResults(searchResults);
       setAlbumData(data);
       setTrackListShown(false);
     } else if (category === "track") {
+      const data = await getTrackData(searchResults[0]);
       setTrackSearchResults(searchResults);
       setTrackData(data);
     }
     scrollToCard(category);
+  };
+
+  const handleKeyDown = async (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      handleSearch("artist");
+      handleSearch("album");
+      handleSearch("track");
+    }
   };
 
   const input = (

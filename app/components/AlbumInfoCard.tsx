@@ -10,7 +10,9 @@ import {
   secondColumnStyle,
 } from "../styles/styles";
 import Hide from "./Hide";
-import getMetaData from "../APICalls/getMetaData";
+import getArtistData from "../APICalls/getArtistData";
+import getAlbumData from "../APICalls/getAlbumData";
+import getAlbumTracksData from "../APICalls/getAlbumTracksData";
 import { parsedReleaseDate } from "../functions/sharedFunctions";
 
 interface AlbumInfoCardProps {
@@ -48,22 +50,23 @@ const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({ scrollToCard }) => {
       setTrackListShown(false);
     } else {
       const albumTracks = albumData
-        ? await getMetaData(albumData.spotifyId, "albumTracks")
+        ? await getAlbumTracksData(albumData.spotifyId)
         : null;
       setAlbumTracks(albumTracks);
-      setTrackListShown(true);
+      if (albumTracks) setTrackListShown(true);
       scrollToCard("albumTracks");
     }
   };
 
   const onClick = async (spotifyId: string, category: Category) => {
-    const data = await getMetaData(spotifyId, category);
     if (category === "artist") {
+      const data = await getArtistData(spotifyId);
       setArtistData(data);
       resetArtistSearchResults();
       setArtistAlbums([]);
       setAlbumListShown(false);
     } else if (category === "album") {
+      const data = await getAlbumData(spotifyId);
       setAlbumData(data);
       setTrackListShown(false);
     }

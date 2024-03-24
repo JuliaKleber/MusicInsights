@@ -3,7 +3,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Hide from "./Hide";
-import getMetaData from "../APICalls/getMetaData";
+import getArtistData from "../APICalls/getArtistData";
+import getArtistAlbumsData from "../APICalls/getArtistAlbumsData";
 import getRecommendations from "../APICalls/getRecommendations";
 import useMusicDataStore from "../stores/musicDataStore";
 import {
@@ -57,9 +58,8 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
     } else {
       setAlbumListShown(true);
       const artistAlbums = artistData
-        ? await getMetaData(
+        ? await getArtistAlbumsData(
             artistData.spotifyId,
-            "artist",
             "/albums?include_groups=album&limit=50"
           )
         : [];
@@ -93,8 +93,8 @@ const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
   };
 
   const onArtistClick = async (spotifyId: string, category: Category) => {
-    const data = await getMetaData(spotifyId, category);
     if (category === "artist") {
+      const data = await getArtistData(spotifyId);
       setArtistData(data);
       setArtistAlbums([]);
     }

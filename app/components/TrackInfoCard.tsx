@@ -1,7 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Hide from "./Hide";
-import getMetaData from "../APICalls/getMetaData";
+import getArtistData from "../APICalls/getArtistData";
+import getAlbumData from "../APICalls/getAlbumData";
+import getTrackData from "../APICalls/getTrackData";
 import { parsedReleaseDate } from "../functions/sharedFunctions";
 import useMusicDataStore from "../stores/musicDataStore";
 import {
@@ -42,18 +44,22 @@ const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
   const previousSpotifyId = trackSearchResults[indexInSearchResults - 1];
 
   const onClick = async (spotifyId: string, category: Category) => {
-    const data = await getMetaData(spotifyId, category);
     if (category === "artist") {
+      const data = await getArtistData(spotifyId);
       setArtistData(data);
       resetArtistSearchResults();
       setArtistAlbums([]);
     }
     if (category === "album") {
+      const data = await getAlbumData(spotifyId);
       setAlbumData(data);
       resetAlbumSearchResults();
       setTrackListShown(false);
     }
-    if (category === "track") setTrackData(data);
+    if (category === "track") {
+      const data = await getTrackData(spotifyId);
+      setTrackData(data);
+    }
     scrollToCard(category);
   };
 

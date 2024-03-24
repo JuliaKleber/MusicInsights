@@ -31,7 +31,7 @@ type MusicDataActions = {
   setArtistAlbums: (data: ArtistAlbum[]) => void;
   setAlbumListShown: (value: boolean) => void;
   setAlbumData: (data: AlbumData | null) => void;
-  setAlbumTracks: (data: AlbumTracks) => void;
+  setAlbumTracks: (data: AlbumTracks | null) => void;
   setTrackListShown: (value: boolean) => void;
   setTrackData: (data: TrackData | null) => void;
 };

@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShuffle } from "@fortawesome/free-solid-svg-icons";
 import Hide from "./Hide";
-import getMetaData from "../APICalls/getMetaData";
+import getArtistData from "../APICalls/getArtistData";
+import getTrackData from "../APICalls/getTrackData";
 import getRecommendations from "../APICalls/getRecommendations";
 import useMusicDataStore from "../stores/musicDataStore";
 import {
@@ -35,12 +36,13 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
   );
 
   const onClick = async (id: string, category: Category) => {
-    const data = await getMetaData(id, category);
     if (category === "artist") {
+      const data = await getArtistData(id);
       setArtistData(data);
       resetArtistSearchResults();
       setArtistAlbums([]);
     } else if (category === "track") {
+      const data = await getTrackData(id);
       setTrackData(data);
       resetTrackSearchResults();
     }
