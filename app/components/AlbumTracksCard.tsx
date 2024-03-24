@@ -18,12 +18,11 @@ const AlbumTracksCard = ({ clickHandler }: AlbumTracksCardProps) => {
   );
 
   const header = (
-    <h2>
+    <h2 className="text-center">
       {albumTracks &&
-        albumTracks.artists
-          .map((artist: Artist) => artist.name)
-          .join(", ")}{" "}
-      - {albumTracks?.name}
+        albumTracks.artists.map((artist: Artist) => artist.name).join(", ")}
+      <br />
+      {albumTracks?.name}
     </h2>
   );
 
@@ -37,7 +36,7 @@ const AlbumTracksCard = ({ clickHandler }: AlbumTracksCardProps) => {
               className={`font-bold ${linkStyle}`}
               onClick={() => clickHandler(track.spotifyId, "track")}
             >
-              {track.name.split(" - Unplugged")[0]}
+              {track.name.split(" -")[0]}
             </td>
           </tr>
         ))}

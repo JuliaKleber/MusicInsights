@@ -2,7 +2,7 @@ import { linkStyle } from "../styles/styles";
 
 const InfoText = () => {
   return (
-    <p className="text-gray-600 text-center">
+    <p className="text-gray-600 dark:text-gray-500 text-center">
       The information shown on this page is provided by{" "}
       <a
         href="https://open.spotify.com"

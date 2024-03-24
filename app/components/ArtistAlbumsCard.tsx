@@ -10,7 +10,7 @@ const ArtistAlbumsCard = ({ clickHandler }: ArtistAlbumsCardProps) => {
   const artistAlbums = useMusicDataStore((state) => state.artistAlbums);
   const artistData = useMusicDataStore((state) => state.artistData);
 
-  const header = <h2>{artistData?.name} - Albums</h2>;
+  const header = <h2>Albums by {artistData?.name}</h2>;
 
   const image = (
     <img
@@ -31,7 +31,7 @@ const ArtistAlbumsCard = ({ clickHandler }: ArtistAlbumsCardProps) => {
                 className={`font-bold ${linkStyle}`}
                 onClick={() => clickHandler(album.spotifyId, "album")}
               >
-                {album.name.split(" (Deluxe")[0].split(" (Remastered")[0]}
+                {album.name.split(" (")[0]}
               </span>
             }
           </li>

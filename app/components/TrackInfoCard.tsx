@@ -87,9 +87,11 @@ const TrackInfoCard = ({ clickHandler }: TrackInfoCardProps) => {
   const header = (
     <div className="flex flex-row mb-3 items-center">
       {trackSearchResults.length > 0 && backArrow}
-      <h2>
-        {trackData?.artists[0].name}{" "}
-        {trackData && trackData.artists.length > 1 && " & v.a."} -{" "}
+      <h2 className="text-center">
+          {`${trackData?.artists[0].name} ${
+            trackData && trackData.artists.length > 1 ? "& v.a." : ""
+          }`}
+        <br />
         {trackData?.name}
       </h2>
       {trackSearchResults.length > 0 && nextArrow}
@@ -119,11 +121,7 @@ const TrackInfoCard = ({ clickHandler }: TrackInfoCardProps) => {
               )
             }
           >
-            {
-              trackData?.album.name
-                .split(" (Remastered")[0]
-                .split(" (Deluxe")[0]
-            }
+            {trackData?.album.name.split("(")[0]}
           </td>
         </tr>
         <tr>

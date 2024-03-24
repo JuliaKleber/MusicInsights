@@ -104,8 +104,9 @@ const AlbumInfoCard = ({ clickHandler, scrollToCard }: AlbumInfoCardProps) => {
   const header = (
     <div className="flex flex-row mb-3 items-center">
       {albumSearchResults.length > 0 && backArrow}
-      <h2>
-        {artistsList} - {albumData?.name}
+      <h2 className="flex flex-col items-center text-center">
+        {artistsList}
+        {albumData?.name}
       </h2>
       {albumSearchResults.length > 0 && nextArrow}
     </div>
