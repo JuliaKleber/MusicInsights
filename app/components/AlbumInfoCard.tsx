@@ -55,7 +55,7 @@ const AlbumInfoCard = ({ clickHandler, scrollToCard }: AlbumInfoCardProps) => {
         <li
           className={`mr-1 ${linkStyle}`}
           key={index}
-          onClick={() => clickHandler(artist.spotifyId, "artist")}
+          onClick={() => clickHandler(artist.spotifyId, "artist", true)}
         >
           {index + 1 < albumData.artists.length
             ? `${artist.name}, `

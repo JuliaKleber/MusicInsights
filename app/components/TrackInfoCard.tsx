@@ -46,7 +46,7 @@ const TrackInfoCard = ({ clickHandler }: TrackInfoCardProps) => {
         <li
           className={`mr-1 ${linkStyle}`}
           key={index}
-          onClick={() => clickHandler(artist.spotifyId, "artist")}
+          onClick={() => clickHandler(artist.spotifyId, "artist", true)}
         >
           {index !== trackData.artists.length - 1
             ? `${artist.name}, `
@@ -112,7 +112,11 @@ const TrackInfoCard = ({ clickHandler }: TrackInfoCardProps) => {
           <td
             className={`${secondColumnStyle} ${linkStyle}`}
             onClick={() =>
-              clickHandler(trackData ? trackData.album.spotifyId : "", "album")
+              clickHandler(
+                trackData ? trackData.album.spotifyId : "",
+                "album",
+                true
+              )
             }
           >
             {
