@@ -32,10 +32,9 @@ const getAlbumTracksData = async (id: string | null) => {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    return data ? setAlbumTracks(data) : null;
+    return setAlbumTracks(data);
   } catch (error) {
     console.error(`Error fetching album's tracks data:`, error);
-    return null;
   }
 };
 

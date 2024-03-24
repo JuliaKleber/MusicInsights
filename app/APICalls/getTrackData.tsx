@@ -106,10 +106,9 @@ const getTrackData = async (
     const data = await response.json();
     const spotifyData = setSpotifyData(data);
     const bpmData = await getKeyAndBpm(data.artists[0].name, data.name);
-    return bpmData ? setBpmAndKey(spotifyData, bpmData) : spotifyData ? spotifyData : null;
+    return bpmData ? setBpmAndKey(spotifyData, bpmData) : spotifyData;
   } catch (error) {
     console.error(`Error fetching track data:`, error);
-    return null;
   }
 };
 

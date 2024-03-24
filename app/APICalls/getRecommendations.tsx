@@ -1,7 +1,6 @@
 "use server";
 
 import getSpotifyToken from "./getSpotifyToken";
-import useMusicDataStore from "../stores/musicDataStore";
 
 const setRecommendations = (data: any) => {
   const recommendations = data.tracks.map((track: any) => ({
@@ -37,7 +36,6 @@ const getRecommendations = async (genre: string) => {
     }
     return recommendations;
   } catch (error) {
-    useMusicDataStore.setState({ recommendations: [] });
     console.error("Error fetching search data:", error);
   }
 };

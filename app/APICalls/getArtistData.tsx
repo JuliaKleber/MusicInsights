@@ -213,12 +213,9 @@ const getArtistData = async (id: string | null) => {
     const musicBrainzData = await getMusicBrainzData(spotifyData.name);
     return musicBrainzData
       ? setArtistDataFromMusicBrainz(spotifyData, musicBrainzData)
-      : spotifyData
-      ? spotifyData
-      : null;
+      : spotifyData;
   } catch (error) {
     console.error(`Error fetching artist data:`, error);
-    return null;
   }
 };
 

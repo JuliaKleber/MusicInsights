@@ -27,13 +27,13 @@ type MusicDataActions = {
   setGenre: (genre: string) => void;
   setRecommendations: (recommendations: Recommendation[]) => void;
 
-  setArtistData: (data: ArtistData | null) => void;
-  setArtistAlbums: (data: ArtistAlbum[]) => void;
+  setArtistData: (data: ArtistData | null | undefined) => void;
+  setArtistAlbums: (data: ArtistAlbum[] | undefined) => void;
   setAlbumListShown: (value: boolean) => void;
-  setAlbumData: (data: AlbumData | null) => void;
-  setAlbumTracks: (data: AlbumTracks | null) => void;
+  setAlbumData: (data: AlbumData | null | undefined) => void;
+  setAlbumTracks: (data: AlbumTracks | null | undefined) => void;
   setTrackListShown: (value: boolean) => void;
-  setTrackData: (data: TrackData | null) => void;
+  setTrackData: (data: TrackData | null | undefined) => void;
 };
 
 type MusicDataStore = MusicDataState & MusicDataActions;

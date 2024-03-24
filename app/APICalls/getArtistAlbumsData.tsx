@@ -29,10 +29,9 @@ const getArtistAlbumsData = async (
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    return data ? setArtistAlbums(data) : [];
+    return setArtistAlbums(data);
   } catch (error) {
     console.error(`Error fetching artist's albums data:`, error);
-    return [];
   }
 };
 

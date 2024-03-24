@@ -19,10 +19,8 @@ const setSpotifyData = (data: any) => {
   return albumData;
 };
 
-const getAlbumData = async (
-  id: string | null,
-) => {
-  const url = `https://api.spotify.com/v1/albums/${id}`
+const getAlbumData = async (id: string | null) => {
+  const url = `https://api.spotify.com/v1/albums/${id}`;
   const accessToken = await getSpotifyToken();
   try {
     const response = await fetch(url, {
@@ -35,10 +33,9 @@ const getAlbumData = async (
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    return data ? setSpotifyData(data) : null;
+    return setSpotifyData(data);
   } catch (error) {
     console.error(`Error fetching album data:`, error);
-    return null;
   }
 };
 
