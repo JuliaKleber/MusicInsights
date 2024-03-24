@@ -7,7 +7,7 @@ interface AlbumTracksCardProps {
   scrollToCard: (category: Category) => void;
 }
 
-const AlbumTracksCard: React.FC<AlbumTracksCardProps> = ({ scrollToCard }) => {
+const AlbumTracksCard = ({ scrollToCard }: AlbumTracksCardProps) => {
   const albumTracks = useMusicDataStore((state) => state.albumTracks);
   const setTrackData = useMusicDataStore((state) => state.setTrackData);
   const resetTrackSearchResults = useMusicDataStore(

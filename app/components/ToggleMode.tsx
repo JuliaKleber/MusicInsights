@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from "next-themes";
 
-const ToggleMode: React.FC = () => {
-  const { systemTheme, theme, setTheme } = useTheme();
+const ToggleMode = () => {
+  const { setTheme } = useTheme();
 
   return (
     <div className="text-xl cursor-pointer text-center">

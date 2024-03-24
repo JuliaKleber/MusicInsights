@@ -15,9 +15,9 @@ interface RecommendationsCardProps {
   scrollToCard: (category: Category, extra?: string) => void;
 }
 
-const RecommendationsCard: React.FC<RecommendationsCardProps> = ({
+const RecommendationsCard = ({
   scrollToCard,
-}) => {
+}: RecommendationsCardProps) => {
   const genre = useMusicDataStore((state) => state.genre);
   const recommendations = useMusicDataStore((state) => state.recommendations);
   const setRecommendations = useMusicDataStore(

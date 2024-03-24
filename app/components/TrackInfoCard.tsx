@@ -18,7 +18,7 @@ interface TrackInfoCardProps {
   scrollToCard: (category: Category) => void;
 }
 
-const TrackInfoCard: React.FC<TrackInfoCardProps> = ({ scrollToCard }) => {
+const TrackInfoCard = ({ scrollToCard }: TrackInfoCardProps) => {
   const trackSearchResults = useMusicDataStore(
     (state) => state.trackSearchResults
   );

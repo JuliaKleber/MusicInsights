@@ -20,7 +20,7 @@ interface ArtistInfoCardProps {
   scrollToCard: (category: Category, endpoint?: string) => void;
 }
 
-const ArtistInfoCard: React.FC<ArtistInfoCardProps> = ({ scrollToCard }) => {
+const ArtistInfoCard = ({ scrollToCard }: ArtistInfoCardProps) => {
   const artistData = useMusicDataStore((state) => state.artistData);
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
   const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);

@@ -17,7 +17,7 @@ interface ButtonProps {
   category: Category;
 }
 
-const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
+const Search = ({ scrollToCard }: SearchProps) => {
   const setArtistSearchResults = useMusicDataStore(
     (state) => state.setArtistSearchResults
   );
@@ -84,7 +84,7 @@ const Search: React.FC<SearchProps> = ({ scrollToCard }) => {
     />
   );
 
-  const Button: React.FC<ButtonProps> = ({ text, category }) => {
+  const Button = ({ text, category }: ButtonProps) => {
     return (
       <button className={buttonStyle} onClick={() => handleSearch(category)}>
         {text}

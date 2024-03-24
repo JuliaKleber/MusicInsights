@@ -7,9 +7,7 @@ interface ArtistAlbumsCardProps {
   scrollToCard: (category: Category) => void;
 }
 
-const ArtistAlbumsCard: React.FC<ArtistAlbumsCardProps> = ({
-  scrollToCard,
-}) => {
+const ArtistAlbumsCard = ({ scrollToCard }: ArtistAlbumsCardProps) => {
   const artistAlbums = useMusicDataStore((state) => state.artistAlbums);
   const artistData = useMusicDataStore((state) => state.artistData);
   const setAlbumData = useMusicDataStore((state) => state.setAlbumData);

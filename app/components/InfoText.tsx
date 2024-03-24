@@ -1,6 +1,6 @@
 import { linkStyle } from "../styles/styles";
 
-const InfoText: React.FC = () => {
+const InfoText = () => {
   return (
     <p className="text-gray-600 text-center">
       The information shown on this page is provided by{" "}

@@ -19,7 +19,7 @@ interface AlbumInfoCardProps {
   scrollToCard: (category: Category) => void;
 }
 
-const AlbumInfoCard: React.FC<AlbumInfoCardProps> = ({ scrollToCard }) => {
+const AlbumInfoCard = ({ scrollToCard }: AlbumInfoCardProps) => {
   const albumData = useMusicDataStore((state) => state.albumData);
   const setArtistData = useMusicDataStore((state) => state.setArtistData);
   const setArtistAlbums = useMusicDataStore((state) => state.setArtistAlbums);
