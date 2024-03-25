@@ -4,7 +4,8 @@ import { useState } from "react";
 import spotifySearch from "../APICalls/spotifySearch";
 import getArtistData from "../APICalls/getArtistData";
 import getAlbumData from "../APICalls/getAlbumData";
-import getTrackData from "../APICalls/getTrackData";
+import getTrackDataFromSpotify from "../APICalls/getTrackDataFromSpotify";
+import getTrackDataFromGetSongBpm from "../APICalls/getTrackDataFromGetSongBpm";
 import { buttonStyle } from "../styles/styles";
 import useMusicDataStore from "../stores/musicDataStore";
 
@@ -56,9 +57,11 @@ const Search = ({ scrollToCard }: SearchProps) => {
       setAlbumData(data);
       setTrackListShown(false);
     } else if (category === "track") {
-      const data = await getTrackData(searchResults[0]);
+      const spotifyData = await getTrackDataFromSpotify(searchResults[0]);
       setTrackSearchResults(searchResults);
-      setTrackData(data);
+      setTrackData(spotifyData);
+      const bpmData =  spotifyData && await getTrackDataFromGetSongBpm(spotifyData);
+      setTrackData(bpmData);
     }
     scrollToCard(category);
   };

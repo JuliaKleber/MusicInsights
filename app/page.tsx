@@ -12,7 +12,8 @@ import RecommendationsCard from "./components/RecommendationsCard";
 import InfoText from "./components/InfoText";
 import getArtistData from "./APICalls/getArtistData";
 import getAlbumData from "./APICalls/getAlbumData";
-import getTrackData from "./APICalls/getTrackData";
+import getTrackDataFromSpotify from "./APICalls/getTrackDataFromSpotify";
+import getTrackDataFromGetSongBpm from "./APICalls/getTrackDataFromGetSongBpm";
 import useMusicDataStore from "./stores/musicDataStore";
 
 export default function Home() {
@@ -68,9 +69,11 @@ export default function Home() {
       setTrackListShown(false);
       if (resetSearch === true) resetAlbumSearchResults();
     } else if (category === "track") {
-      const data = await getTrackData(spotifyId);
-      setTrackData(data);
+      const spotifyData = await getTrackDataFromSpotify(spotifyId);
+      setTrackData(spotifyData);
       if (resetSearch === true) resetTrackSearchResults();
+      const bpmData =  spotifyData && await getTrackDataFromGetSongBpm(spotifyData);
+      setTrackData(bpmData);
     }
     scrollToCard(category);
   };
