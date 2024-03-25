@@ -73,7 +73,9 @@ const RecommendationsCard = ({
                     clickHandler(recommendation.spotifyId, "track")
                   }
                 >
-                  {recommendation.name}
+                  {recommendation.name.includes("emaster")
+                    ? recommendation.name.split("(")[0].split(" -")[0]
+                    : recommendation.name}
                 </td>
               </tr>
             );
@@ -86,7 +88,7 @@ const RecommendationsCard = ({
   return (
     <div
       className={
-        "m-5 mb-0 p-2 flex justify-center rounded-lg shadow-costum dark:bg-bgDark"
+        "m-5 mb-0 p-2 flex justify-center rounded-lg shadow-costum dark:bg-bgDarkCard"
       }
     >
       <div className="flex flex-col ">

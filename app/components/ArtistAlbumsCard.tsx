@@ -31,7 +31,9 @@ const ArtistAlbumsCard = ({ clickHandler }: ArtistAlbumsCardProps) => {
                 className={`font-bold ${linkStyle}`}
                 onClick={() => clickHandler(album.spotifyId, "album")}
               >
-                {album.name.split(" (")[0]}
+                {album.name?.length > 40 && (album.name.includes("aster") || album.name.includes("elux"))
+                  ? album.name.split(" (")[0].split(" -")[0]
+                  : album.name}
               </span>
             }
           </li>

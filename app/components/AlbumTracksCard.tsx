@@ -36,7 +36,9 @@ const AlbumTracksCard = ({ clickHandler }: AlbumTracksCardProps) => {
               className={`font-bold ${linkStyle}`}
               onClick={() => clickHandler(track.spotifyId, "track")}
             >
-              {track.name.split(" -")[0]}
+              {track.name.includes("emaster")
+                ? track.name.split(" -")[0].split(" (")[0]
+                : track.name}
             </td>
           </tr>
         ))}
